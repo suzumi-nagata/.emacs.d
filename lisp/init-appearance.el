@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Default font
 (set-frame-font "Input Mono Compressed 11" nil t)
 
 ;; Base theme
@@ -15,6 +16,7 @@
     (load-theme 'monokai t))
   )
 
+;; Faces color configurations
 (custom-set-faces
  '(highlight ((t (:background "orange" :foreground "black"))))
  '(bold ((t (:foreground "orange" :weight bold))))
@@ -117,6 +119,9 @@
               :box '(:line-width 1 :style released-button))
 
 (setq-default transient-mark-mode 'nil)
+
+;; Divide window equaly when splitting
+(setq window-combination-resize t)
 
 (provide 'init-appearance)
 ;;; init-appearance.el ends here
