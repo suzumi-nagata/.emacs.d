@@ -139,5 +139,8 @@
 ;; Divide window equaly when splitting
 (setq window-combination-resize t)
 
+;; If truncate-lines is true, there is no "visual line break"
+(setq-default truncate-lines t)
+
 (provide 'init-appearance)
 ;;; init-appearance.el ends here
