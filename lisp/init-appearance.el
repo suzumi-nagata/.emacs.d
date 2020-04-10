@@ -104,5 +104,17 @@
 (setq display-time-default-load-average nil)
 (display-time-mode 1)
 
+(set-face-attribute  'mode-line
+              nil
+              :foreground "#8aff2b"
+              :background "DimGrey"
+              :box '(:line-width 1 :style released-button))
+
+(set-face-attribute  'mode-line-inactive
+              nil
+              :foreground "ForestGreen"
+              :background "gray4"
+              :box '(:line-width 1 :style released-button))
+
 (provide 'init-appearance)
 ;;; init-appearance.el ends here
