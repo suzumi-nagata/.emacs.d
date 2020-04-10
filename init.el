@@ -39,3 +39,4 @@
 
 ;; Configure some default directories like auto-save
 (require 'init-config-dirs)
+(require 'init-appearance)
