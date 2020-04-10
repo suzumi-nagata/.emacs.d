@@ -48,5 +48,21 @@
 ;; Kill current buffer instead of asking
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
 
+(global-set-key (kbd "C-c d") 'duplicate-line)
+
+(global-set-key (kbd "C-c c") 'insert-curly-braces)
+
+(global-set-key (kbd "C-o") 'open-line-with-reindent)
+
+(global-set-key (kbd "M-p") 'move-line-up)
+(global-set-key (kbd "M-n") 'move-line-down)
+
+(global-set-key (kbd "C-c p") 'insert-parenthesis)
+(global-set-key (kbd "C-c n") 'insert-curl-brackets)
+(global-set-key (kbd "C-c b") 'insert-brackets)
+(global-set-key (kbd "C-c e") 'insert-double-quotes)
+(global-set-key (kbd "C-c x") 'insert-simple-quotes)
+(global-set-key (kbd "C-c ,") 'insert-tag)
+
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here
