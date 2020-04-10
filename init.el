@@ -22,4 +22,5 @@
             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
 
 ;; Startup configurations
+(require 'init-startup-packages)
 (require 'init-config-dirs)
