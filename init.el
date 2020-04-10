@@ -43,3 +43,4 @@
 (require 'init-utils)
 (require 'init-global-keybinds)
 (require 'init-productivity)
+(require 'init-org)
