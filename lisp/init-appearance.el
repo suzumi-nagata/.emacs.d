@@ -25,6 +25,22 @@
  '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
  '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))
  )
+;;----------------------------------------------------------------------------
+;; Some color changes to the base themes
+;;----------------------------------------------------------------------------
+;; GUI
+(when (display-graphic-p)
+  (set-background-color "#1e1c31")
+  )
+
+;; Terminal
+(unless (display-graphic-p)
+  (set-face-attribute 'region nil :background "blue")
+  )
+
+;;----------------------------------------------------------------------------
+;; General Appearance
+;;----------------------------------------------------------------------------
 
 ;; Disable the scroll bar
 (scroll-bar-mode -1)
