@@ -1,5 +1,7 @@
 auto-save-list
-.#init.el
+*.#*
 .emacs.desktop
 .emacs.desktop.lock
 elpa/
+.last-package-update-day
+custom.el
