@@ -70,5 +70,10 @@
 (global-set-key (kbd "C-c x") 'insert-simple-quotes)
 (global-set-key (kbd "C-c ,") 'insert-tag)
 
+;; Org mode
+(define-key global-map "\C-c l l" 'org-store-link)
+(global-set-key (kbd "<f12>") 'org-agenda)
+(global-set-key (kbd "C-c C-ç") 'org-capture)
+
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here
