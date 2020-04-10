@@ -142,5 +142,8 @@
 ;; If truncate-lines is true, there is no "visual line break"
 (setq-default truncate-lines t)
 
+(use-package diminish
+  :ensure t)
+
 (provide 'init-appearance)
 ;;; init-appearance.el ends here
