@@ -116,5 +116,7 @@
               :background "gray4"
               :box '(:line-width 1 :style released-button))
 
+(setq-default transient-mark-mode 'nil)
+
 (provide 'init-appearance)
 ;;; init-appearance.el ends here

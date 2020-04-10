@@ -39,4 +39,7 @@
 
 ;; Configure some default directories like auto-save
 (require 'init-config-dirs)
+;; Theme and colors
 (require 'init-appearance)
+(require 'init-utils)
+(require 'init-global-keybinds)
