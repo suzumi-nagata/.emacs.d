@@ -134,7 +134,7 @@
               :background "gray4"
               :box '(:line-width 1 :style released-button))
 
-(setq-default transient-mark-mode 'nil)
+(setq-default transient-mark-mode 't)
 
 ;; Divide window equaly when splitting
 (setq window-combination-resize t)

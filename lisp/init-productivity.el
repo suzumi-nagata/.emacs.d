@@ -61,6 +61,5 @@
 (global-set-key [remap scroll-down-command] 'golden-ratio-scroll-screen-down)
 (global-set-key [remap scroll-up-command] 'golden-ratio-scroll-screen-up)
 
-
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
