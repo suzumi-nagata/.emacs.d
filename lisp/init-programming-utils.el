@@ -30,5 +30,8 @@
 (define-key yas-minor-mode-map (kbd "TAB") nil)
 (global-set-key '[8711] 'yas-expand)
 
+(use-package flycheck
+  :ensure t)
+
 (provide 'init-programming-utils)
 ;;; init-programming-utils.el ends here
