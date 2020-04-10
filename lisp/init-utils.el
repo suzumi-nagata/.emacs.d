@@ -49,5 +49,13 @@
   (dolist (pattern patterns)
     (add-to-list 'auto-mode-alist (cons pattern mode))))
 
+;;----------------------------------------------------------------------------
+;; Kill current buffer instead of asking what buffer to kill
+;;----------------------------------------------------------------------------
+(defun kill-current-buffer ()
+  "Kills the current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here

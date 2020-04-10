@@ -41,5 +41,12 @@
 
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
 
+;; split window and change focus
+(global-set-key "\C-x2" (lambda () (interactive)(split-window-vertically) (other-window 1)))
+(global-set-key "\C-x3" (lambda () (interactive)(split-window-horizontally) (other-window 1)))
+
+;; Kill current buffer instead of asking
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
+
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here
