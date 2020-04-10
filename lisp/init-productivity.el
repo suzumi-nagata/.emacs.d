@@ -67,5 +67,8 @@
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
 
+(use-package sudo-edit
+  :ensure t)
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
