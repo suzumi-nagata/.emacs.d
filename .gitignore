@@ -5,3 +5,7 @@ auto-save-list
 elpa/
 .last-package-update-day
 custom.el
+emacs-backups
+emacs-saves
+bookmarks
+recentf

@@ -141,7 +141,7 @@
 (defun insert-curly-braces()
   (interactive)
   (end-of-line)
-  (insert "{")
+  (insert " {")
   (indent-according-to-mode)
   (newline)
   (indent-according-to-mode)
