@@ -57,5 +57,13 @@
   (interactive)
   (kill-buffer (current-buffer)))
 
+;;----------------------------------------------------------------------------
+;; close all open buffers
+;;----------------------------------------------------------------------------
+(defun close-all-buffers ()
+  "Kill all buffers without regard for their origin."
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
