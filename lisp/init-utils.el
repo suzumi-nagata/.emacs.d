@@ -65,5 +65,121 @@
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
 
+;;----------------------------------------------------------------------------
+;; duplicate line
+;;----------------------------------------------------------------------------
+(defun duplicate-line()
+  (interactive)
+  (let (sline)
+    (setq sline (buffer-substring (point-at-bol) (point-at-eol)))
+    (end-of-line)
+    (newline)
+    (insert sline)))
+
+;;----------------------------------------------------------------------------
+;; Insert pairs: insert a pair from the arguments. If the region is selected
+;; put the pair around the region.
+;;----------------------------------------------------------------------------
+(defun my-insert-pair (open close)
+  (if (region-active-p)
+      (progn
+        (let* ((mark-start (region-beginning))
+               (mark-end (region-end)))
+          (goto-char mark-end)
+          (insert close)
+          (goto-char mark-start)
+          (insert open)))
+    (insert open close))
+  (backward-char))
+
+;; Move the current line up
+(defun move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2))
+
+;; Move the current line down
+(defun move-line-down ()
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1))
+
+;; tag insertion
+(defun insert-tag()
+  (interactive)
+  (my-insert-pair "<" ">"))
+
+;; Parenthesis insertion
+(defun insert-parenthesis()
+  (interactive)
+  (my-insert-pair ?( ?)))
+
+;; Double quotes insertion
+(defun insert-double-quotes()
+  (interactive)
+  (my-insert-pair  "\"" "\""))
+
+;; Simple quotes insertion
+(defun insert-simple-quotes()
+  (interactive)
+  (my-insert-pair  "'" "'"))
+
+;; Square Braket insertion
+(defun insert-brackets()
+  (interactive)
+  (my-insert-pair ?[ ?]))
+
+;; Curly Braces insertion
+(defun insert-curl-brackets()
+  (interactive)
+  (my-insert-pair ?{ ?}))
+
+;;----------------------------------------------------------------------------
+;; Curly brackets insertion
+;;----------------------------------------------------------------------------
+(defun insert-curly-braces()
+  (interactive)
+  (end-of-line)
+  (insert "{")
+  (indent-according-to-mode)
+  (newline)
+  (indent-according-to-mode)
+  (newline)
+  (insert "}")
+  (indent-according-to-mode)
+  (previous-line)
+  (end-of-line))
+
+;;----------------------------------------------------------------------------
+;; Open line and tabs
+;;----------------------------------------------------------------------------
+(defun open-line-with-reindent (n)
+  "A version of `open-line' which reindents the start and end positions.
+  If there is a fill prefix and/or a `left-margin', insert them
+  on the new line if the line would have been blank.
+  With arg N, insert N newlines."
+  (interactive "*p")
+  (let* ((do-fill-prefix (and fill-prefix (bolp)))
+         (do-left-margin (and (bolp) (> (current-left-margin) 0)))
+         (loc (point-marker))
+         ;; Don't expand an abbrev before point.
+         (abbrev-mode nil))
+    (delete-horizontal-space t)
+    (newline n)
+    (indent-according-to-mode)
+    (when (eolp)
+      (delete-horizontal-space t))
+    (goto-char loc)
+    (while (> n 0)
+      (cond ((bolp)
+             (if do-left-margin (indent-to (current-left-margin)))
+             (if do-fill-prefix (insert-and-inherit fill-prefix))))
+      (forward-line 1)
+      (setq n (1- n)))
+    (goto-char loc)
+    (end-of-line)
+    (indent-according-to-mode)))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
