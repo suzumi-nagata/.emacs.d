@@ -70,5 +70,9 @@
 (use-package sudo-edit
   :ensure t)
 
+;; I'm installing this just to use on org-wiki, I don't like helm that much
+(use-package helm
+  :ensure t)
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
