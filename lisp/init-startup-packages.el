@@ -9,10 +9,9 @@
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 ;; Install use-package if not installed
-(dolist (package '(use-package))
-   (unless (package-installed-p package)
-     (package-refresh-contents)
-     (package-install package)))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (provide 'init-startup-packages)
 ;;; init-startup-packages ends here
