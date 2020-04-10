@@ -219,6 +219,32 @@
         (org-agenda-files :maxlevel . 9)))
 
 ;;----------------------------------------------------------------------------
+;; Org wiki
+;;----------------------------------------------------------------------------
+
+(unless (package-installed-p 'org-wiki)
+  (let ((url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char (point-min))
+      (re-search-forward "^$")
+      (delete-region (point) (point-min))
+      (kill-whole-line)
+      (package-install-from-buffer)))
+  )
+
+(require 'org-wiki)
+(setq org-wiki-location-list '("~/Common/Wiki"))
+
+;; Initialize first org-wiki-directory or default org-wiki
+(setq org-wiki-location (car org-wiki-location-list))
+
+(setq org-wiki-close-root-switch t)
+
+(setq org-wiki-server-port "8000")
+
+(setq org-wiki-server-host "127.0.0.1") ;; Listen only localhost
+
+;;----------------------------------------------------------------------------
 ;; Usefull functions
 ;;----------------------------------------------------------------------------
 
@@ -242,6 +268,21 @@
         (message "File created and linked...")
         )
     (message "You're in a not saved buffer! Save it first!")))
+
+;; Insert setupfiles
+(defun bigblow-setupfile ()
+  "Insert setupfile at point."
+  (interactive)
+  (insert "#+SETUPFILE: ./org-html-themes/setup/theme-bigblow-local.setup")
+  (newline)
+  )
+
+(defun readtheorg-setupfile ()
+  "Insert setupfile at point."
+  (interactive)
+  (insert "#+SETUPFILE: ./org-html-themes/setup/theme-readtheorg-local.setup")
+  (newline)
+  )
 
 (provide 'init-org)
 ;;; init-org.el ends here
