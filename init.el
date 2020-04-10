@@ -15,12 +15,27 @@
 ;;----------------------------------------------------------------------------
 ;; Adjust garbage collection during startup and restores original afterwards
 ;;----------------------------------------------------------------------------
-(let ((normal-gc-cons-threshold (* 20 1024 1024))
-      (init-gc-cons-threshold (* 128 1024 1024)))
-  (setq gc-cons-threshold init-gc-cons-threshold)
-  (add-hook 'emacs-startup-hook
-            (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+(setq gc-cons-threshold-original gc-cons-threshold)
+(setq gc-cons-threshold (* 1024 1024 100))
 
-;; Startup configurations
+(setq file-name-handler-alist-original file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+(run-with-idle-timer
+ 5 nil
+ (lambda ()
+   (setq gc-cons-threshold gc-cons-threshold-original)
+   (setq file-name-handler-alist file-name-handler-alist-original)
+   (makunbound 'gc-cons-threshold-original)
+   (makunbound 'file-name-handler-alist-original)
+   (message "gc-cons-threshold and file-name-handler-alist restored")))
+
+;;----------------------------------------------------------------------------
+;; Configurations (files located at ~/.emacs.d/lisp)
+;;----------------------------------------------------------------------------
+
+;; Initialize packages
 (require 'init-startup-packages)
+
+;; Configure some default directories like auto-save
 (require 'init-config-dirs)

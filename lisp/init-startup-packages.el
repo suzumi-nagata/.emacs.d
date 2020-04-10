@@ -11,7 +11,8 @@
 ;; Install use-package if not installed
 (dolist (package '(use-package))
    (unless (package-installed-p package)
-       (package-install package)))
+     (package-refresh-contents)
+     (package-install package)))
 
 (provide 'init-startup-packages)
 ;;; init-startup-packages ends here
