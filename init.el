@@ -27,8 +27,7 @@
    (setq gc-cons-threshold gc-cons-threshold-original)
    (setq file-name-handler-alist file-name-handler-alist-original)
    (makunbound 'gc-cons-threshold-original)
-   (makunbound 'file-name-handler-alist-original)
-   (message "gc-cons-threshold and file-name-handler-alist restored")))
+   (makunbound 'file-name-handler-alist-original)))
 
 ;;----------------------------------------------------------------------------
 ;; Configurations (files located at ~/.emacs.d/lisp)
