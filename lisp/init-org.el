@@ -63,11 +63,15 @@
 
 ;; Use yas-minor mode for org and latex on org buffers
 (defun my-org-latex-yas ()
-  "Activate org and LaTeX yas expansion in org-mode buffers."
+  "Activate org and LaTeX yas expansion in 'org-mode' buffers."
   (yas-minor-mode)
   (yas-activate-extra-mode 'latex-mode))
 
 (add-hook 'org-mode-hook #'my-org-latex-yas)
+
+;; Permit org-export local variable as safe
+(add-to-list 'safe-local-variable-values '(eval . (add-hook 'after-save-hook 'org-html-export-to-html t t)))
+
 ;;----------------------------------------------------------------------------
 ;; Agenda config
 ;;----------------------------------------------------------------------------
