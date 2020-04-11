@@ -22,15 +22,22 @@
  '(bold ((t (:foreground "orange" :weight bold))))
  '(font-lock-comment-face ((t (:foreground "#9acd32"))))
 
+ ;; Org mode
+ '(org-level-1 ((t (:inherit outline-1 :height 1.15))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.05))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
  '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
  '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))
+ '(org-verbatim ((t (:inherit shadow :foreground "DarkGoldenrod1" :box (:line-width 1 :color "grey75" :style pressed-button)))))
  )
 ;;----------------------------------------------------------------------------
 ;; Some color changes to the base themes
 ;;----------------------------------------------------------------------------
 ;; GUI
 (when (display-graphic-p)
-  (set-background-color "#1e1c31")
+  (set-background-color "#131417")
   )
 
 ;; Terminal

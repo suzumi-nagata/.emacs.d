@@ -135,6 +135,11 @@
   (interactive)
   (my-insert-pair ?{ ?}))
 
+;; Verbatim Insertion
+(defun insert-verbatim-equals()
+  (interactive)
+  (my-insert-pair ?\= ?\=))
+
 ;;----------------------------------------------------------------------------
 ;; Curly brackets insertion
 ;;----------------------------------------------------------------------------
