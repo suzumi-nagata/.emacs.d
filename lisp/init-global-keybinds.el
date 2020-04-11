@@ -69,6 +69,7 @@
 (global-set-key (kbd "C-c e") 'insert-double-quotes)
 (global-set-key (kbd "C-c x") 'insert-simple-quotes)
 (global-set-key (kbd "C-c ,") 'insert-tag)
+(global-set-key (kbd "C-c v") 'insert-verbatim-equals)
 
 ;; Org mode
 (define-key global-map "\C-c l l" 'org-store-link)
