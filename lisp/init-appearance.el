@@ -38,6 +38,7 @@
 ;; GUI
 (when (display-graphic-p)
   (set-background-color "#131417")
+  (set-face-attribute 'fringe nil :background nil)
   )
 
 ;; Terminal
