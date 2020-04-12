@@ -21,6 +21,7 @@
  '(highlight ((t (:background "orange" :foreground "black"))))
  '(bold ((t (:foreground "orange" :weight bold))))
  '(font-lock-comment-face ((t (:foreground "#9acd32"))))
+ '(default ((t (:inherit nil :stipple nil :background "#131417" :foreground "#f8f8f2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width extra-condensed :foundry "FBI " :family "Input Mono Compressed"))))
 
  ;; Org mode
  '(org-level-1 ((t (:inherit outline-1 :height 1.15))))
@@ -37,7 +38,7 @@
 ;;----------------------------------------------------------------------------
 ;; GUI
 (when (display-graphic-p)
-  (set-background-color "#131417")
+  (add-to-list 'default-frame-alist '(background-color . "#131417"))
   (set-face-attribute 'fringe nil :background nil)
   )
 
@@ -148,7 +149,16 @@
 (setq window-combination-resize t)
 
 ;; If truncate-lines is true, there is no "visual line break"
-(setq-default truncate-lines t)
+;; If word-wrap is ture, words are wrapped on space
+(add-hook 'org-mode-hook
+          '(lambda ()
+             (setq truncate-lines nil
+                   word-wrap t)))
+
+(add-hook 'prog-mode-hook
+          '(lambda ()
+             (setq truncate-lines t
+                   word-wrap nil)))
 
 (use-package diminish
   :ensure t)
