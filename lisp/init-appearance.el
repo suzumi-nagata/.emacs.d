@@ -29,6 +29,8 @@
  '(org-level-3 ((t (:inherit outline-3 :height 1.05))))
  '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+ '(org-hide ((t (:background "#131417" :foreground "#131417"))))
  '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
  '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))
  '(org-verbatim ((t (:inherit shadow :foreground "DarkGoldenrod1" :box (:line-width 1 :color "grey75" :style pressed-button)))))
