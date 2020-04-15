@@ -74,5 +74,15 @@
 (use-package helm
   :ensure t)
 
+(use-package subword
+  :ensure t
+  :diminish)
+
+(use-package beacon
+  :ensure t
+  :diminish
+  :config
+  (beacon-mode 1))
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here

@@ -2,6 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+(use-package rainbow-mode
+  :ensure t
+  :diminish
+  :hook prog-mode)
+
 (use-package rainbow-delimiters
   :ensure t
   :init
