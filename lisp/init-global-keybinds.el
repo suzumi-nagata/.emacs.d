@@ -75,6 +75,8 @@
 (define-key global-map "\C-c l l" 'org-store-link)
 (global-set-key (kbd "<f12>") 'org-agenda)
 (global-set-key (kbd "C-c C-ç") 'org-capture)
+(global-set-key (kbd "C-<f12>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
+(global-set-key (kbd "C-<f11>") 'org-display-inline-images)
 
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here
