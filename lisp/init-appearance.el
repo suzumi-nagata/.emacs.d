@@ -17,24 +17,26 @@
   )
 
 ;; Faces color configurations
-(custom-set-faces
- '(highlight ((t (:background "orange" :foreground "black"))))
- '(bold ((t (:foreground "orange" :weight bold))))
- '(font-lock-comment-face ((t (:foreground "#9acd32"))))
- '(default ((t (:inherit nil :stipple nil :background "#131417" :foreground "#f8f8f2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width extra-condensed :foundry "FBI " :family "Input Mono Compressed"))))
+(when (display-graphic-p)
+  (custom-set-faces
+   '(highlight ((t (:background "orange" :foreground "black"))))
+   '(bold ((t (:foreground "orange" :weight bold))))
+   '(font-lock-comment-face ((t (:foreground "#9acd32"))))
+   '(default ((t (:inherit nil :stipple nil :background "#131417" :foreground "#f8f8f2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width extra-condensed :foundry "FBI " :family "Input Mono Compressed"))))
 
- ;; Org mode
- '(org-level-1 ((t (:inherit outline-1 :height 1.15))))
- '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
- '(org-level-3 ((t (:inherit outline-3 :height 1.05))))
- '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
- '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
- '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
- '(org-hide ((t (:background "#131417" :foreground "#131417"))))
- '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
- '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))
- '(org-verbatim ((t (:inherit shadow :foreground "DarkGoldenrod1" :box (:line-width 1 :color "grey75" :style pressed-button)))))
- )
+   ;; Org mode
+   '(org-level-1 ((t (:inherit outline-1 :height 1.15))))
+   '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
+   '(org-level-3 ((t (:inherit outline-3 :height 1.05))))
+   '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+   '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+   '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+   '(org-hide ((t (:background "#131417" :foreground "#131417"))))
+   '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
+   '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))
+   '(org-verbatim ((t (:inherit shadow :foreground "DarkGoldenrod1" :box (:line-width 1 :color "grey75" :style pressed-button)))))
+   )
+  )
 ;;----------------------------------------------------------------------------
 ;; Some color changes to the base themes
 ;;----------------------------------------------------------------------------
@@ -161,6 +163,12 @@
           '(lambda ()
              (setq truncate-lines t
                    word-wrap nil)))
+
+;; Note, on a newly installed OS, there is a need to run
+;; M-x all-the-icons-install-fonts
+;; To install the required fonts
+(use-package all-the-icons
+  :ensure t)
 
 (use-package diminish
   :ensure t)
