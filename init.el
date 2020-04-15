@@ -7,7 +7,7 @@
 ;;; Code:
 
 ;; Uncomment to debug
-;;(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;; Add ~/.emacs.d/lisp to load the rest of configuration files
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
