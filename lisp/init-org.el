@@ -24,6 +24,11 @@
       org-ellipsis "⬎"
       org-archive-location (concat "archive/" "%s_archive::")
       org-cycle-separator-lines 0
+      org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator nil
+      org-agenda-compact-blocks t
       )
 
 (org-babel-do-load-languages
@@ -44,6 +49,9 @@
    (plantuml . t)
    (latex . t))
  )
+
+;; latex preview font size
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.7))
 
 (use-package org-bullets
   :ensure t
@@ -79,7 +87,8 @@
 (setq org-todo-keywords
       (quote ((sequence "☛ TODO(t)" "↻ REDO(r@)" "➥ IN PROGRESS(p!)" "|")
               (sequence "⚑ WAITING(w@)" "➤ FORWARD(f@)" "◷ HOLD(h@)" "|")
-              (sequence "⚡ NEXT(n!)" "|" "✘ CANCELLED(c@)" "✔ DONE(d!)")))
+              (sequence "⚡ NEXT(n!)" "|" "✘ CANCELLED(c@)" "✔ DONE(d!)")
+              (sequence "Ω SOMEDAY(s!)" "⬆ URGENT(u!)" "|")))
       )
 
 (setq org-todo-keyword-faces
@@ -92,6 +101,8 @@
         ("➤ FORWARD" . "gold3")
         ("✘ CANCELLED" . "lawn green")
         ("✔ DONE" . "green")
+        ("Ω SOMEDAY" ."LightGoldenrod")
+        ("⬆ URGENT" ."red3")
         ))
 
 (setq org-agenda-files (list "~/Common/Agenda/work.org"
@@ -153,63 +164,397 @@
                          `(face (:background, backcolor, :foreground, forecolor)))))
 
 ;; Priorities
-(setq org-highest-priority ?A)
-(setq org-default-priority ?D)
-(setq org-lowest-priority ?G)
+(use-package org-fancy-priorities
+  :ensure t
+  :diminish
+  :after (org)
+  :commands (org-fancy-priorities-mode)
+  :hook
+  (org-mode . org-fancy-priorities-mode)
+  :custom
+  (org-fancy-priorities-list '("I∧U" "I¬U" "¬IU" "¬I¬U")
+                             "Eisenhower Matrix of Importance and Urgency"))
 
-(setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
-                           (?B . (:foreground "orange1"))
-                           (?C . (:foreground "yellow"))
-                           (?D . (:foreground "green"))
-                           (?E . (:foreground "blue"))
-                           (?F . (:foreground "DarkViolet"))
-                           (?G . (:foreground "DarkMagenta"))))
+(setq org-priority-faces '((?A . (:foreground "green" :weight 'bold))
+                           (?B . (:foreground "cyan"))
+                           (?C . (:foreground "orange1"))
+                           (?D . (:foreground "tomato"))
+                           ))
+
+(setq org-default-priority ?A)
+(setq org-lowest-priority ?D)
+
+;; (setq org-highest-priority ?A)
+;; (setq org-default-priority ?D)
+;; (setq org-lowest-priority ?G)
+
+;; (setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
+;;                            (?B . (:foreground "orange1"))
+;;                            (?C . (:foreground "yellow"))
+;;                            (?D . (:foreground "green"))
+;;                            (?E . (:foreground "blue"))
+;;                            (?F . (:foreground "DarkViolet"))
+;;                            (?G . (:foreground "DarkMagenta"))))
+
+;; (setq org-fancy-priorities-list '((?A . "❗")
+;;                                   (?B . "⬆")
+;;                                   (?C . "⮬")
+;;                                   (?D . "↕")
+;;                                   (?E . "⮮")
+;;                                   (?F . "⬇")
+;;                                   (?G . "☕")
+
+;; super agenda
+;; TODO: finish reading the docs: https://github.com/alphapapa/org-super-agenda
+(use-package org-super-agenda
+  :ensure t
+  :init
+  (setq org-super-agenda-groups
+       '(;; Each group has an implicit boolean OR operator between its selectors.
+         (:name "Today"  ; Optionally specify section name
+                :time-grid t  ; Items that appear on the time grid
+                :todo "TODAY")  ; Items that have this TODO keyword
+         (:name "Important And Urgent"
+                :priority "A")
+         (:name "Important But Not Urgent"
+                :priority "B")
+         (:name "Not Important And Urgent"
+                :priority "C")
+         (:name "Not Important Nor Urgent"
+                :priority "D")
+         ;; Set order of multiple groups at once
+         (:order-multi (2 (:name "Shopping in town"
+                                 ;; Boolean AND group matches items that match all subgroups
+                                 :and (:tag "shopping" :tag "@town"))
+                          (:name "Food-related"
+                                 ;; Multiple args given in list with implicit OR
+                                 :tag ("food" "dinner"))
+                          (:name "Personal"
+                                 :habit t
+                                 :tag "personal")
+                          (:name "Space-related (non-moon-or-planet-related)"
+                                 ;; Regexps match case-insensitively on the entire entry
+                                 :and (:regexp ("space" "NASA")
+                                               ;; Boolean NOT also has implicit OR between selectors
+                                               :not (:regexp "moon" :tag "planet")))))
+         ;; Groups supply their own section names when none are given
+         (:todo "WAITING" :order 8)  ; Set order of this section
+         (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+                ;; Show this group at the end of the agenda (since it has the
+                ;; highest number). If you specified this group last, items
+                ;; with these todo keywords that e.g. have priority A would be
+                ;; displayed in that group instead, because items are grouped
+                ;; out in the order the groups are listed.
+                :order 9)
+         (:priority<= "B"
+                      ;; Show this section after "Today" and "Important", because
+                      ;; their order is unspecified, defaulting to 0. Sections
+                      ;; are displayed lowest-number-first.
+                      :order 1)
+         ;; After the last group, the agenda will display items that didn't
+         ;; match any of these groups, with the default order position of 99
+         ))
+  :config
+  (org-super-agenda-mode))
+
+(setq org-agenda-custom-commands
+      '(("o" "Overview"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today"
+                                :time-grid t
+                                :date today
+                                :todo "TODAY"
+                                :scheduled today
+                                :order 1)))))
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "Next to do"
+                                 :todo "⚡ NEXT"
+                                 :order 1)
+                          (:name "Important"
+                                 :tag "Important"
+                                 :priority "A"
+                                 :order 6)
+                          (:name "Due Today"
+                                 :deadline today
+                                 :order 2)
+                          (:name "Due Soon"
+                                 :deadline future
+                                 :order 8)
+                          (:name "Overdue"
+                                 :deadline past
+                                 :face error
+                                 :order 7)
+                          (:name "Assignments"
+                                 :tag "Assignment"
+                                 :order 10)
+                          (:name "Issues"
+                                 :tag "Issue"
+                                 :order 12)
+                          (:name "Projects"
+                                 :tag "Project"
+                                 :order 14)
+                          (:name "Emacs"
+                                 :tag "Emacs"
+                                 :order 13)
+                          (:name "Research"
+                                 :tag "Research"
+                                 :order 15)
+                          (:name "To read"
+                                 :tag "Read"
+                                 :order 30)
+                          (:name "Waiting"
+                                 :todo "⚑ WAITING"
+                                 :order 28)
+                          (:name "In Progress"
+                                 :todo "➥ IN PROGRESS"
+                                 :order 20)
+                          (:name "On Hold"
+                                 :todo "◷ HOLD"
+                                 :order 27)
+                          (:name "Trivial"
+                                 :priority<= "E"
+                                 :tag ("Trivial" "Unimportant")
+                                 :todo ("SOMEDAY" )
+                                 :order 90)
+                          (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
 
 ;;----------------------------------------------------------------------------
 ;; Org capture
 ;;----------------------------------------------------------------------------
+(use-package doct
+  :ensure t
+  ;;recommended: defer until calling doct
+  :commands (doct))
+
 (setq org-capture-templates
-      '(
-        ("t" "Todo")
-        ("tt" "Todo Entry"
-         entry (file "~/Common/Agenda/refile.org")
-         "* ☛ TODO %?\n")
-        ("ts" "Todo with Clipboard"
-         entry (file "~/Common/Agenda/refile.org")
-         "* ☛ TODO %?\n  %x")
-        ("tn" "NEWS"
-         entry (file "~/Common/Agenda/refile.org")
-         "* (NEWS) %?\n  %x")
+      (doct '((" Personal Todo"
+               :keys "t"
+               :file "~/Common/Agenda/refile.org"
+               :prepend t
+               :type entry
+               :children
+               (("☛ Todo"
+                 :keys "t"
+                 :template ("* ☛ TODO %?\n"))
+                ("⚡ Next"
+                 :keys "n"
+                 :template ("* ⚡ NEXT %?\n"))
+                ("Ω Someday"
+                 :keys "s"
+                 :template ("* Ω SOMEDAY %?\n"))
+                ("⬆ Urgent"
+                 :keys "u"
+                 :template ("* ⬆ URGENT %?\n")))
+               )
+              (" Journal"
+               :keys "j"
+               :file "~/Common/Agenda/journal.org"
+               :type entry
+               :datetree t
+               :children
+               ((" Journal Entry"
+                 :keys "e"
+                 :template ("* %U %^{Title}\n  %?\n"))
+                (" Journal Prompt"
+                 :keys "p"
+                 :time-prompt t
+                 :template ("* %^{Title}\n %?\n")))
+               )
+              )
+            ))
 
-        ("j" "Journal")
-        ("jn" "Journal Entry"
-         entry (file+datetree "~/Common/Agenda/journal.org")
-         "* %U %^{Title}\n  %?\n")
-        ("js" "Journal Clipboard"
-         entry (file+datetree "~/Common/Agenda/journal.org")
-         "* %U %?\n  %x\n")
-        ("jc" "Journal with context" plain
-         (file+datetree+prompt "~/Common/Agenda/journal.org")
-         "%K - %a\n%i\n%?\n")
+;;         ("j" "Journal")
+;;         ("jn" "Journal Entry"
+;;          entry (file+datetree "~/Common/Agenda/journal.org")
+;;          "* %U %^{Title}\n  %?\n")
+;;         ("js" "Journal Clipboard"
+;;          entry (file+datetree "~/Common/Agenda/journal.org")
+;;          "* %U %?\n  %x\n")
+;;         ("jc" "Journal with context" plain
+;;          (file+datetree+prompt "~/Common/Agenda/journal.org")
+;;          "%K - %a\n%i\n%?\n")
 
-        ("c" "Compras"
-         entry (file "~/Common/Agenda/compras.org")
-         "* %?\n")
+;;         ("c" "Compras"
+;;          entry (file "~/Common/Agenda/compras.org")
+;;          "* %?\n")
 
-        ("p" "PIBIC"
-         entry (file "~/Common/Agenda/PIBIC.org")
-         "* ☛ TODO %?\n")
+;; (after! org-capture
+;;   <<prettify-capture>>
+;;   (setq +org-capture-uni-units (split-string (f-read-text "~/.org/.uni-units")))
+;;   (add-transient-hook! 'org-capture-select-template
+;;     (setq org-capture-templates
+;;           (doct `((,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+;;                    :keys "t"
+;;                    :file +org-capture-todo-file
+;;                    :prepend t
+;;                    :headline "Inbox"
+;;                    :type entry
+;;                    :template ("* TODO %?"
+;;                               "%i %a")
+;;                    )
+;;                   (,(format "%s\tPersonal note" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-green :v-adjust 0.01))
+;;                    :keys "n"
+;;                    :file +org-capture-todo-file
+;;                    :prepend t
+;;                    :headline "Inbox"
+;;                    :type entry
+;;                    :template ("* %?"
+;;                               "%i %a")
+;;                    )
+;;                   (,(format "%s\tUniversity" (all-the-icons-faicon "graduation-cap" :face 'all-the-icons-purple :v-adjust 0.01))
+;;                    :keys "u"
+;;                    :file +org-capture-todo-file
+;;                    :headline "University"
+;;                    :unit-prompt ,(format "%%^{Unit|%s}" (string-join +org-capture-uni-units "|"))
+;;                    :prepend t
+;;                    :type entry
+;;                    :children ((,(format "%s\tTest" (all-the-icons-material "timer" :face 'all-the-icons-red :v-adjust 0.01))
+;;                                :keys "t"
+;;                                :template ("* TODO [#C] %{unit-prompt} %? :uni:tests:"
+;;                                           "SCHEDULED: %^{Test date:}T"
+;;                                           "%i %a"))
+;;                               (,(format "%s\tAssignment" (all-the-icons-material "library_books" :face 'all-the-icons-orange :v-adjust 0.01))
+;;                                :keys "a"
+;;                                :template ("* TODO [#B] %{unit-prompt} %? :uni:assignments:"
+;;                                           "DEADLINE: %^{Due date:}T"
+;;                                           "%i %a"))
+;;                               (,(format "%s\tLecture" (all-the-icons-fileicon "keynote" :face 'all-the-icons-orange :v-adjust 0.01))
+;;                                :keys "l"
+;;                                :template ("* TODO [#C] %{unit-prompt} %? :uni:lecture:"
+;;                                           "%i %a"))
+;;                               (,(format "%s\tMiscellaneous task" (all-the-icons-faicon "list" :face 'all-the-icons-yellow :v-adjust 0.01))
+;;                                :keys "u"
+;;                                :template ("* TODO [#D] %{unit-prompt} %? :uni:"
+;;                                           "%i %a"))))
+;;                   (,(format "%s\tEmail" (all-the-icons-faicon "envelope" :face 'all-the-icons-blue :v-adjust 0.01))
+;;                    :keys "e"
+;;                    :file +org-capture-todo-file
+;;                    :prepend t
+;;                    :headline "Inbox"
+;;                    :type entry
+;;                    :template ("* TODO %^{type|reply to|contact} %\\3 %? :email:"
+;;                               "Send an email %^{urgancy|soon|ASAP|anon|at some point|eventually} to %^{recipiant}"
+;;                               "about %^{topic}"
+;;                               "%U %i %a"))
+;;                   (,(format "%s\tInteresting" (all-the-icons-faicon "eye" :face 'all-the-icons-lcyan :v-adjust 0.01))
+;;                    :keys "i"
+;;                    :file +org-capture-todo-file
+;;                    :prepend t
+;;                    :headline "Interesting"
+;;                    :type entry
+;;                    :template ("* [ ] %{desc}%? :%{i-type}:"
+;;                               "%i %a")
+;;                    :children ((,(format "%s\tWebpage" (all-the-icons-faicon "globe" :face 'all-the-icons-green :v-adjust 0.01))
+;;                                :keys "w"
+;;                                :desc "%(org-cliplink-capture) "
+;;                                :i-type "read:web"
+;;                                )
+;;                               (,(format "%s\tArticle" (all-the-icons-octicon "file-text" :face 'all-the-icons-yellow :v-adjust 0.01))
+;;                                :keys "a"
+;;                                :desc ""
+;;                                :i-type "read:reaserch"
+;;                                )
+;;                               (,(format "%s\tInformation" (all-the-icons-faicon "info-circle" :face 'all-the-icons-blue :v-adjust 0.01))
+;;                                :keys "i"
+;;                                :desc ""
+;;                                :i-type "read:info"
+;;                                )
+;;                               (,(format "%s\tIdea" (all-the-icons-material "bubble_chart" :face 'all-the-icons-silver :v-adjust 0.01))
+;;                                :keys "I"
+;;                                :desc ""
+;;                                :i-type "idea"
+;;                                )))
+;;                   (,(format "%s\tTasks" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
+;;                    :keys "k"
+;;                    :file +org-capture-todo-file
+;;                    :prepend t
+;;                    :headline "Tasks"
+;;                    :type entry
+;;                    :template ("* TODO %? %^G%{extra}"
+;;                               "%i")
+;;                    :children ((,(format "%s\tGeneral Task" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
+;;                                :keys "k"
+;;                                :extra ""
+;;                                )
+;;                               (,(format "%s\tTask with deadline" (all-the-icons-material "timer" :face 'all-the-icons-orange :v-adjust -0.1))
+;;                                :keys "d"
+;;                                :extra "\nDEADLINE: %^{Deadline:}t"
+;;                                )
+;;                               (,(format "%s\tScheduled Task" (all-the-icons-octicon "calendar" :face 'all-the-icons-orange :v-adjust 0.01))
+;;                                :keys "s"
+;;                                :extra "\nSCHEDULED: %^{Start time:}t"
+;;                                )
+;;                               ))
+;;                   (,(format "%s\tProject" (all-the-icons-octicon "repo" :face 'all-the-icons-silver :v-adjust 0.01))
+;;                    :keys "p"
+;;                    :prepend t
+;;                    :type entry
+;;                    :headline "Inbox"
+;;                    :template ("* %{time-or-todo} %?"
+;;                               "%i"
+;;                               "%a")
+;;                    :file ""
+;;                    :custom (:time-or-todo "")
+;;                    :children ((,(format "%s\tProject-local todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+;;                                :keys "t"
+;;                                :time-or-todo "TODO"
+;;                                :file +org-capture-project-todo-file)
+;;                               (,(format "%s\tProject-local note" (all-the-icons-faicon "sticky-note" :face 'all-the-icons-yellow :v-adjust 0.01))
+;;                                :keys "n"
+;;                                :time-or-todo "%U"
+;;                                :file +org-capture-project-notes-file)
+;;                               (,(format "%s\tProject-local changelog" (all-the-icons-faicon "list" :face 'all-the-icons-blue :v-adjust 0.01))
+;;                                :keys "c"
+;;                                :time-or-todo "%U"
+;;                                :heading "Unreleased"
+;;                                :file +org-capture-project-changelog-file))
+;;                    )
+;;                   ("\tCentralised project templates"
+;;                    :keys "o"
+;;                    :type entry
+;;                    :prepend t
+;;                    :template ("* %{time-or-todo} %?"
+;;                               "%i"
+;;                               "%a")
+;;                    :children (("Project todo"
+;;                                :keys "t"
+;;                                :prepend nil
+;;                                :time-or-todo "TODO"
+;;                                :heading "Tasks"
+;;                                :file +org-capture-central-project-todo-file)
+;;                               ("Project note"
+;;                                :keys "n"
+;;                                :time-or-todo "%U"
+;;                                :heading "Notes"
+;;                                :file +org-capture-central-project-notes-file)
+;;                               ("Project changelog"
+;;                                :keys "c"
+;;                                :time-or-todo "%U"
+;;                                :heading "Unreleased"
+;;                                :file +org-capture-central-project-changelog-file))
+;;                    ))))))
 
-        ("ç" "Generic without todo"
-         entry (file "~/Common/Agenda/refile.org")
-         "* %?\n")
+;; (setq org-capture-templates
+;;       '(
 
-        ("n" "Note" entry (file "~/Common/Agenda/refile.org")
-         "* NOTE %?\n%U" :empty-lines 1)
-        ("N" "Note with Clipboard" entry (file "~/Common/Agenda/refile.org")
-         "* NOTE %?\n%U\n   %x" :empty-lines 1)
-        )
-      )
+
+
+;;         ("p" "PIBIC"
+;;          entry (file "~/Common/Agenda/PIBIC.org")
+;;          "* ☛ TODO %?\n")
+
+;;         ("ç" "Generic without todo"
+;;          entry (file "~/Common/Agenda/refile.org")
+;;          "* %?\n")
+
+;;         ("n" "Note" entry (file "~/Common/Agenda/refile.org")
+;;          "* NOTE %?\n%U" :empty-lines 1)
+;;         ("N" "Note with Clipboard" entry (file "~/Common/Agenda/refile.org")
+;;          "* NOTE %?\n%U\n   %x" :empty-lines 1)
+;;         )
+;;       )
 
 (setq org-refile-targets
       '((nil :maxlevel . 9)
