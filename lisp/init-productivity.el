@@ -104,5 +104,7 @@
   (prog-mode . hl-todo-mode)
   )
 
+(winner-mode)
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
