@@ -71,6 +71,9 @@
 (global-set-key (kbd "C-c ,") 'insert-tag)
 (global-set-key (kbd "C-c v") 'insert-verbatim-equals)
 
+;; ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
+
 ;; Org mode
 (define-key global-map "\C-c l l" 'org-store-link)
 (global-set-key (kbd "<f12>") 'org-agenda)
