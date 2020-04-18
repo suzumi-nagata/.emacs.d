@@ -84,5 +84,9 @@
   :config
   (beacon-mode 1))
 
+(use-package f
+  :ensure t
+  :diminish)
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
