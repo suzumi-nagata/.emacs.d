@@ -88,5 +88,21 @@
   :ensure t
   :diminish)
 
+(use-package sudo-edit
+  :ensure t)
+
+(use-package hl-todo
+  :ensure t
+  :init
+  (setq hl-todo-keyword-faces
+      '(("TODO"   . "#FF0000")
+        ("FIXME"  . "#FF0000")
+        ("DEBUG"  . "#A020F0")
+        ("GOTCHA" . "#FF4500")
+        ("STUB"   . "#1E90FF")))
+  :hook
+  (prog-mode . hl-todo-mode)
+  )
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
