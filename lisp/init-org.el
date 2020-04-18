@@ -546,5 +546,36 @@
   (newline)
   )
 
+;; Create notes in a directory with date
+(defun today-notes (folder-name)
+  "Create a directory with today's date with FOLDER-NAME."
+  (interactive "sFolder name: ")
+  (let ((final-folder-name))
+    (if (not (string= "" folder-name))
+        (setq final-folder-name (concat "-" folder-name))
+      (setq final-folder-name folder-name)
+      )
+    (let ((daily-name (format-time-string "%Y-%m-%d")))
+      (make-directory (concat daily-name final-folder-name "/images") :parents)
+      (find-file (expand-file-name (concat daily-name final-folder-name "/notes.org")))
+      (insert (concat "#+TITLE:" folder-name))
+      (newline)
+      (insert "#+SETUPFILE: /home/nagata/Common/Templates/org-html-themes/setup/theme-readtheorg-local.setup")
+      )
+    )
+  )
+
+;; create workspace for assignment
+(defun relatorio ()
+  "Docstring."
+  (interactive)
+  (let ((dir-name "relatorio/images"))
+    (make-directory dir-name :parents)
+    (find-file (expand-file-name "relatorio/relatorio.org"))
+    (insert-org-latex-macros)
+    (save-buffer)
+    )
+  )
+
 (provide 'init-org)
 ;;; init-org.el ends here
