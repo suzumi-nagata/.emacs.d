@@ -328,12 +328,14 @@
   ;;recommended: defer until calling doct
   :commands (doct))
 
+;; Taken from https://tecosaur.github.io/emacs-config/config.html (there is a lot of good stuff)
 (setq org-capture-templates
       (doct '((" Personal Todo"
                :keys "t"
                :file "~/Common/Agenda/refile.org"
                :prepend t
                :type entry
+               :headline "Inbox"
                :children
                (("☛ Todo"
                  :keys "t"
@@ -362,199 +364,117 @@
                  :time-prompt t
                  :template ("* %^{Title}\n %?\n")))
                )
-              )
-            ))
-
-;;         ("j" "Journal")
-;;         ("jn" "Journal Entry"
-;;          entry (file+datetree "~/Common/Agenda/journal.org")
-;;          "* %U %^{Title}\n  %?\n")
-;;         ("js" "Journal Clipboard"
-;;          entry (file+datetree "~/Common/Agenda/journal.org")
-;;          "* %U %?\n  %x\n")
-;;         ("jc" "Journal with context" plain
-;;          (file+datetree+prompt "~/Common/Agenda/journal.org")
-;;          "%K - %a\n%i\n%?\n")
-
-;;         ("c" "Compras"
-;;          entry (file "~/Common/Agenda/compras.org")
-;;          "* %?\n")
-
-;; (after! org-capture
-;;   <<prettify-capture>>
-;;   (setq +org-capture-uni-units (split-string (f-read-text "~/.org/.uni-units")))
-;;   (add-transient-hook! 'org-capture-select-template
-;;     (setq org-capture-templates
-;;           (doct `((,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
-;;                    :keys "t"
-;;                    :file +org-capture-todo-file
-;;                    :prepend t
-;;                    :headline "Inbox"
-;;                    :type entry
-;;                    :template ("* TODO %?"
-;;                               "%i %a")
-;;                    )
-;;                   (,(format "%s\tPersonal note" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-green :v-adjust 0.01))
-;;                    :keys "n"
-;;                    :file +org-capture-todo-file
-;;                    :prepend t
-;;                    :headline "Inbox"
-;;                    :type entry
-;;                    :template ("* %?"
-;;                               "%i %a")
-;;                    )
-;;                   (,(format "%s\tUniversity" (all-the-icons-faicon "graduation-cap" :face 'all-the-icons-purple :v-adjust 0.01))
-;;                    :keys "u"
-;;                    :file +org-capture-todo-file
-;;                    :headline "University"
-;;                    :unit-prompt ,(format "%%^{Unit|%s}" (string-join +org-capture-uni-units "|"))
-;;                    :prepend t
-;;                    :type entry
-;;                    :children ((,(format "%s\tTest" (all-the-icons-material "timer" :face 'all-the-icons-red :v-adjust 0.01))
-;;                                :keys "t"
-;;                                :template ("* TODO [#C] %{unit-prompt} %? :uni:tests:"
-;;                                           "SCHEDULED: %^{Test date:}T"
-;;                                           "%i %a"))
-;;                               (,(format "%s\tAssignment" (all-the-icons-material "library_books" :face 'all-the-icons-orange :v-adjust 0.01))
-;;                                :keys "a"
-;;                                :template ("* TODO [#B] %{unit-prompt} %? :uni:assignments:"
-;;                                           "DEADLINE: %^{Due date:}T"
-;;                                           "%i %a"))
-;;                               (,(format "%s\tLecture" (all-the-icons-fileicon "keynote" :face 'all-the-icons-orange :v-adjust 0.01))
-;;                                :keys "l"
-;;                                :template ("* TODO [#C] %{unit-prompt} %? :uni:lecture:"
-;;                                           "%i %a"))
-;;                               (,(format "%s\tMiscellaneous task" (all-the-icons-faicon "list" :face 'all-the-icons-yellow :v-adjust 0.01))
-;;                                :keys "u"
-;;                                :template ("* TODO [#D] %{unit-prompt} %? :uni:"
-;;                                           "%i %a"))))
-;;                   (,(format "%s\tEmail" (all-the-icons-faicon "envelope" :face 'all-the-icons-blue :v-adjust 0.01))
-;;                    :keys "e"
-;;                    :file +org-capture-todo-file
-;;                    :prepend t
-;;                    :headline "Inbox"
-;;                    :type entry
-;;                    :template ("* TODO %^{type|reply to|contact} %\\3 %? :email:"
-;;                               "Send an email %^{urgancy|soon|ASAP|anon|at some point|eventually} to %^{recipiant}"
-;;                               "about %^{topic}"
-;;                               "%U %i %a"))
-;;                   (,(format "%s\tInteresting" (all-the-icons-faicon "eye" :face 'all-the-icons-lcyan :v-adjust 0.01))
-;;                    :keys "i"
-;;                    :file +org-capture-todo-file
-;;                    :prepend t
-;;                    :headline "Interesting"
-;;                    :type entry
-;;                    :template ("* [ ] %{desc}%? :%{i-type}:"
-;;                               "%i %a")
-;;                    :children ((,(format "%s\tWebpage" (all-the-icons-faicon "globe" :face 'all-the-icons-green :v-adjust 0.01))
-;;                                :keys "w"
-;;                                :desc "%(org-cliplink-capture) "
-;;                                :i-type "read:web"
-;;                                )
-;;                               (,(format "%s\tArticle" (all-the-icons-octicon "file-text" :face 'all-the-icons-yellow :v-adjust 0.01))
-;;                                :keys "a"
-;;                                :desc ""
-;;                                :i-type "read:reaserch"
-;;                                )
-;;                               (,(format "%s\tInformation" (all-the-icons-faicon "info-circle" :face 'all-the-icons-blue :v-adjust 0.01))
-;;                                :keys "i"
-;;                                :desc ""
-;;                                :i-type "read:info"
-;;                                )
-;;                               (,(format "%s\tIdea" (all-the-icons-material "bubble_chart" :face 'all-the-icons-silver :v-adjust 0.01))
-;;                                :keys "I"
-;;                                :desc ""
-;;                                :i-type "idea"
-;;                                )))
-;;                   (,(format "%s\tTasks" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
-;;                    :keys "k"
-;;                    :file +org-capture-todo-file
-;;                    :prepend t
-;;                    :headline "Tasks"
-;;                    :type entry
-;;                    :template ("* TODO %? %^G%{extra}"
-;;                               "%i")
-;;                    :children ((,(format "%s\tGeneral Task" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
-;;                                :keys "k"
-;;                                :extra ""
-;;                                )
-;;                               (,(format "%s\tTask with deadline" (all-the-icons-material "timer" :face 'all-the-icons-orange :v-adjust -0.1))
-;;                                :keys "d"
-;;                                :extra "\nDEADLINE: %^{Deadline:}t"
-;;                                )
-;;                               (,(format "%s\tScheduled Task" (all-the-icons-octicon "calendar" :face 'all-the-icons-orange :v-adjust 0.01))
-;;                                :keys "s"
-;;                                :extra "\nSCHEDULED: %^{Start time:}t"
-;;                                )
-;;                               ))
-;;                   (,(format "%s\tProject" (all-the-icons-octicon "repo" :face 'all-the-icons-silver :v-adjust 0.01))
-;;                    :keys "p"
-;;                    :prepend t
-;;                    :type entry
-;;                    :headline "Inbox"
-;;                    :template ("* %{time-or-todo} %?"
-;;                               "%i"
-;;                               "%a")
-;;                    :file ""
-;;                    :custom (:time-or-todo "")
-;;                    :children ((,(format "%s\tProject-local todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
-;;                                :keys "t"
-;;                                :time-or-todo "TODO"
-;;                                :file +org-capture-project-todo-file)
-;;                               (,(format "%s\tProject-local note" (all-the-icons-faicon "sticky-note" :face 'all-the-icons-yellow :v-adjust 0.01))
-;;                                :keys "n"
-;;                                :time-or-todo "%U"
-;;                                :file +org-capture-project-notes-file)
-;;                               (,(format "%s\tProject-local changelog" (all-the-icons-faicon "list" :face 'all-the-icons-blue :v-adjust 0.01))
-;;                                :keys "c"
-;;                                :time-or-todo "%U"
-;;                                :heading "Unreleased"
-;;                                :file +org-capture-project-changelog-file))
-;;                    )
-;;                   ("\tCentralised project templates"
-;;                    :keys "o"
-;;                    :type entry
-;;                    :prepend t
-;;                    :template ("* %{time-or-todo} %?"
-;;                               "%i"
-;;                               "%a")
-;;                    :children (("Project todo"
-;;                                :keys "t"
-;;                                :prepend nil
-;;                                :time-or-todo "TODO"
-;;                                :heading "Tasks"
-;;                                :file +org-capture-central-project-todo-file)
-;;                               ("Project note"
-;;                                :keys "n"
-;;                                :time-or-todo "%U"
-;;                                :heading "Notes"
-;;                                :file +org-capture-central-project-notes-file)
-;;                               ("Project changelog"
-;;                                :keys "c"
-;;                                :time-or-todo "%U"
-;;                                :heading "Unreleased"
-;;                                :file +org-capture-central-project-changelog-file))
-;;                    ))))))
-
-;; (setq org-capture-templates
-;;       '(
-
-
-
-;;         ("p" "PIBIC"
-;;          entry (file "~/Common/Agenda/PIBIC.org")
-;;          "* ☛ TODO %?\n")
-
-;;         ("ç" "Generic without todo"
-;;          entry (file "~/Common/Agenda/refile.org")
-;;          "* %?\n")
-
-;;         ("n" "Note" entry (file "~/Common/Agenda/refile.org")
-;;          "* NOTE %?\n%U" :empty-lines 1)
-;;         ("N" "Note with Clipboard" entry (file "~/Common/Agenda/refile.org")
-;;          "* NOTE %?\n%U\n   %x" :empty-lines 1)
-;;         )
-;;       )
+              (" Compras"
+               :keys "c"
+               :file "~/Common/Agenda/compras.org"
+               :type plain
+               :template ("- %?\n")
+               )
+              (" University"
+               :keys "u"
+               :file "~/Common/Agenda/refile.org"
+               :headline "University"
+               :unit-prompt "%%^{Unit|EM524|GT001|PIBIC}"
+               :prepend t
+               :type entry
+               :children ((" Test"
+                           :keys "t"
+                           :template ("* ☛ TODO [#B] %{unit-prompt} %? :uni:tests:"
+                                      "SCHEDULED: %^{Test date:}T"
+                                      "%i %a"))
+                          (" Assignment"
+                           :keys "a"
+                           :template ("* ☛ TODO [#B] %{unit-prompt} %? :uni:assignments:"
+                                      "DEADLINE: %^{Due date:}T"
+                                      "%i %a"))
+                          (" Lecture"
+                           :keys "l"
+                           :template ("* ☛ TODO [#B] %{unit-prompt} %? :uni:lecture:"
+                                      "%i %a"))
+                          (" Miscellaneous task"
+                           :keys "m"
+                           :template ("* ☛ TODO [#B] %{unit-prompt} %? :uni:"
+                                      "%i %a")
+                           )))
+              (" Email"
+               :keys "e"
+               :file "~/Common/Agenda/refile.org"
+               :prepend t
+               :headline "Mail"
+               :type entry
+               :template ("* ☛ TODO %^{type|reply to|contact} %\\3 %? :email:"
+                          "Send an email %^{urgancy|soon|ASAP|anon|at some point|eventually} to %^{recipiant}"
+                          "about %^{topic}"
+                          "%U %i %a"))
+              (" Interesting"
+               :keys "i"
+               :file "~/Common/Agenda/refile.org"
+               :prepend t
+               :headline "Interesting"
+               :type entry
+               :template ("* [ ] %{desc}%? :%{i-type}:"
+                          "%i %a")
+               :children ((" Web"
+                           :keys "w"
+                           :desc "%(org-cliplink-capture) "
+                           :i-type "read:web"
+                           )
+                          (" Article"
+                           :keys "a"
+                           :desc ""
+                           :i-type "read:reaserch"
+                           )
+                          (" Information"
+                           :keys "i"
+                           :desc ""
+                           :i-type "read:info"
+                           )
+                          (" Idea"
+                           :keys "I"
+                           :desc ""
+                           :i-type "idea"
+                           )))
+              (" Tasks"
+               :keys "k"
+               :file "~/Common/Agenda/refile.org"
+               :prepend t
+               :headline "Tasks"
+               :type entry
+               :template ("* TODO %? %^G%{extra}"
+                          "%i")
+               :children ((" General Task"
+                           :keys "k"
+                           :extra "")
+                          (" Task with deadline"
+                           :keys "d"
+                           :extra "\nDEADLINE: %^{Deadline:}t")
+                          (" Scheduled Task"
+                           :keys "s"
+                           :extra "\nSCHEDULED: %^{Start time:}t")))
+              (" PIBIC"
+               :keys "p"
+               :prepend t
+               :type entry
+               :headline "Inbox"
+               :file ""
+               :template ("* %{time-or-todo} %?"
+                          "%i"
+                          "%a")
+               :custom (:time-or-todo "")
+               :children ((" Project todo"
+                           :keys "t"
+                           :time-or-todo "☛ TODO"
+                           :file "~/Common/PIBIC/3_org_files/captures/todo.org")
+                          (" Project note"
+                           :keys "n"
+                           :time-or-todo "%U"
+                           :file "~/Common/PIBIC/3_org_files/captures/notes.org")
+                          (" Project changelog"
+                           :keys "c"
+                           :time-or-todo "%U"
+                           :heading "Unreleased"
+                           :file "~/Common/PIBIC/3_org_files/captures/changelog.org"))
+               ))))
 
 (setq org-refile-targets
       '((nil :maxlevel . 9)
