@@ -45,3 +45,7 @@
 (require 'init-productivity)
 (require 'init-org)
 (require 'init-programming-utils)
+(require 'init-ibuffer)
+
+(provide 'init)
+;;; init.el ends here
