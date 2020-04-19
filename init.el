@@ -46,6 +46,10 @@
 (require 'init-org)
 (require 'init-programming-utils)
 (require 'init-ibuffer)
+(require 'init-company)
+(require 'init-lsp)
+
+(require 'init-c)
 
 (provide 'init)
 ;;; init.el ends here
