@@ -36,7 +36,9 @@
 (global-set-key '[8711] 'yas-expand)
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (provide 'init-programming-utils)
 ;;; init-programming-utils.el ends here
