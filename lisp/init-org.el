@@ -328,7 +328,7 @@
   ;;recommended: defer until calling doct
   :commands (doct))
 
-;; Taken from https://tecosaur.github.io/emacs-config/config.html (there is a lot of good stuff)
+;; Taken from https://tecosaur.github.io/emacs-config/config.html (lots of good stuff)
 (setq org-capture-templates
       (doct '((" Personal Todo"
                :keys "t"
@@ -374,7 +374,7 @@
                :keys "u"
                :file "~/Common/Agenda/refile.org"
                :headline "University"
-               :unit-prompt "%%^{Unit|EM524|GT001|PIBIC}"
+               :unit-prompt "%%^{Unit|EM524|GT001}"
                :prepend t
                :type entry
                :children ((" Test"
