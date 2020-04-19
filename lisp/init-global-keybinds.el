@@ -71,6 +71,8 @@
 (global-set-key (kbd "C-c ,") 'insert-tag)
 (global-set-key (kbd "C-c v") 'insert-verbatim-equals)
 
+(global-set-key (kbd "C-x M-f") 'close-wrong-buffer-and-find-file)
+
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
 

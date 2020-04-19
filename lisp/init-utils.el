@@ -186,5 +186,16 @@
     (end-of-line)
     (indent-according-to-mode)))
 
+;;----------------------------------------------------------------------------
+;; If you have open a wrong buffer but want to keep searching the right one
+;;----------------------------------------------------------------------------
+
+(defun close-wrong-buffer-and-find-file ()
+  (interactive)
+  (let ((dirname (buffer-name)))
+  (call-interactively #'find-file)
+  (kill-buffer dirname))
+  )
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
