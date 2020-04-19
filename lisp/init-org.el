@@ -29,6 +29,8 @@
       org-agenda-include-deadlines t
       org-agenda-block-separator nil
       org-agenda-compact-blocks t
+      org-agenda-start-day "-2d"
+      org-agenda-span 15
       )
 
 (org-babel-do-load-languages
@@ -141,7 +143,7 @@
               (color-org-header "PIBIC:" "#E10600" "#00239C")
               (color-org-header "EM524:" "DimGrey" "LawnGreen")
               (color-org-header "GT001:" "DarkBlue" "green1")
-              (color-org-header "IE509:" "sienna4" "seashell1seashell1")
+              (color-org-header "IE509:" "sienna4" "seashell1")
               (color-org-header "EA072:" "#EEA47F" "#00539C")
               (color-org-header "IA012:" "#2C5F2D" "#97BC62")
               (color-org-header "EA080:" "#D6ED17" "#1C1C1B")
