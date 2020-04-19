@@ -9,3 +9,5 @@ emacs-backups
 emacs-saves
 bookmarks
 recentf
+irony
+.lsp-session-v1
