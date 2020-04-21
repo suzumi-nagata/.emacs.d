@@ -35,6 +35,12 @@
 (define-key yas-minor-mode-map (kbd "TAB") nil)
 (global-set-key '[8711] 'yas-expand)
 
+(use-package auto-yasnippet
+  :ensure t
+  :bind
+  ("C-c w" . #'aya-create)
+  ("C-c y" . #'aya-expand))
+
 (use-package flycheck
   :ensure t
   :config
