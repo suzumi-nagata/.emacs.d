@@ -40,6 +40,7 @@
 (require 'init-config-dirs)
 ;; Theme and colors
 (require 'init-appearance)
+(require 'init-modeline)
 (require 'init-utils)
 (require 'init-global-keybinds)
 (require 'init-productivity)

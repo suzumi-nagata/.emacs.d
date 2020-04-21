@@ -130,28 +130,6 @@
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
 
-;; Modeline
-(setq line-number-mode t)
-(setq column-number-mode t)
-(setq display-time-24hr-format t)
-(setq display-time-format "%H:%M - %d %B %Y")
-(setq display-time-default-load-average nil)
-(display-time-mode 1)
-
-(set-face-attribute  'mode-line
-              nil
-              :foreground "#8aff2b"
-              :background "DimGrey"
-              :box '(:line-width 1 :style released-button))
-
-(set-face-attribute  'mode-line-inactive
-              nil
-              :foreground "ForestGreen"
-              :background "gray4"
-              :box '(:line-width 1 :style released-button))
-
-(setq-default transient-mark-mode 't)
-
 ;; Divide window equaly when splitting
 (setq window-combination-resize t)
 
