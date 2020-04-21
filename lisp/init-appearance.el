@@ -117,10 +117,10 @@
 ;; Enable highlighting current line
 (use-package hl-line
   :ensure t
-  :init
-  (when (display-graphic-p)
-    (global-hl-line-mode 1)
-    ))
+  ;; :init
+  ;; (when (display-graphic-p) (global-hl-line-mode 1))
+  :hook
+  (prog-mode . hl-line-mode))
 
 ;; Pretty way to show buffers with same name
 (require 'uniquify)
