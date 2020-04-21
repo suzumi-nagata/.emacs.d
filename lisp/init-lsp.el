@@ -4,7 +4,7 @@
 
 (use-package lsp-mode
   :ensure t
-  :hook prog-mode
+  :hook (prog-mode . lsp-mode)
   :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
