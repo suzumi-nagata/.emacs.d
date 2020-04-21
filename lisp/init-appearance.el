@@ -33,7 +33,7 @@
    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
    '(org-hide ((t (:background "#131417" :foreground "#131417"))))
-   '(org-agenda-date-today ((t (:inherit org-agenda-date :background "orange" :foreground "#300b66" :weight bold))))
+   '(org-agenda-date-today ((t (:inherit org-agenda-date :background "orange" :foreground "#300b66"))))
    '(org-agenda-date-weekend ((t (:inherit org-agenda-date :background "#97BC62" :foreground "NavyBlue"))))
    '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
    '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))

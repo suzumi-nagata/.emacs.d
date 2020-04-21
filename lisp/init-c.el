@@ -10,6 +10,10 @@
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
 
+(add-hook 'c-mode-common-hook
+  (lambda()
+    (local-set-key  (kbd "M-o") 'ff-find-other-file)))
+
 ;; (use-package company-irony
 ;;   :ensure t
 ;;   :config
