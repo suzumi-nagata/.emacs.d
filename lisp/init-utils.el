@@ -198,5 +198,35 @@
   (kill-buffer dirname))
   )
 
+;;----------------------------------------------------------------------------
+;; Activate flyspell with pt or en
+;;----------------------------------------------------------------------------
+
+(defun spell (language)
+  "Enable flyspell in this buffer for LANGUAGE as en or pt."
+  (interactive "sLanguage: ")
+  (if (string= "pt" language)
+      (ispell-change-dictionary "pt_BR"))
+  (if (string= "en" language)
+      (ispell-change-dictionary "en_US"))
+  (if (string= "" language)
+      (flyspell-mode 0)
+    (flyspell-mode 1))
+  )
+
+;;----------------------------------------------------------------------------
+;; Close compilation buffer if there is no errors
+;;----------------------------------------------------------------------------
+
+(setq compilation-finish-function
+      (lambda (buf str)
+        (if (null (string-match ".*exited abnormally.*" str))
+            ;;no errors, make the compilation window go away in a few seconds
+            (progn
+              (run-at-time
+               "2 sec" nil 'delete-windows-on
+               (get-buffer-create "*compilation*"))
+              (message "No Compilation Errors!")))))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here

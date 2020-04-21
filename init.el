@@ -48,6 +48,8 @@
 (require 'init-ibuffer)
 (require 'init-company)
 (require 'init-lsp)
+(require 'init-git)
+(require 'init-flyspell)
 
 (require 'init-c)
 
