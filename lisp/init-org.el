@@ -30,7 +30,7 @@
       org-agenda-block-separator nil
       org-agenda-compact-blocks t
       org-agenda-start-day "-2d"
-      org-agenda-span 15
+      org-agenda-span 17 ;; 15  days + the start day
       )
 
 (org-babel-do-load-languages
