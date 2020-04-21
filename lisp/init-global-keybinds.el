@@ -18,10 +18,16 @@
 (global-set-key (kbd "M-S-<up>") 'enlarge-window)
 
 ;; Switch selected window
-(global-set-key (kbd "M-<right>") 'windmove-right)
-(global-set-key (kbd "M-<left>") 'windmove-left)
-(global-set-key (kbd "M-<down>") 'windmove-down)
-(global-set-key (kbd "M-<up>") 'windmove-up)
+(global-set-key (kbd "M-s-<left>") 'windmove-left)
+(global-set-key (kbd "M-s-<down>") 'windmove-down)
+(global-set-key (kbd "M-s-<up>") 'windmove-up)
+(global-set-key (kbd "M-s-<right>") 'windmove-right)
+
+;; Vim keybindings
+(global-set-key (kbd "M-s-h") 'windmove-left)
+(global-set-key (kbd "M-s-j") 'windmove-down)
+(global-set-key (kbd "M-s-k") 'windmove-up)
+(global-set-key (kbd "M-s-l") 'windmove-right)
 
 ;; Change window keystroke
 (global-set-key (kbd "C-ç") 'other-window)
@@ -78,10 +84,17 @@
 
 ;; Org mode
 (define-key global-map "\C-c l l" 'org-store-link)
-(global-set-key (kbd "<f12>") 'org-agenda)
 (global-set-key (kbd "C-c C-ç") 'org-capture)
-(global-set-key (kbd "C-<f12>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
-(global-set-key (kbd "C-<f11>") 'org-toggle-inline-images)
+(global-set-key (kbd "C-<f1>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
+(global-set-key (kbd "C-<f2>") 'org-toggle-inline-images)
+(global-set-key (kbd "<f12>") 'org-agenda)
+
+;; ispell
+(global-set-key (kbd "C-<f11>") 'check-previous-spelling-error)
+(global-set-key (kbd "C-<f12>") 'check-next-spelling-error)
+
+(global-set-key (kbd "C-c o") 'xref-find-definitions)
+(global-set-key (kbd "C-M-p") 'xref-pop-marker-stack)
 
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here
