@@ -262,6 +262,7 @@
 (setq org-agenda-custom-commands
       '(("o" "Overview"
          ((agenda "" ((org-agenda-span 'day)
+                      (org-agenda-start-day "+0d")
                       (org-super-agenda-groups
                        '((:name "Today"
                                 :time-grid t
