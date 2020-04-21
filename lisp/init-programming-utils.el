@@ -23,6 +23,7 @@
 
 (use-package yasnippet
   :ensure t
+  :diminish (yas-minor-mode)
   :config
   (use-package yasnippet-snippets
     :ensure t)
@@ -37,6 +38,7 @@
 
 (use-package auto-yasnippet
   :ensure t
+  :diminish
   :bind
   ("C-c w" . #'aya-create)
   ("C-c y" . #'aya-expand))
