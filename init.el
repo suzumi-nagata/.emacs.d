@@ -1,4 +1,4 @@
-;;; init.el
+;;; init.el --- Main init file
 ;;; Commentary:
 
 ;; This config file is inspired by https://github.com/purcell/emacs.d where the

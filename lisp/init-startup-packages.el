@@ -22,4 +22,4 @@
    (auto-package-update-maybe))
 
 (provide 'init-startup-packages)
-;;; init-startup-packages ends here
+;;; init-startup-packages.el ends here

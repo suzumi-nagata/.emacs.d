@@ -13,8 +13,10 @@
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "M-p") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-next)
   (define-key company-active-map (kbd "SPC") #'company-abort))
+
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
 
 (provide 'init-company)
 ;;; init-company.el ends here
