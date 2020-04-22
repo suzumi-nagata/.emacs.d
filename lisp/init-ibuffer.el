@@ -41,6 +41,7 @@
          ;; Org mode
          ("Agenda" (or (filename . "Agenda")
                        (mode . org-agenda-mode)))
+         ("Unicamp" (filename . "Unicamp"))
          ("Wiki" (filename . "Wiki"))
          ("Org" (or (mode . org-mode)
                     (filename . "OrgMode")))
