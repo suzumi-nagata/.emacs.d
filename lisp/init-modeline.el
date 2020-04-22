@@ -36,11 +36,21 @@ Source: https://git.io/vQKzv"
               (list
 
                "["  ;; Size of file
-               (propertize "%I" 'face 'font-lock-constant-face) "] "
+               (propertize "%I" 'face 'font-lock-constant-face)
+               "] "
 
                "["  ;; Buffer name with file name as tooltip
                '(:eval (propertize "%b" 'face 'font-lock-keyword-face
-                                   'help-echo (buffer-file-name))) "] "
+                                   'help-echo (buffer-file-name)))
+               "] "
+
+               '(:eval (when (vc-mode)
+                         (concat
+                          "["
+                          (propertize (substring vc-mode 1)
+                                      'face 'font-lock-string-face)
+                          "] "
+                          )))
 
                "["  ;; Major mode
                '(:eval (propertize "%m" 'face 'font-lock-string-face)) "] "
@@ -82,14 +92,14 @@ Source: https://git.io/vQKzv"
                '(:eval (when (bound-and-true-p flyspell-mode)
                          (propertize
                           "[SPL]"
-                          'face 'font-lock-string-face)
-                         )
-                       )
+                          'face 'font-lock-string-face)))
 
-               "["
-               '(:eval (when (lsp-mode)
-                         (substring (lsp-mode-line) 1)))
-               "] "
+               ;; lsp indicator on prog mode
+               '(:eval (when (derived-mode-p 'prog-mode)
+                         (concat
+                          "["
+                          (substring (lsp-mode-line) 1)
+                          "] ")))
 
                "[" ;; time and date
                '(:eval (propertize
