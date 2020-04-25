@@ -41,15 +41,15 @@
                   (interactive)
                   (org-wiki-index)))
 
-(global-set-key (kbd "<f10>") '
-                (lambda()
-                  (interactive)
-                  (find-file "~/Common/PIBIC/3_org_files/Index.org")))
+(global-set-key (kbd "<f10>")
+                '(lambda()
+                   (interactive)
+                   (find-file "~/Common/PIBIC/3_org_files/Index.org")))
 
-(global-set-key (kbd "<f11>") '
-                (lambda()
-                  (interactive)
-                  (find-file "~/Common/SelfLearning/SelfLearning.org")))
+(global-set-key (kbd "<f11>")
+                '(lambda()
+                   (interactive)
+                   (find-file "~/Common/SelfLearning/SelfLearning.org")))
 
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
 
@@ -95,6 +95,21 @@
 
 (global-set-key (kbd "C-c o") 'xref-find-definitions)
 (global-set-key (kbd "C-M-p") 'xref-pop-marker-stack)
+
+;; god mode
+(global-set-key (kbd "<escape>") 'god-mode-all)
+(global-set-key (kbd "C-x C-2") (lambda ()
+                          (interactive)
+                          (split-window-vertically)
+                          (other-window 1)))
+(global-set-key (kbd "C-x C-3") (lambda ()
+                          (interactive)
+                          (split-window-horizontally)
+                          (other-window 1)))
+
+(global-set-key (kbd "C-x C-1") 'delete-other-windows)
+(global-set-key (kbd "C-x C-k") 'kill-current-buffer)
+(global-set-key (kbd "C-x C-0") 'delete-window)
 
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here
