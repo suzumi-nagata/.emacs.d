@@ -55,6 +55,35 @@ Source: https://git.io/vQKzv"
                "["  ;; Major mode
                '(:eval (propertize "%m" 'face 'font-lock-string-face)) "] "
 
+               ;; god mode
+               '(:eval (if (bound-and-true-p god-local-mode)
+                           (progn
+                             (set-face-attribute  'mode-line
+                                                  nil
+                                                  :foreground "#209d6e"
+                                                  :background "#490f25"
+                                                  :box '(:line-width 1 :style released-button))
+
+                             (set-face-attribute  'mode-line-inactive
+                                                  nil
+                                                  :foreground "#c57b57"
+                                                  :background "#080340"
+                                                  :box '(:line-width 1 :style released-button)))
+                         (progn
+                           (set-face-attribute  'mode-line
+                                                nil
+                                                :foreground "LawnGreen"
+                                                :background "#0a2832"
+                                                :box '(:line-width 1 :style released-button))
+
+                           (set-face-attribute  'mode-line-inactive
+                                                nil
+                                                :foreground "ForestGreen"
+                                                :background "gray4"
+                                                :box '(:line-width 1 :style released-button))
+                           )
+                         ))
+
                "[" ;; Line, column and percentage
                (propertize "%01l" 'face 'font-lock-type-face)
                ","
