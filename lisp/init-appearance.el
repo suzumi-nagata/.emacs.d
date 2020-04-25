@@ -21,7 +21,7 @@
   (custom-set-faces
    '(highlight ((t (:background "orange" :foreground "black"))))
    '(bold ((t (:foreground "orange" :weight bold))))
-   '(font-lock-comment-face ((t (:foreground "#9acd32"))))
+   ;; '(font-lock-comment-face ((t (:foreground "#9acd32"))))
    '(default ((t (:inherit nil :stipple nil :background "#131417" :foreground "#f8f8f2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width extra-condensed :foundry "FBI " :family "Input Mono Compressed"))))
    '(show-paren-match ((t (:background "orange" :foreground "black" :weight extra-bold))))
 

@@ -15,7 +15,7 @@
       org-fast-tag-selection-single-key 'expert
       org-html-validation-link nil
       org-export-kill-product-buffer-when-displayed t
-      org-tags-column 80
+      org-tags-column 0
       org-clock-into-drawer t
       org-log-into-drawer t
       org-link-file-path-type 'adaptive
@@ -90,7 +90,7 @@
       (quote ((sequence "☛ TODO(t)" "↻ REDO(r@)" "➥ IN PROGRESS(p!)" "|")
               (sequence "⚑ WAITING(w@)" "➤ FORWARD(f@)" "◷ HOLD(h@)" "|")
               (sequence "⚡ NEXT(n!)" "|" "✘ CANCELLED(c@)" "✔ DONE(d!)")
-              (sequence "Ω SOMEDAY(s!)" "⬆ URGENT(u!)" "|")))
+              (sequence "Ω SOMEDAY(s!)" "⬆ URGENT(u!)" " ROUTINE(o!)" "|")))
       )
 
 (setq org-todo-keyword-faces
@@ -105,6 +105,7 @@
         ("✔ DONE" . "green")
         ("Ω SOMEDAY" ."LightGoldenrod")
         ("⬆ URGENT" ."red3")
+        (" ROUTINE" ."PowderBlue")
         ))
 
 (setq org-agenda-files (list "~/Common/Agenda/work.org"
@@ -143,18 +144,16 @@
               (color-org-header "PIBIC:" "#E10600" "#00239C")
               (color-org-header "EM524:" "DimGrey" "LawnGreen")
               (color-org-header "GT001:" "DarkBlue" "green1")
-              (color-org-header "IE509:" "sienna4" "seashell1")
-              (color-org-header "EA072:" "#EEA47F" "#00539C")
-              (color-org-header "IA012:" "#2C5F2D" "#97BC62")
-              (color-org-header "EA080:" "#D6ED17" "#1C1C1B")
-              (color-org-header "estagios:" "#343136" "#D7C49E")
-              (color-org-header "personal:" "#F2AA4C" "#101820")
-              (color-org-header "unicamp:" "#422057" "#FCF951")
-              (color-org-header "E.E.:" "#ADEFD1" "#00203F")
-              ;; Silver & Turkish Sea
-              (color-org-header "Emacs:" "#A2A2A1" "#195190")
-              ;; Electric Blue Lemonade (#0063B2FF) and Aquamarine (#9CC3D5FF)
-              (color-org-header "O.S.:" "#9CC3D5" "#0063B2")
+              (color-org-header "Work:"  "#343136" "#D7C49E")
+              (color-org-header "AA000:" "sienna4" "seashell1")
+              (color-org-header "AA000:" "#EEA47F" "#00539C")
+              (color-org-header "AA000:" "#2C5F2D" "#97BC62")
+              (color-org-header "AA000:" "#D6ED17" "#1C1C1B")
+              (color-org-header "AA000:" "#F2AA4C" "#101820")
+              (color-org-header "AA000:" "#422057" "#FCF951")
+              (color-org-header "AA000:" "#ADEFD1" "#00203F")
+              (color-org-header "AA000:" "#A2A2A1" "#195190")
+              (color-org-header "AA000:" "#9CC3D5" "#0063B2")
               )))
 
 (defun color-org-header (tag backcolor forecolor)
@@ -216,14 +215,12 @@
          (:name "Today"  ; Optionally specify section name
                 :time-grid t  ; Items that appear on the time grid
                 :todo "TODAY")  ; Items that have this TODO keyword
-         (:name "Important And Urgent"
+         (:name "Important"
                 :priority "A")
-         (:name "Important But Not Urgent"
-                :priority "B")
-         (:name "Not Important And Urgent"
-                :priority "C")
-         (:name "Not Important Nor Urgent"
-                :priority "D")
+         (:name "EM524"
+                :category "EM524")
+         (:name "GT001"
+                :category "GT001")
          ;; Set order of multiple groups at once
          (:order-multi (2 (:name "Shopping in town"
                                  ;; Boolean AND group matches items that match all subgroups
