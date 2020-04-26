@@ -85,8 +85,8 @@
 ;; Org mode
 (define-key global-map "\C-c l l" 'org-store-link)
 (global-set-key (kbd "C-c C-ç") 'org-capture)
-(global-set-key (kbd "C-<f1>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
-(global-set-key (kbd "C-<f2>") 'org-toggle-inline-images)
+;; (global-set-key (kbd "C-<f1>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
+;; (global-set-key (kbd "C-<f2>") 'org-toggle-inline-images)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
 ;; ispell
@@ -110,6 +110,8 @@
 (global-set-key (kbd "C-x C-1") 'delete-other-windows)
 (global-set-key (kbd "C-x C-k") 'kill-current-buffer)
 (global-set-key (kbd "C-x C-0") 'delete-window)
+
+(global-set-key (kbd "<f6>") 'spray-mode)
 
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here

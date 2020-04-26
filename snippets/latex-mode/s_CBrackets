@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Sizable Curly Brackets
+# key: s{}
+# --
+\left\\\{ $0 \right\\\}

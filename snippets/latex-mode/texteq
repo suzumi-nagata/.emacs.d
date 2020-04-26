@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Text over equality 
+# key: texteq
+# --
+\overset{\text{$1}}{=}$0

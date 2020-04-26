@@ -52,6 +52,7 @@
 (require 'init-git)
 (require 'init-flyspell)
 (require 'init-god)
+(require 'init-fun)
 
 (require 'init-c)
 

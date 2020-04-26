@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sizable_IP
+# key: s<>
+# --
+\left\langle $0 \right\rangle

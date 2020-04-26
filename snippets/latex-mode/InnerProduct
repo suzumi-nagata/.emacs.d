@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: InnerProduct
+# key: <>
+# --
+\langle $0 \rangle
