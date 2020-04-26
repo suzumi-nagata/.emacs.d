@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Sizable Paranthesis
+# key: s()
+# --
+\left( $0 \right)

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sizable_norm
+# key: s||
+# --
+\left\| $0 \right\|

@@ -1,0 +1,109 @@
+#key : lest
+#name : LaTeX Excersize Sheet Template
+#contributor: Simon Erfurth
+# --
+\documentclass[a4paper,]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[
+	backend=bibtex,
+	citestyle=authoryear,
+	bibstyle=authoryear,
+	sorting=nyt
+	]{biblatex}
+	\bibliography{math}
+\usepackage[
+	intlimits,
+	sumlimits
+	]{kpfonts}
+\usepackage{fancyhdr,lastpage,setspace,graphicx,amsmath,amsfonts,siunitx}
+	\pagestyle{fancy}
+	\setlength{\headheight}{30pt}
+	\allowdisplaybreaks
+\usepackage[section]{placeins}
+\usepackage[
+	tracking=true,
+	kerning=true,
+	spacing=true
+	]{microtype}
+\usepackage[
+	hidelinks,
+	unicode=true
+	]{hyperref}
+	\urlstyle{sf}
+\usepackage[nodayofweek]{datetime}
+\usepackage[english=british]{csquotes}
+\usepackage[usenames]{color}
+%\usepackage{pdfpages}
+\numberwithin{equation}{section}
+
+\setcounter{MaxMatrixCols}{20}
+\newcommand{\me}{\mathrm{e}}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+%\renewcommand\thesubsection{\thesection.\alph{subsection}}
+
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+\newcommand{\me}{\mathrm{e}}
+\newcommand{\NN}[0]{\mathbb{N}}
+\newcommand{\ZZ}[0]{\mathbb{Z}}
+\newcommand{\QQ}[0]{\mathbb{Q}}
+\newcommand{\RR}[0]{\mathbb{R}}
+\newcommand{\CC}[0]{\mathbb{C}}
+\newcommand{\FF}[0]{\mathbb{F}}
+\newcommand{\MM}[0]{\mathbb{M}}
+\newcommand{\F}[0]{\mathscr{F}}
+\newcommand{\RRN}[0]{\mathbb{R}^n}
+\newcommand{\cl}[1]{\mathcal{#1}}
+\newcommand{\pw}[1]{^{#1}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\scr}[1]{\mathscr{#1}}
+\newcommand{\sfinite}{$\sigma$-finite}
+\newcommand{\ideal}{\triangleleft}
+\newcommand{\calg}[0]{$C^{*}$-algebra}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\graph}{graph}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\rank}{rank}
+
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs}  
+
+\newdate{due}{`(format-time-string "%d")`}{`(format-time-string "%m")`}{`(format-time-string "%Y")`}
+
+\begin{document}
+\begin{singlespacing}
+
+\lhead{MM666 \\\\ Ex. week 42}
+\chead{}
+\rhead{\ddmmyydate\displaydate{due} \\\\ Simon Erfurth}
+\lfoot{SDU\includegraphics[height=1.8ex]{SDUinline}}
+\cfoot{}
+\rfoot{Page \thepage{} of \pageref{LastPage}}
+
+\title{HW}
+\author{Simon S. Erfurth}
+\date{\displaydate{due}}
+\maketitle
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1.05\textwidth]{SDUlogo}
+\end{center}
+
+\newpage
+\end{singlespacing}
+\begin{spacing}{1.15}
+
+$0
+`(copy-file "~/ss-config/emacs/SDUlogo.pdf" "SDUlogo.pdf")`
+`(copy-file "~/ss-config/emacs/SDUinline.png" "SDUinline.png")`
+`(copy-file "~/ss-config/emacs/math.bib" "math.bib")`
+\vspace{1cm}
+\printbibliography
+
+\end{spacing}
+\end{document}
