@@ -67,5 +67,13 @@ Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
   (push-mark (point) t nil)
   (message "Pushed mark to ring"))
 
+(use-package flyspell-lazy
+  :ensure t
+  :init
+  ;; If you are using aspell instead of ispell on the backend, the following setting may improve performance:
+  (add-to-list 'ispell-extra-args "--sug-mode=ultra")
+  :config
+  (flyspell-lazy-mode 1))
+
 (provide 'init-flyspell)
 ;;; init-flyspell.el ends here
