@@ -106,5 +106,11 @@
 
 (winner-mode)
 
+;; Raise undo-limit to 80Mb
+(setq undo-limit 80000000)
+
+;; Interpret CamelCase as two words
+(setq global-subword-mode 1)
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
