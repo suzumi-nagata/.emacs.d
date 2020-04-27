@@ -53,6 +53,7 @@
 (require 'init-flyspell)
 (require 'init-god)
 (require 'init-fun)
+(require 'init-term)
 
 (require 'init-c)
 
