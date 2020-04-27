@@ -7,7 +7,8 @@
   :config
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
-  (setq company-dabbrev-downcase nil))
+  (setq company-dabbrev-downcase nil)
+  (setq company-show-numbers t))
 
 ;; Remap company navigation keys
 (with-eval-after-load 'company
