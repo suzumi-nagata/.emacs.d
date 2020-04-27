@@ -120,7 +120,7 @@ Source: https://git.io/vQKzv"
                ;; flyspell indicator
                '(:eval (when (bound-and-true-p flyspell-mode)
                          (propertize
-                          "[SPL]"
+                          "[SPL] "
                           'face 'font-lock-string-face)))
 
                ;; lsp indicator on prog mode
