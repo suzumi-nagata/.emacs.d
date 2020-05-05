@@ -25,9 +25,7 @@
   )
 
 (use-package expand-region
-  :ensure t
-  :bind
-  ("C-q" . er/expand-region))
+  :ensure t)
 
 (use-package mark-multiple
   :ensure t
@@ -111,6 +109,18 @@
 
 ;; Interpret CamelCase as two words
 (setq global-subword-mode 1)
+
+(use-package vlf
+  :ensure t)
+
+(use-package rg
+  :ensure t
+  :bind
+  ("C-c s" . #'rg-menu)
+  :hook
+  (rg-mode . (lambda()
+               (local-set-key (kbd "C-n") 'compilation-next-error)
+               (local-set-key (kbd "C-p") 'compilation-previous-error))))
 
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
