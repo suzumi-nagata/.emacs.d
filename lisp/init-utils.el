@@ -36,7 +36,7 @@
 ;;----------------------------------------------------------------------------
 (defun kill-region-or-backward-word ()
   "If the region is active and non-empty, call `kill-region'.
-  Otherwise, call `backward-kill-word'."
+Otherwise, call `backward-kill-word'."
   (interactive)
   (call-interactively
    (if (use-region-p) 'kill-region 'backward-kill-word)))
@@ -53,7 +53,7 @@
 ;; Kill current buffer instead of asking what buffer to kill
 ;;----------------------------------------------------------------------------
 (defun kill-current-buffer ()
-  "Kills the current buffer."
+  "Kill the current buffer."
   (interactive)
   (kill-buffer (current-buffer)))
 
@@ -69,6 +69,7 @@
 ;; duplicate line
 ;;----------------------------------------------------------------------------
 (defun duplicate-line()
+  "Duplicate current line."
   (interactive)
   (let (sline)
     (setq sline (buffer-substring (point-at-bol) (point-at-eol)))
@@ -197,6 +198,24 @@
   (call-interactively #'find-file)
   (kill-buffer dirname))
   )
+
+;;----------------------------------------------------------------------------
+;; Find file starting from a PROJECT root.
+;; (Usefull if the project is inside many directories)
+;;----------------------------------------------------------------------------
+; TODO: Fazer um jeito de ler os nomes e paths a partir de um arquivo
+;; (split-string (f-read-text org-uni-units-file-location) "\n")
+(defvar projects-roots-path '(("PIBIC" . "~/Common/PIBIC/")
+                              ("go" . "~/Common/Projects/go/src/")
+                              ("elisp" . "~/.emacs.d/lisp")))
+(defun find-file-project-root (project)
+  "Find file starting from a PROJECT root."
+  (interactive (list (completing-read
+                      "Select a project: "
+                      projects-roots-path
+                      nil t)))
+  (find-file (cdr (assoc project projects-roots-path)))
+  (close-wrong-buffer-and-find-file))
 
 ;;----------------------------------------------------------------------------
 ;; Activate flyspell with pt or en

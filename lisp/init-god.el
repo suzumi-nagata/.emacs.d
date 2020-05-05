@@ -16,6 +16,8 @@
   (define-key god-local-mode-map (kbd "C-x C-b") 'ivy-switch-buffer)
   (define-key god-local-mode-map (kbd "C-x C-S-b") 'ibuffer)
   (define-key god-local-mode-map (kbd "C-<f12>") 'org-agenda)
+
+  (define-key god-local-mode-map (kbd "C-c C-u") 'dumb-jump-go)
   (define-key god-local-mode-map (kbd "I") 'mortal-mode))
 
 (define-minor-mode mortal-mode

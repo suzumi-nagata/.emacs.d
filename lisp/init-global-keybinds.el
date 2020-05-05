@@ -6,10 +6,10 @@
 (global-set-key (kbd "C-c 1") 'linum-mode)
 
 ;; Replace string keystroke
-(global-set-key (kbd "C-c s") 'replace-string)
+(global-set-key (kbd "C-c r") 'replace-string)
 
 ;; Query replace string keystroke
-(global-set-key (kbd "C-c S") 'query-replace)
+(global-set-key (kbd "C-c R") 'query-replace)
 
 ;; Adjust window size keystrokes
 (global-set-key (kbd "M-S-<right>") 'enlarge-window-horizontally)
@@ -85,9 +85,13 @@
 ;; Org mode
 (define-key global-map "\C-c l l" 'org-store-link)
 (global-set-key (kbd "C-c C-ç") 'org-capture)
+(global-set-key (kbd "C-<f1>") 'vterm-other-window)
 ;; (global-set-key (kbd "C-<f1>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
 ;; (global-set-key (kbd "C-<f2>") 'org-toggle-inline-images)
 (global-set-key (kbd "<f12>") 'org-agenda)
+
+;; expand region
+(global-set-key (kbd "C-q") 'er/expand-region)
 
 ;; ispell
 (global-set-key (kbd "C-<f11>") 'check-previous-spelling-error)
@@ -112,6 +116,11 @@
 (global-set-key (kbd "C-x C-0") 'delete-window)
 
 (global-set-key (kbd "<f6>") 'spray-mode)
+
+(global-set-key (kbd "C-c f") 'find-file-project-root)
+
+;; dumb-jump
+(global-set-key (kbd "C-c u") 'dumb-jump-go)
 
 (provide 'init-global-keybinds)
 ;;; init-global-keybinds.el ends here

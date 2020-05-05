@@ -48,5 +48,9 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+(use-package dumb-jump
+  :ensure t
+  :diminish)
+
 (provide 'init-programming-utils)
 ;;; init-programming-utils.el ends here
