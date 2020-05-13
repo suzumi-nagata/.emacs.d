@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: over right arrow
+# key: rarr
+# --
+\overrightarrow{$1} $0
