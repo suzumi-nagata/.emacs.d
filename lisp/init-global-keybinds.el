@@ -87,7 +87,7 @@
 (global-set-key (kbd "C-c C-ç") 'org-capture)
 (global-set-key (kbd "C-<f1>") 'vterm-other-window)
 ;; (global-set-key (kbd "C-<f1>") (lambda () (interactive) (org-preview-latex-fragment '(16))))
-;; (global-set-key (kbd "C-<f2>") 'org-toggle-inline-images)
+(global-set-key (kbd "C-<f2>") 'org-toggle-inline-images)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
 ;; expand region
