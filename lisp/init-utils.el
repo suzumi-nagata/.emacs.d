@@ -207,6 +207,7 @@ Otherwise, call `backward-kill-word'."
 ;; (split-string (f-read-text org-uni-units-file-location) "\n")
 (defvar projects-roots-path '(("PIBIC" . "~/Common/PIBIC/")
                               ("go" . "~/Common/Projects/go/src/")
+                              ("config" . "~/.config/")
                               ("elisp" . "~/.emacs.d/lisp")))
 (defun find-file-project-root (project)
   "Find file starting from a PROJECT root."
