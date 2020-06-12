@@ -42,6 +42,29 @@ Otherwise, call `backward-kill-word'."
    (if (use-region-p) 'kill-region 'backward-kill-word)))
 
 ;;----------------------------------------------------------------------------
+;; Kill word that the cursor is on (taken from https://github.com/wandersoncferreira/vim-mindset-apply-emacs)
+;;----------------------------------------------------------------------------
+(defun bk/kill-inner-word ()
+  "Kill the entire word your cursor is in, equivalent to ciw in vim."
+  (interactive)
+  (forward-char 1)
+  (backward-word)
+  (kill-word 1))
+
+;;----------------------------------------------------------------------------
+;; Copy whole line independent of cursor position (taken from https://github.com/wandersoncferreira/vim-mindset-apply-emacs)
+;;----------------------------------------------------------------------------
+(defun bk/copy-whole-line ()
+  "Copies a line without regard for cursor position."
+  (interactive)
+  (save-excursion
+    (kill-new
+     (buffer-substring
+      (point-at-bol)
+      (point-at-eol)))
+    (message "Whole line copied!")))
+
+;;----------------------------------------------------------------------------
 ;; Handier way to add modes to auto-mode-alist
 ;;----------------------------------------------------------------------------
 (defun add-auto-mode (mode &rest patterns)
