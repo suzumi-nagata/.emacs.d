@@ -40,8 +40,8 @@
   :ensure t
   :diminish
   :bind
-  ("C-c w" . #'aya-create)
-  ("C-c y" . #'aya-expand))
+  ("C-c a c" . #'aya-create)
+  ("C-c a e" . #'aya-expand))
 
 (use-package flycheck
   :ensure t
