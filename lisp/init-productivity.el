@@ -122,5 +122,23 @@
                (local-set-key (kbd "C-n") 'compilation-next-error)
                (local-set-key (kbd "C-p") 'compilation-previous-error))))
 
+(use-package el-patch
+  :ensure t)
+
+(use-package hungry-delete
+  :ensure t)
+
+(use-package ag
+  :ensure t)
+
+(require 'change-inner)
+
+(auto-save-visited-mode 1)
+
+(use-package xclip
+  :ensure t
+  :init
+  (xclip-mode 1))
+
 (provide 'init-productivity)
 ;;; init-productivity.el ends here
