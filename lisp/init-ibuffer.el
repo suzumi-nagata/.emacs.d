@@ -14,10 +14,10 @@
          ("go" (mode . go-mode))
          ("Makefile" (mode . makefile-mode))
          ;; Certs
-         ("Keys / Certs" (or (filename . ".key")
-                             (filename . ".crt")
-                             (filename . ".pem")
-                             (filename . ".der")))
+         ("Keys / Certs" (or (filename . "\.key")
+                             (filename . "\.crt")
+                             (filename . "\.pem")
+                             (filename . "\.der")))
          ;; Tools
          ("Google Translate" (name . "*Google Translate*"))
          ("Keys / Certs" (or (filename . ".key")
@@ -39,6 +39,8 @@
          ("Flycheck / Flymake" (name . "Flymake"))
          ("ag-search" (mode . ag-mode))
          ;; Org mode
+         ("Org-roam" (or (filename . "roam")
+                         (name . "*org-roam*")))
          ("Agenda" (or (filename . "Agenda")
                        (mode . org-agenda-mode)))
          ("Unicamp" (filename . "Unicamp"))
@@ -46,6 +48,7 @@
          ("Org" (or (mode . org-mode)
                     (filename . "OrgMode")))
          ;; Buffers to ignore but I do not want to close them
+         ("httpd" (name . "*httpd*"))
          ("Help / Warning / Messages" (or (name . "\*Help\*")
                      (name . "\*Apropos\*")
                      (name . "\*info\*")
