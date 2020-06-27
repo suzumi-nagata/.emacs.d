@@ -54,6 +54,7 @@
 (require 'init-god)
 (require 'init-fun)
 (require 'init-term)
+;; (require 'command-log-mode)
 
 (require 'init-c)
 
