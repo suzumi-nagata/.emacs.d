@@ -70,12 +70,16 @@
 (global-set-key (kbd "M-n") 'move-line-down)
 
 (global-set-key (kbd "C-c p") 'insert-parenthesis)
-(global-set-key (kbd "C-c n") 'insert-curl-brackets)
-(global-set-key (kbd "C-c b") 'insert-brackets)
+;; (global-set-key (kbd "C-c n") 'insert-curl-brackets)
+;; (global-set-key (kbd "C-c b") 'insert-brackets)
 (global-set-key (kbd "C-c e") 'insert-double-quotes)
-(global-set-key (kbd "C-c x") 'insert-simple-quotes)
-(global-set-key (kbd "C-c ,") 'insert-tag)
-(global-set-key (kbd "C-c v") 'insert-verbatim-equals)
+;; (global-set-key (kbd "C-c x") 'insert-simple-quotes)
+;; (global-set-key (kbd "C-c ,") 'insert-tag)
+;; (global-set-key (kbd "C-c v") 'insert-verbatim-equals)
+(global-set-key (kbd "C-c k w") 'bk/kill-inner-word)
+(global-set-key (kbd "C-c y l") 'bk/copy-whole-line)
+(global-set-key (kbd "M-i") 'change-inner)
+(global-set-key (kbd "M-o") 'change-outer)
 
 (global-set-key (kbd "C-x M-f") 'close-wrong-buffer-and-find-file)
 
@@ -118,6 +122,9 @@
 (global-set-key (kbd "<f6>") 'spray-mode)
 
 (global-set-key (kbd "C-c f") 'find-file-project-root)
+
+;; ag search
+(global-set-key (kbd "C-c i") 'ag-project)
 
 ;; dumb-jump
 (global-set-key (kbd "C-c u") 'dumb-jump-go)
