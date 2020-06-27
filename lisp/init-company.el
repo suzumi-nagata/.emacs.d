@@ -19,5 +19,7 @@
 
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 
+(add-hook 'org-mode-hook 'company-mode)
+
 (provide 'init-company)
 ;;; init-company.el ends here
