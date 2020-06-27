@@ -39,6 +39,8 @@
    '(org-block-begin-line ((t (:foreground "#9acd32" :background "#3d4551"))))
    '(org-block-end-line ((t (:foreground "#9acd32" :background "#3d4551"))))
    '(org-verbatim ((t (:inherit shadow :foreground "DarkGoldenrod1" :box (:line-width 1 :color "grey75" :style pressed-button)))))
+   '(org-roam-link ((t (:inherit org-link :foreground "dark orange"))))
+   '(org-list-dt ((t (:foreground "#105fff" :weight bold))))
    )
   )
 ;;----------------------------------------------------------------------------
@@ -132,8 +134,8 @@
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
 
-;; Divide window equaly when splitting
-(setq window-combination-resize t)
+;; Divide windoaw equaly when splitting
+;; (setq window-combination-resize t)
 
 ;; If truncate-lines is true, there is no "visual line break"
 ;; If word-wrap is ture, words are wrapped on space
