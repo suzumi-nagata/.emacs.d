@@ -6,7 +6,7 @@
 
 (require 'package)
 (add-to-list 'package-archives
-  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  '("melpa" . "http://melpa.org/packages/") t)
 
 ;; Install use-package if not installed
 (unless (package-installed-p 'use-package)
