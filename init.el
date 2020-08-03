@@ -52,8 +52,10 @@
 (require 'init-git)
 (require 'init-flyspell)
 (require 'init-god)
+(require 'init-latex)
 (require 'init-fun)
 (require 'init-term)
+(require 'valign)
 ;; (require 'command-log-mode)
 
 (require 'init-c)
