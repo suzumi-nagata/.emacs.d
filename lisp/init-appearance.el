@@ -2,18 +2,18 @@
 ;;; Commentary:
 ;;; Code:
 
-;; Default font
-(set-frame-font "Input Mono Compressed 11" nil t)
+;; ;; Default font
+;; (set-frame-font "Input Monospace 13" nil t)
 
 ;; Base theme
 (if (display-graphic-p)
     (progn
       ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
-      (use-package dracula-theme :ensure t)
-      (load-theme 'dracula t))
+      (use-package monokai-theme :ensure t)
+      (load-theme 'monokai t))
   (progn
-    (use-package monokai-theme :ensure t)
-    (load-theme 'monokai t))
+    (use-package dracula-theme :ensure t)
+    (load-theme 'dracula t))
   )
 
 ;; Faces color configurations
