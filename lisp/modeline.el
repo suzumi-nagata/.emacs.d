@@ -1,20 +1,6 @@
-;;; init-modeline --- custom modeline
+;;; modeline --- custom modeline
 ;;; Commentary:
 ;;; Code:
-
-(set-face-attribute  'mode-line
-              nil
-              :foreground "LawnGreen"
-              :background "#0a2832"
-              :box '(:line-width 1 :style released-button))
-
-(set-face-attribute  'mode-line-inactive
-              nil
-              :foreground "ForestGreen"
-              :background "gray4"
-              :box '(:line-width 1 :style released-button))
-
-(setq-default transient-mark-mode 't)
 
 ;; flycheck
 (defun d/flycheck-lighter (state)
@@ -147,5 +133,5 @@ Source: https://git.io/vQKzv"
                                      'help-echo "Buffer is read only")))
                ))
 
-(provide 'init-modeline)
-;;; init-modeline.el ends here
+(provide 'modeline)
+;;; modeline.el ends here
