@@ -7,7 +7,7 @@
 ;;; Code:
 
 ;; Uncomment to debug
-;; (setq debug-on-error t)
+(setq debug-on-error t)
 
 ;; Add ~/.emacs.d/lisp to load the rest of configuration files
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -33,6 +33,8 @@
 ;; Configurations (files located at ~/.emacs.d/lisp)
 ;;----------------------------------------------------------------------------
 
+(setq byte-compile-warnings '(cl-functions))
+
 ;; Initialize packages
 (require 'init-startup-packages)
 
@@ -54,6 +56,8 @@
 (require 'init-god)
 (require 'init-fun)
 (require 'init-term)
+(require 'init-close-client)
+(require 'init-dap)
 ;; (require 'command-log-mode)
 
 (require 'init-c)
