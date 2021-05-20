@@ -137,7 +137,7 @@ Otherwise, call `backward-kill-word'."
 ;; Parenthesis insertion
 (defun insert-parenthesis()
   (interactive)
-  (my-insert-pair ?( ?)))
+  (my-insert-pair "(" ")"))
 
 ;; Double quotes insertion
 (defun insert-double-quotes()
@@ -152,17 +152,17 @@ Otherwise, call `backward-kill-word'."
 ;; Square Braket insertion
 (defun insert-brackets()
   (interactive)
-  (my-insert-pair ?[ ?]))
+  (my-insert-pair "[" "]"))
 
 ;; Curly Braces insertion
 (defun insert-curl-brackets()
   (interactive)
-  (my-insert-pair ?{ ?}))
+  (my-insert-pair "{" "}"))
 
 ;; Verbatim Insertion
-(defun insert-verbatim-equals()
-  (interactive)
-  (my-insert-pair ?\= ?\=))
+;; (defun insert-verbatim-equals()
+;;   (interactive)
+;;   (my-insert-pair ?\= ?\=))
 
 ;;----------------------------------------------------------------------------
 ;; Curly brackets insertion
@@ -228,10 +228,9 @@ Otherwise, call `backward-kill-word'."
 ;;----------------------------------------------------------------------------
 ; TODO: Fazer um jeito de ler os nomes e paths a partir de um arquivo
 ;; (split-string (f-read-text org-uni-units-file-location) "\n")
-(defvar projects-roots-path '(("PIBIC" . "~/Common/PIBIC/")
-                              ("go" . "~/Common/Projects/go/src/")
-                              ("config" . "~/.config/")
+(defvar projects-roots-path '(("config" . "~/.config/")
                               ("elisp" . "~/.emacs.d/lisp")))
+
 (defun find-file-project-root (project)
   "Find file starting from a PROJECT root."
   (interactive (list (completing-read
@@ -270,6 +269,37 @@ Otherwise, call `backward-kill-word'."
                "2 sec" nil 'delete-windows-on
                (get-buffer-create "*compilation*"))
               (message "No Compilation Errors!")))))
+
+;;---------------------------------------------------------------------------
+;; Eclim - server para Java
+;;---------------------------------------------------------------------------
+;;Start eclim and eclim daemon
+;;Add path to eclim to run java lsp
+;; (add-to-list 'load-path "/opt/eclipse/eclim/")
+;; (require 'eclim)
+;; (setq eclimd-autostart t)
+;; (global-eclim-mode)
+
+;; (custom-set-variables
+;;   '(eclim-eclipse-dirs '("/opt/eclipse"))
+;;   '(eclim-executable "~/.eclipse/eclim"))
+
+;; (setq help-at-pt-display-when-idle t)
+;; (setq help-at-pt-timer-delay 0.1)
+;; (help-at-pt-set-timer)
+
+;; ;; regular auto-complete initialization
+;; ;;(require 'auto-complete-config)
+;; ;;(ac-config-default)
+
+;; ;; add the emacs-eclim source
+;; (require 'ac-emacs-eclim-source)
+;; (ac-emacs-eclim-config)
+
+;; (require 'company)
+;; (require 'company-emacs-eclim)
+;; (company-emacs-eclim-setup)
+;; (global-company-mode t)
 
 (provide 'init-utils)
 ;;; init-utils.el ends here
