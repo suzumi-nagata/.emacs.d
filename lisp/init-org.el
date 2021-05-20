@@ -108,17 +108,7 @@
         (" ROUTINE" ."PowderBlue")
         ))
 
-(setq org-agenda-files (list "~/Common/Agenda/work.org"
-                             "~/Common/Agenda/refile.org"
-                             "~/Common/Agenda/unicamp.org"
-                             "~/Common/Agenda/personal.org"
-                             "~/Common/Agenda/projects.org"
-                             "~/Common/Agenda/reading.org"
-                             "~/Common/Agenda/courses.org"
-                             "~/Common/Agenda/PIBIC.org"
-                             "~/Documents/1_Unicamp/EM524/EM524.org"
-                             "~/Documents/1_Unicamp/GT001/GT001.org"
-                             ))
+(setq org-agenda-files (list "~/Documents/IC/"))
 
 ;; Auto schedule depending on the first header
 (defun my/org-after-refile-insert-hook ()
