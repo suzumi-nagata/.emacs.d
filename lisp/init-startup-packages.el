@@ -10,6 +10,7 @@
 
 ;; Install use-package if not installed
 (unless (package-installed-p 'use-package)
+  (package-initialize)
   (package-refresh-contents)
   (package-install 'use-package))
 
@@ -20,6 +21,7 @@
    (setq auto-package-update-delete-old-versions t
          auto-package-update-interval 4)
    (auto-package-update-maybe))
+
 
 (provide 'init-startup-packages)
 ;;; init-startup-packages.el ends here
