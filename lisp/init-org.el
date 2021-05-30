@@ -296,5 +296,22 @@
 :END:"
 )))
 
+(fset 'highlight-investment-table
+   (kmacro-lambda-form [?\M-x ?h ?i ?g ?h ?l ?i ?g ?h ?t ?- ?r ?e ?g ?e ?x ?p return ?E ?T ?F return return ?\M-x ?h ?i ?g ?h ?l ?i ?g ?h ?t ?- ?r ?e ?g ?e ?\C-n return ?F ?I ?I return return ?\M-x ?h ?i ?g ?h ?l ?i ?i backspace backspace ?i ?g ?h ?t ?- ?r ?e ?g ?e ?\C-n return ?S ?t ?o ?c ?k return return ?\M-x ?h ?i ?g ?h ?l ?i ?g ?h ?t ?- ?r ?e ?g ?e ?\C-n return ?F ?i ?x ?e ?d return return] 0 "%d"))
+
+;; (use-package org-transclusion
+;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
+;;   :config
+;;   (set-face-attribute
+;;    'org-transclusion-fringe nil
+;;    :foreground "DarkSlateBlue"
+;;    :background "MidnightBlue")
+;;   (org-transclusion-mode)
+;;   )
+
+(add-hook 'org-mode-hook #'(lambda ()
+                             (ispell-change-dictionary "en_US")
+                             (flyspell-mode)))
+
 (provide 'init-org)
 ;;; init-org.el ends here
