@@ -294,7 +294,7 @@
 (use-package rainbow-delimiters :straight t :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 (use-package dumb-jump :straight t)
 (use-package multiple-cursors :straight t)
-(use-package beacon :straight t :config (beacon-mode 1))
+;; (use-package beacon :straight t :config (beacon-mode 1))
 (use-package f :straight t)
 (use-package sudo-edit :straight t)
 (use-package projectile :straight t
