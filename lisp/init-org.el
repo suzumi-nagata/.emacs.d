@@ -20,18 +20,22 @@
       org-use-sub-superscripts "{}"
       org-startup-folded "fold"
       org-agenda-window-setup 'current-window
-      org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))
-      org-tags-column 55
+      org-refile-targets '((org-agenda-files :level . 1))
+      ;; org-tags-column 55
       org-noter-notes-window-location 'other-frame
       org-format-latex-options (plist-put org-format-latex-options :scale 1.7)
       org-roam-server-port 1784
       org-habit-graph-column 70
       org-display-remote-inline-images 'download
+      org-adapt-indentation t
+      org-agenda-block-separator nil
+      org-agenda-start-with-log-mode t
       )
 
 (defvar org-agenda-directory (concat org-directory "agenda/"))
 (setq org-agenda-files (list org-agenda-directory))
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
+(defvar org-capture-reading-file (concat org-agenda-directory "reading.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "email.org"))
 (defvar org-capture-groceries-file (concat org-agenda-directory "groceries.org"))
 
@@ -53,6 +57,10 @@
                         "|"
                         "✔ DONE(d!)"
                         "✘ CXLD(c@)"))))
+
+(setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
+                           (?B . (:foreground "yellow"))
+                           (?C . (:foreground "green"))))
 
 (setq org-todo-keyword-faces
       '(("☛ TODO" . "tomato")
@@ -106,17 +114,11 @@
                :file org-capture-groceries-file
                :type plain
                :template ("- %?")
-               :children
-               (("Basic" :keys "b" :headline "Basic")
-                ("Beverages" :keys "d" :headline "Beverages")
-                ("Carbohydrates" :keys "c" :headline "Carbohydrates")
-                ("Meat" :keys "m" :headline "Meat")
-                ("Sweets" :keys "d" :headline "Sweets")
-                ("Fruits" :keys "f" :headline "Fruits")
-                ("Hygiene" :keys "h" :headline "Hygiene")))
+               )
               )))
 
-(setq-default org-agenda-custom-commands `(("m" "Agenda"
+;TODO: Migrate to Super agenda
+(setq-default org-agenda-custom-commands `((" " "Agenda"
                                     ((agenda ""
                                              ((org-agenda-start-day "-2d")
                                               (org-agenda-span 10)
@@ -127,12 +129,15 @@
                                      (todo "☛ TODO"
                                            ((org-agenda-overriding-header "Emails")
                                             (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
-                                     ;; (todo "☛ TODO"
-                                     ;;       ((org-agenda-overriding-header "UNICAMP")
-                                     ;;        (org-agenda-files '(org-capture-todo-file))))
-                                     ;; (todo "☛ TODO"
-                                     ;;       ((org-agenda-overriding-header "Personal")
-                                     ;;        (org-agenda-files '(org-capture-todo-file))))
+                                     ;; (tags "CATEGORY=\"Reading\""
+                                     ;;       ((org-agenda-overriding-header "Reading")
+                                     ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
+                                     ;; (todo "CATEGORY=\"To read\""
+                                     ;;       ((org-agenda-overriding-header "To read")
+                                     ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
+                                     ;; (todo "CATEGORY=\"To write\""
+                                     ;;       ((org-agenda-overriding-header "To write")
+                                     ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
                                      )
                                     )))
 
@@ -159,6 +164,196 @@
 ;;                                               (org-agenda-files '(,(expand-file-name "next.org" jethro/org-agenda-directory)))
 ;;                                               (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled)))))))))
 
+(use-package org-pretty-tags
+  :after all-the-icons
+  :straight t
+  :config
+  (setq org-pretty-tags-surrogate-strings
+        `(("UNICAMP"      . ,(all-the-icons-faicon   "graduation-cap" :face 'all-the-icons-silver  :v-adjust 0.01))
+          ("@home"        . ,(all-the-icons-material "home"           :face 'all-the-icons-purple  :v-adjust 0.01))
+          ("assignment"   . ,(all-the-icons-material "library_books"  :face 'all-the-icons-orange  :v-adjust 0.01))
+          ("test"         . ,(all-the-icons-material "timer"          :face 'all-the-icons-red     :v-adjust 0.01))
+          ("lecture"      . ,(all-the-icons-fileicon "keynote"        :face 'all-the-icons-orange  :v-adjust 0.01))
+          ("email"        . ,(all-the-icons-faicon   "envelope"       :face 'all-the-icons-blue    :v-adjust 0.01))
+          ("read"         . ,(all-the-icons-octicon  "book"           :face 'all-the-icons-lblue   :v-adjust 0.01))
+          ("article"      . ,(all-the-icons-octicon  "file-text"      :face 'all-the-icons-yellow  :v-adjust 0.01))
+          ("web"          . ,(all-the-icons-faicon   "globe"          :face 'all-the-icons-green   :v-adjust 0.01))
+          ("info"         . ,(all-the-icons-faicon   "info-circle"    :face 'all-the-icons-blue    :v-adjust 0.01))
+          ("issue"        . ,(all-the-icons-faicon   "bug"            :face 'all-the-icons-red     :v-adjust 0.01))
+          ("someday"      . ,(all-the-icons-faicon   "calendar-o"     :face 'all-the-icons-cyan    :v-adjust 0.01))
+          ("idea"         . ,(all-the-icons-octicon  "light-bulb"     :face 'all-the-icons-yellow  :v-adjust 0.01))
+          ("emacs"        . ,(all-the-icons-fileicon "emacs"          :face 'all-the-icons-lpurple :v-adjust 0.01))))
+  (org-pretty-tags-global-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;          Agenda processing          ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun custom/org-agenda-bulk-mark-regexp-category (regexp)
+  "Mark entries whose category match REGEXP for future agenda bulk action."
+  (interactive "sMark entries with category matching regexp: ")
+  (let ((entries-marked 0) txt-at-point)
+    (save-excursion
+      (goto-char (point-min))
+      (goto-char (next-single-property-change (point) 'org-hd-marker))
+      (while (and (re-search-forward regexp nil t)
+                  (setq category-at-point
+                        (get-text-property (match-beginning 0) 'org-category)))
+        (if (get-char-property (point) 'invisible)
+            (beginning-of-line 2)
+          (when (string-match-p regexp category-at-point)
+            (setq entries-marked (1+ entries-marked))
+            (call-interactively 'org-agenda-bulk-mark)))))
+    (unless entries-marked
+      (message "No entry matching this regexp."))))
+
+(setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
+
+(setq org-tag-alist '(("@office" . ?o)
+                      ("UNICAMP" . ?u)
+                      ("@home" . ?h)
+                      ("programming" . ?p)
+                      ("projects" . ?ç)
+                      ("cryptography" . ?c)
+                      ;; (:newline)
+                      ;; ("CANCELLED" . ?c)
+                      ))
+
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+
+(defun jethro/org-archive-done-tasks ()
+  "Archive all done tasks."
+  (interactive)
+  (org-map-entries 'org-archive-subtree "/DONE" 'file))
+(require 'find-lisp)
+
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (local-set-key (kbd "f") 'jethro/org-process-inbox)))
+
+(defun jethro/org-process-inbox ()
+  "Called in org-agenda-mode, processes all inbox items."
+  (interactive)
+  (custom/org-agenda-bulk-mark-regexp-category "inbox")
+  (jethro/bulk-process-entries))
+
+(defvar jethro/org-current-effort "1:00"
+  "Current effort for agenda items.")
+
+(defvar nagata/org-current-effort-list '(("0:15" . "0:15")
+                                         ("0:30" . "0:30")
+                                         ("0:45" . "0:45")
+                                         ("1:00" . "1:00")
+                                         ("1:15" . "1:15")
+                                         ("1:30" . "1:30")
+                                         ("1:45" . "1:45")
+                                         ("2:00" . "2:00")
+                                         ("2:30" . "2:30")
+                                         ("3:00" . "3:00")
+                                         ("4:00" . "4:00")
+                                         ("5:00" . "5:00")
+                                         ("6:00" . "6:00")
+                                         ("7:00" . "7:00")
+                                         ("8:00" . "8:00")))
+
+(defun jethro/my-org-agenda-set-effort (effort)
+  "Set the effort property for the current headline."
+  ;; (interactive
+  ;;  (list (read-string (format "Effort [%s]: " jethro/org-current-effort) nil nil jethro/org-current-effort)))
+  (interactive (list (completing-read
+                      "Effort: "
+                      nagata/org-current-effort-list
+                      nil nil)))
+  (setq jethro/org-current-effort effort)
+  (org-agenda-check-no-diary)
+  (let* ((hdmarker (or (org-get-at-bol 'org-hd-marker)
+                       (org-agenda-error)))
+         (buffer (marker-buffer hdmarker))
+         (pos (marker-position hdmarker))
+         (inhibit-read-only t)
+         newhead)
+    (org-with-remote-undo buffer
+      (with-current-buffer buffer
+        (widen)
+        (goto-char pos)
+        (org-show-context 'agenda)
+        (funcall-interactively 'org-set-effort nil jethro/org-current-effort)
+        (end-of-line 1)
+        (setq newhead (org-get-heading)))
+      (org-agenda-change-all-lines newhead hdmarker))))
+
+(defun jethro/org-agenda-process-inbox-item ()
+  "Process a single item in the 'org-agenda'."
+  (org-with-wide-buffer
+   (org-agenda-set-tags)
+   (org-agenda-priority)
+   (call-interactively 'jethro/my-org-agenda-set-effort)
+   (org-agenda-refile nil nil t)))
+
+(defun jethro/bulk-process-entries ()
+  (if (not (null org-agenda-bulk-marked-entries))
+      (let ((entries (reverse org-agenda-bulk-marked-entries))
+            (processed 0)
+            (skipped 0))
+        (dolist (e entries)
+          (let ((pos (text-property-any (point-min) (point-max) 'org-hd-marker e)))
+            (if (not pos)
+                (progn (message "Skipping removed entry at %s" e)
+                       (cl-incf skipped))
+              (goto-char pos)
+              (let (org-loop-over-headlines-in-active-region) (funcall 'jethro/org-agenda-process-inbox-item))
+              ;; `post-command-hook' is not run yet.  We make sure any
+              ;; pending log note is processed.
+              (when (or (memq 'org-add-log-note (default-value 'post-command-hook))
+                        (memq 'org-add-log-note post-command-hook))
+                (org-add-log-note))
+              (cl-incf processed))))
+        (org-agenda-redo)
+        (unless org-agenda-persistent-marks (org-agenda-bulk-unmark-all))
+        (message "Acted on %d entries%s%s"
+                 processed
+                 (if (= skipped 0)
+                     ""
+                   (format ", skipped %d (disappeared before their turn)"
+                           skipped))
+                 (if (not org-agenda-persistent-marks) "" " (kept marked)")))))
+
+(defvar jethro/org-agenda-bulk-process-key ?f
+  "Default key for bulk processing inbox items.")
+
+(defun jethro/org-inbox-capture ()
+  (interactive)
+  "Capture a task in agenda mode."
+  (org-capture nil "i"))
+
+(setq org-agenda-bulk-custom-functions `((,jethro/org-agenda-bulk-process-key jethro/org-agenda-process-inbox-item)))
+
+;; (map! :map org-agenda-mode-map
+;;       "i" #'org-agenda-clock-in
+;;       "I" #'jethro/clock-in-and-advance
+;;       "r" #'jethro/org-process-inbox
+;;       "R" #'org-agenda-refile
+;;       "c" #'jethro/org-inbox-capture)
+
+(defun jethro/advance-todo ()
+  (org-todo 'right)
+  (remove-hook 'org-clock-in-hook #'jethro/advance-todo))
+
+(defun jethro/clock-in-and-advance ()
+  (interactive)
+  (add-hook 'org-clock-in-hook 'jethro/advance-todo)
+  (org-agenda-clock-in))
+
+;; (use-package org-clock-convenience
+;;   :bind (:map org-agenda-mode-map
+;;               ("<S-up>" . org-clock-convenience-timestamp-up)
+;;               ("<S-down>" . org-clock-convenience-timestamp-down)
+;;               ("o" . org-clock-convenience-fill-gap)
+;;               ("e" . org-clock-convenience-fill-gap-both)))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;               Org roam              ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package org-roam :straight t
   :init
