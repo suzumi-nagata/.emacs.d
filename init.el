@@ -109,7 +109,8 @@
 
 (global-set-key (kbd "C-o") 'open-line-with-reindent)
 
-(global-set-key (kbd "<escape>") #'god-mode-all)
+;; (global-set-key (kbd "<escape>") #'god-mode-all)
+(global-set-key (kbd "<escape>") #'turn-on-evil-mode)
 
 (global-set-key (kbd "C-c n l") 'org-roam)
 (global-set-key (kbd "C-c n i") 'org-roam-insert)
@@ -351,59 +352,88 @@
   (add-hook hook 'show-trailing-whitespace))
 (use-package vterm :straight t)
 
-(use-package god-mode
+;; (use-package god-mode
+;;   :straight t
+;;   :init
+;;   (setq god-mode-enable-function-key-translation nil)
+;;   :config
+;;   (setq god-exempt-major-modes nil)
+;;   (setq god-exempt-predicates nil)
+;;   (define-key god-local-mode-map (kbd "C-x C-k") #'kill-current-buffer)
+;;   (define-key god-local-mode-map (kbd "C-x C-1") #'delete-other-windows)
+;;   (define-key god-local-mode-map (kbd "C-x C-2") #'split-window-below)
+;;   (define-key god-local-mode-map (kbd "C-x C-3") #'split-window-right)
+;;   (define-key god-local-mode-map (kbd "C-x C-0") #'delete-window)
+
+;;   (define-key god-local-mode-map (kbd "C-x C-b") 'ivy-switch-buffer)
+;;   (define-key god-local-mode-map (kbd "C-x C-S-b") 'ibuffer)
+
+;;   (define-key god-local-mode-map (kbd "C-c C-u") 'dumb-jump-go)
+;;   (define-key god-local-mode-map (kbd "C-c C-i") 'ag-project)
+;;   (define-key god-local-mode-map (kbd "C-c C-o") 'xref-find-definitions)
+;;   (define-key god-local-mode-map (kbd "C-c C-p") 'xref-pop-marker-stack)
+;;   (define-key god-local-mode-map (kbd "C-c C-ç") 'xref-find-references)
+;;   (define-key god-local-mode-map (kbd "C-c C-j") 'lsp-ivy-workspace-symbol)
+
+;;   (define-key god-local-mode-map (kbd "C-<f12>") 'org-agenda)
+
+;;   (define-key god-local-mode-map (kbd "z") 'repeat)
+;;   (define-key god-local-mode-map (kbd "i") 'god-mode-all)
+;;   (define-key god-local-mode-map (kbd "I") 'mortal-mode)
+
+;;   (god-mode)
+;;   )
+
+;; (define-minor-mode mortal-mode
+;;   "Allow temporary departures from god-mode."
+;;   :lighter " mortal"
+;;   :keymap '(([return] . (lambda ()
+;;                           "Exit mortal-mode and resume god mode." (interactive)
+;;                           (god-local-mode-resume)
+;;                           (mortal-mode 0))))
+;;   (when mortal-mode
+;;     (god-local-mode-pause)))
+
+;; (defun my-god-mode-update-cursor ()
+;;   (setq cursor-type (if (or god-local-mode buffer-read-only)
+;;                         'box
+;;                       'bar)))
+
+;; (add-hook 'god-mode-enabled-hook #'my-god-mode-update-cursor)
+;; (add-hook 'god-mode-disabled-hook #'my-god-mode-update-cursor)
+
+(defun close-wrong-buffer-and-magit ()
+  "Close current buffer and find file from current path."
+  (interactive)
+  (let ((dirname (buffer-name)))
+  (magit-status)
+  (kill-buffer dirname)))
+(defun find-magit-project-root (project)
+  "Open magit starting from a PROJECT root."
+  (interactive (list (completing-read
+                      "Select a project: "
+                      projects-roots-path
+                      nil t)))
+  (find-file (cdr (assoc project projects-roots-path)))
+  (close-wrong-buffer-and-magit))
+
+(use-package evil
   :straight t
+  :hook (after-init . evil-mode)
   :init
-  (setq god-mode-enable-function-key-translation nil)
-  :config
-  (setq god-exempt-major-modes nil)
-  (setq god-exempt-predicates nil)
-  (define-key god-local-mode-map (kbd "C-x C-k") #'kill-current-buffer)
-  (define-key god-local-mode-map (kbd "C-x C-1") #'delete-other-windows)
-  (define-key god-local-mode-map (kbd "C-x C-2") #'split-window-below)
-  (define-key god-local-mode-map (kbd "C-x C-3") #'split-window-right)
-  (define-key god-local-mode-map (kbd "C-x C-0") #'delete-window)
-
-  (define-key god-local-mode-map (kbd "C-x C-b") 'ivy-switch-buffer)
-  (define-key god-local-mode-map (kbd "C-x C-S-b") 'ibuffer)
-
-  (define-key god-local-mode-map (kbd "C-c C-u") 'dumb-jump-go)
-  (define-key god-local-mode-map (kbd "C-c C-i") 'ag-project)
-  (define-key god-local-mode-map (kbd "C-c C-o") 'xref-find-definitions)
-  (define-key god-local-mode-map (kbd "C-c C-p") 'xref-pop-marker-stack)
-  (define-key god-local-mode-map (kbd "C-c C-ç") 'xref-find-references)
-  (define-key god-local-mode-map (kbd "C-c C-j") 'lsp-ivy-workspace-symbol)
-
-  (define-key god-local-mode-map (kbd "C-<f12>") 'org-agenda)
-
-  (define-key god-local-mode-map (kbd "z") 'repeat)
-  (define-key god-local-mode-map (kbd "i") 'god-mode-all)
-  (define-key god-local-mode-map (kbd "I") 'mortal-mode)
-
-  (god-mode)
-  )
-
-(define-minor-mode mortal-mode
-  "Allow temporary departures from god-mode."
-  :lighter " mortal"
-  :keymap '(([return] . (lambda ()
-                          "Exit mortal-mode and resume god mode." (interactive)
-                          (god-local-mode-resume)
-                          (mortal-mode 0))))
-  (when mortal-mode
-    (god-local-mode-pause)))
-
-(defun my-god-mode-update-cursor ()
-  (setq cursor-type (if (or god-local-mode buffer-read-only)
-                        'box
-                      'bar)))
-
-(add-hook 'god-mode-enabled-hook #'my-god-mode-update-cursor)
-(add-hook 'god-mode-disabled-hook #'my-god-mode-update-cursor)
+  ;; use emacs bindings in insert-mode
+  (setq evil-disable-insert-state-bindings t)
+  (setq evil-want-keybinding nil))
 
 (use-package framemove
   :config (setq framemove-hook-into-windmove t)
   :straight t)
+
+(use-package s :straight t)
+
+(use-package google-this :straight t
+  :config
+  (google-this-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;               company               ;
