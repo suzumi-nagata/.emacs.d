@@ -133,7 +133,10 @@
 (if (display-graphic-p)
     (progn
       ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
-      (use-package dracula-theme :straight t)
+      (use-package dracula-theme
+        :straight (dracula-theme :type git :host github :repo "dracula/emacs"
+                                 :fork (:host github
+                                        :repo "nagatavit/dracula")))
       (load-theme 'dracula t))
   (progn
     (use-package monokai-theme :straight t)
