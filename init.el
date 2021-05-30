@@ -101,6 +101,7 @@
 (global-set-key "\C-x\C-m" 'compile)
 
 (global-set-key (kbd "<f1>") 'find-file-project-root)
+(global-set-key (kbd "<f11>") 'find-magit-project-root)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
@@ -504,6 +505,8 @@
   ;; Compile to PDF when `TeX-PDF-mode' is active.
   (setq auctex-latexmk-inherit-TeX-PDF-mode t))
 
+(use-package insert-shebang :straight t :defer 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                 lsp                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -565,6 +568,13 @@
       (flyspell-mode 0)
     (flyspell-mode 1))
   )
+
+(use-package flyspell-correct :straight t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(use-package flyspell-correct-ivy :straight t
+  :after flyspell-correct)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;             global hooks            ;
