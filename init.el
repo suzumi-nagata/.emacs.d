@@ -346,9 +346,7 @@
                                     (flyspell-mode))))
 (require 'ispell)
 (setq ispell-program-name "/usr/bin/aspell")
-(add-hook 'git-commit-mode-hook #'(lambda ()
-                                    (ispell-change-dictionary "en_US")
-                                    (flyspell-mode)))
+
 (defun show-trailing-whitespace ()
   "Enable display of trailing whitespace in this buffer."
   (setq-local show-trailing-whitespace t))
