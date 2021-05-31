@@ -196,6 +196,7 @@ Otherwise, call `backward-kill-word'."
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/python")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/js")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/.config")))
+(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Org")))
 
 (defun find-file-project-root (project)
   "Find file starting from a PROJECT root."
