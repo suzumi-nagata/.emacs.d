@@ -243,8 +243,8 @@
 ;; Makes *scratch* empty.
 (setq initial-scratch-message "")
 ;; Removes *messages* from the buffer.
-(setq-default message-log-max nil)
-(kill-buffer "*Messages*")
+;; (setq-default message-log-max nil)
+;; (kill-buffer "*Messages*")
 ;; Removes *Completions* from buffer after you've opened a file.
 (add-hook 'minibuffer-exit-hook
           '(lambda () (let ((buffer "*Completions*"))
@@ -437,6 +437,30 @@
   :config
   (google-this-mode 1))
 
+(use-package evil-surround :straight t
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-collection
+  :straight t
+  :config
+  (setq-default evil-collection-company-use-tng nil)
+  (evil-collection-init))
+
+(use-package evil-easymotion
+  :straight t
+  :config
+  (evilem-default-keybindings "SPC"))
+
+(use-package diff-hl
+  :straight t
+  :config
+  (global-diff-hl-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;           end productivity          ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;               company               ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -505,6 +529,8 @@
 
 (use-package insert-shebang :straight t :defer 1)
 
+(use-package x509-mode :straight t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                 lsp                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -513,6 +539,8 @@
   :init
   (add-hook 'c-mode-hook #'lsp-deferred)
   (add-hook 'c++-mode-hook #'lsp-deferred)
+  (add-hook 'python-mode-hook #'lsp-deferred)
+  (add-hook 'go-mode-hook #'lsp-deferred)
   (setq gc-cons-threshold 100000000)
   (setq lsp-file-watch-threshold 20000)
   :commands (lsp lsp-deferred))
