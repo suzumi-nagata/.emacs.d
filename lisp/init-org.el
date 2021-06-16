@@ -119,27 +119,32 @@
 
 ;TODO: Migrate to Super agenda
 (setq-default org-agenda-custom-commands `((" " "Agenda"
-                                    ((agenda ""
-                                             ((org-agenda-start-day "-2d")
-                                              (org-agenda-span 10)
-                                              (org-deadline-warning-days 365)))
-                                     (todo "☛ TODO"
-                                           ((org-agenda-overriding-header "To Refile")
-                                            (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
-                                     (todo "☛ TODO"
-                                           ((org-agenda-overriding-header "Emails")
-                                            (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
-                                     ;; (tags "CATEGORY=\"Reading\""
-                                     ;;       ((org-agenda-overriding-header "Reading")
-                                     ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                                     ;; (todo "CATEGORY=\"To read\""
-                                     ;;       ((org-agenda-overriding-header "To read")
-                                     ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                                     ;; (todo "CATEGORY=\"To write\""
-                                     ;;       ((org-agenda-overriding-header "To write")
-                                     ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                                     )
-                                    )))
+                                            ((agenda ""
+                                                     ((org-agenda-start-day "-2d")
+                                                      (org-agenda-span 10)
+                                                      (org-deadline-warning-days 365)))
+                                             (todo "☛ TODO"
+                                                   ((org-agenda-overriding-header "To Refile")
+                                                    (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
+                                             (todo "☛ TODO"
+                                                   ((org-agenda-overriding-header "Emails")
+                                                    (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
+                                             ;; (tags "CATEGORY=\"Reading\""
+                                             ;;       ((org-agenda-overriding-header "Reading")
+                                             ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
+                                             ;; (todo "CATEGORY=\"To read\""
+                                             ;;       ((org-agenda-overriding-header "To read")
+                                             ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
+                                             ;; (todo "CATEGORY=\"To write\""
+                                             ;;       ((org-agenda-overriding-header "To write")
+                                             ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
+                                             ))
+                                           ("r" "Review"
+                                            ((agenda ""
+                                                     ((org-agenda-start-day "-7d")
+                                                      (org-agenda-span 8)
+                                                      (org-deadline-warning-days 365)))))
+                                           ))
 
 ;; (setq org-agenda-custom-commands `((" " "Agenda"
 ;;                                       ((agenda ""
@@ -171,8 +176,8 @@
   (setq org-pretty-tags-surrogate-strings
         `(("UNICAMP"      . ,(all-the-icons-faicon   "graduation-cap" :face 'all-the-icons-silver  :v-adjust 0.01))
           ("@home"        . ,(all-the-icons-material "home"           :face 'all-the-icons-purple  :v-adjust 0.01))
-          ("assignment"   . ,(all-the-icons-material "library_books"  :face 'all-the-icons-orange  :v-adjust 0.01))
-          ("test"         . ,(all-the-icons-material "timer"          :face 'all-the-icons-red     :v-adjust 0.01))
+          ("cryptography" . ,(all-the-icons-material "vpn_key"        :face 'all-the-icons-lorange  :v-adjust 0.01))
+          ("programming"  . ,(all-the-icons-faicon   "terminal"       :face 'all-the-icons-lsilver :v-adjust 0.01))
           ("lecture"      . ,(all-the-icons-fileicon "keynote"        :face 'all-the-icons-orange  :v-adjust 0.01))
           ("email"        . ,(all-the-icons-faicon   "envelope"       :face 'all-the-icons-blue    :v-adjust 0.01))
           ("read"         . ,(all-the-icons-octicon  "book"           :face 'all-the-icons-lblue   :v-adjust 0.01))
@@ -224,7 +229,7 @@
 (defun jethro/org-archive-done-tasks ()
   "Archive all done tasks."
   (interactive)
-  (org-map-entries 'org-archive-subtree "/DONE" 'file))
+  (org-map-entries 'org-archive-subtree "✔ DONE" 'file))
 (require 'find-lisp)
 
 (add-hook 'org-agenda-mode-hook
@@ -389,7 +394,19 @@
            "%?"
            :file-name "private/${slug}"
            :unnarrowed t
-           :head "#+title: ${title}\n")))
+           :head "#+title: ${title}\n")
+          ("r" "recipes" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "recipes/${slug}"
+           :unnarrowed t
+           :head "#+TITLE: ${title}
+#+ROAM_ALIAS:
+#+ROAM_TAGS:
+#+DATE: %u\n
+- links :: \n
+* Ingredients
+* Directions
+* Notes")))
 
   (setq org-roam-capture-ref-templates
         '(("r" "ref" plain (function org-roam-capture--get-point)
@@ -442,10 +459,10 @@
     :init
     (setq org-ref-notes-directory "/home/nagata/Common/Backup/Org/bib/notes.org"
           org-ref-bibliography-notes "/home/nagata/Common/Backup/Org/bib/articles.org"
-          org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/library.bib")
+          org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
           org-ref-pdf-directory "/home/nagata/Common/Backup/Zotero"))
 
-(use-package helm-bibtex :straight t
+(use-package ivy-bibtex :straight t
   :after org
   :init
   (setq bibtex-format-citation-functions
@@ -454,13 +471,13 @@
                                            (mapconcat 'identity x ",")
                                            "}")) ""))))
   (setq bibtex-completion-pdf-field "file"
-        bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/library.bib")
+        bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
         bibtex-completion-library-path '("/home/nagata/Common/Backup/Zotero/")
         bibtex-completion-notes-path "/home/nagata/Common/Backup/Org/bib/articles.org"
         ))
 
 (use-package org-roam-bibtex :straight t
-  :load-path "/home/nagata/Common/Backup/Org/bib/library.bib" ;Modify with your own path
+  :load-path "/home/nagata/Common/Backup/Org/bib/my_library.bib" ;Modify with your own path
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :bind (:map org-mode-map
          (("C-c n a" . orb-note-actions))))
