@@ -220,7 +220,7 @@
 ;; Raise undo-limit to 80Mb
 (setq undo-limit 80000000)
 ;; Interpret CamelCase as two words
-(setq global-subword-mode 1)
+(setq-default global-subword-mode 1)
 ;; Smooth scrolling lines
 (setq scroll-conservatively 100)
 (setq split-height-threshold nil)
