@@ -11,3 +11,14 @@ bookmarks
 recentf
 irony
 .lsp-session-v1
+.cache
+.dap-breakpoints
+.org-id-locations
+eln-cache
+emojis
+projectile-bookmarks.eld
+straight
+tramp
+transient
+%backup%*
+session.*
