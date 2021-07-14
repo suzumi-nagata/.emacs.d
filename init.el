@@ -101,6 +101,11 @@
 (global-set-key "\C-x\C-m" 'compile)
 
 (global-set-key (kbd "<f1>") 'find-file-project-root)
+(global-set-key (kbd "<f2>") 'display-line-numbers-mode)
+(global-set-key (kbd "<f5>") 'x509-viewkey)
+(global-set-key (kbd "<f6>") 'x509-viewasn1)
+(global-set-key (kbd "<f7>") 'x509-viewcrl)
+(global-set-key (kbd "<f8>") 'x509-viewcert)
 (global-set-key (kbd "<f11>") 'find-magit-project-root)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
