@@ -429,7 +429,12 @@
   :init
   ;; use emacs bindings in insert-mode
   (setq evil-disable-insert-state-bindings t)
-  (setq evil-want-keybinding nil))
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-define-key 'normal global-map "q" 'er/expand-region)
+  (evil-define-key 'normal global-map "ç" 'other-window)
+  (evil-define-key 'normal global-map "a" 'evil-first-non-blank)
+  (evil-define-key 'normal global-map "e" 'evil-end-of-visual-line))
 
 (use-package framemove
   :config (setq framemove-hook-into-windmove t)
@@ -449,6 +454,8 @@
   :straight t
   :config
   (setq-default evil-collection-company-use-tng nil)
+  (setq-default evil-collection-calendar-want-org-bindings t)
+  (setq-default evil-collection-outline-bind-tab-p t)
   (evil-collection-init))
 
 (use-package evil-easymotion
