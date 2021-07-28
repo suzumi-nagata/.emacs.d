@@ -38,6 +38,8 @@
 (defvar org-capture-reading-file (concat org-agenda-directory "reading.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "email.org"))
 (defvar org-capture-groceries-file (concat org-agenda-directory "groceries.org"))
+(defvar org-capture-projects-file (concat org-agenda-directory "projects.org"))
+(defvar org-capture-cryptography-file (concat org-agenda-directory "cryptography.org"))
 
 (use-package org-bullets :straight t
   :init (setq org-bullets-bullet-list '("⬢" "✤" "◉" "❄" "✧" "▶" "◆" "✿" "✸"))
@@ -50,25 +52,25 @@
 ;; Taken from https://tecosaur.github.io/emacs-config/config.html (lots of good stuff)
 ;; Note: uni-units is a list of names separated by newlines
 (setq org-todo-keywords
-      (quote ((sequence "☛ TODO(t)"
-                        "➥ PROG(p!)"
-                        "⚑ WAIT(w@)"
-                        "◷ HOLD(h@)"
+      (quote ((sequence "> TODO(t)"
+                        "# PROG(p)"
+                        "$ WAIT(w@)"
+                        "& HOLD(h@)"
                         "|"
-                        "✔ DONE(d!)"
-                        "✘ CXLD(c@)"))))
+                        "V DONE(d)"
+                        "X CXLD(c@)"))))
 
 (setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
                            (?B . (:foreground "yellow"))
                            (?C . (:foreground "green"))))
 
 (setq org-todo-keyword-faces
-      '(("☛ TODO" . "tomato")
-        ("➥ PROG" . "deep sky blue")
-        ("◷ HOLD" . "NavajoWhite1")
-        ("⚑ WAIT" . "gray")
-        ("✔ DONE" . "green")
-        ("✘ CXLD" . "lawn green")))
+      '(("> TODO" . "tomato")
+        ("# PROG" . "deep sky blue")
+        ("$ WAIT" . "gray")
+        ("& HOLD" . "NavajoWhite1")
+        ("V DONE" . "green")
+        ("X CXLD" . "lawn green")))
 
 (set-face-attribute 'org-headline-done nil :strike-through t)
 
@@ -82,10 +84,10 @@
                :children
                (("Todo"
                  :keys "t"
-                 :template ("* ☛ TODO %?"))
+                 :template ("* > TODO %?"))
                 ("Urgent"
                  :keys "u"
-                 :template ("* ☛ TODO [#A] %^{Title} "
+                 :template ("* > TODO [#A] %^{Title} "
                             "DEADLINE: %^{Due date:}t"))))
               ("Web"
                :keys "w"
@@ -93,7 +95,7 @@
                :prepend t
                :type entry
                :headline "Web Captures"
-               :template ("* ☛ TODO [[%:link][%:description]]\n\n %i")
+               :template ("* > TODO [[%:link][%:description]]\n\n %i")
                :immediate-finish t
                )
               ("Email"
@@ -105,90 +107,50 @@
                :children
                (("Send"
                  :keys "s"
-                 :template ("* ☛ TODO [#A] Send %^{recipient}: %^{subject}"))
+                 :template ("* > TODO [#A] Send %^{recipient}: %^{subject}"))
                 ("Reply"
                  :keys "r"
-                 :template ("* ☛ TODO [#A] Reply %^{recipient}: %^{subject}"))))
+                 :template ("* > TODO [#A] Reply %^{recipient}: %^{subject}"))))
               ("Groceries"
                :keys "g"
                :file org-capture-groceries-file
-               :type plain
-               :template ("- %?")
+               :type entry
+               :template ("* > TODO %?")
                )
               )))
 
 ;TODO: Migrate to Super agenda
-(setq-default org-agenda-custom-commands `((" " "Agenda"
-                                            ((agenda ""
-                                                     ((org-agenda-start-day "-2d")
-                                                      (org-agenda-span 10)
-                                                      (org-deadline-warning-days 365)))
-                                             (todo "☛ TODO"
-                                                   ((org-agenda-overriding-header "To Refile")
-                                                    (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
-                                             (todo "☛ TODO"
-                                                   ((org-agenda-overriding-header "Emails")
-                                                    (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
-                                             ;; (tags "CATEGORY=\"Reading\""
-                                             ;;       ((org-agenda-overriding-header "Reading")
-                                             ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                                             ;; (todo "CATEGORY=\"To read\""
-                                             ;;       ((org-agenda-overriding-header "To read")
-                                             ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                                             ;; (todo "CATEGORY=\"To write\""
-                                             ;;       ((org-agenda-overriding-header "To write")
-                                             ;;        (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                                             ))
-                                           ("r" "Review"
-                                            ((agenda ""
-                                                     ((org-agenda-start-day "-7d")
-                                                      (org-agenda-span 8)
-                                                      (org-deadline-warning-days 365)))))
-                                           ))
-
-;; (setq org-agenda-custom-commands `((" " "Agenda"
-;;                                       ((agenda ""
-;;                                                ((org-agenda-start-day "-2d")
-;;                                                 (org-agenda-span 10)
-;;                                                 (org-deadline-warning-days 365)))
-;;                                        (todo "☛ TODO"
-;;                                              ((org-agenda-overriding-header "Inbox")
-;;                                               (org-agenda-files '(,(expand-file-name "inbox.org" jethro/org-agenda-directory)))))
-;;                                        (todo "☛ TODO"
-;;                                              ((org-agenda-overriding-header "Emails")
-;;                                               (org-agenda-files '(,(expand-file-name "emails.org" jethro/org-agenda-directory)))))
-;;                                        (todo "NEXT"
-;;                                              ((org-agenda-overriding-header "In Progress")
-;;                                               (org-agenda-files '(,(expand-file-name "projects.org" jethro/org-agenda-directory)))))
-;;                                        (todo "TODO"
-;;                                              ((org-agenda-overriding-header "Active Projects")
-;;                                               (org-agenda-skip-function #'jethro/skip-projects)
-;;                                               (org-agenda-files '(,(expand-file-name "projects.org" jethro/org-agenda-directory)))))
-;;                                        (todo "TODO"
-;;                                              ((org-agenda-overriding-header "One-off Tasks")
-;;                                               (org-agenda-files '(,(expand-file-name "next.org" jethro/org-agenda-directory)))
-;;                                               (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled)))))))))
-
-(use-package org-pretty-tags
-  :after all-the-icons
-  :straight t
-  :config
-  (setq org-pretty-tags-surrogate-strings
-        `(("UNICAMP"      . ,(all-the-icons-faicon   "graduation-cap" :face 'all-the-icons-silver  :v-adjust 0.01))
-          ("@home"        . ,(all-the-icons-material "home"           :face 'all-the-icons-purple  :v-adjust 0.01))
-          ("cryptography" . ,(all-the-icons-material "vpn_key"        :face 'all-the-icons-lorange  :v-adjust 0.01))
-          ("programming"  . ,(all-the-icons-faicon   "terminal"       :face 'all-the-icons-lsilver :v-adjust 0.01))
-          ("lecture"      . ,(all-the-icons-fileicon "keynote"        :face 'all-the-icons-orange  :v-adjust 0.01))
-          ("email"        . ,(all-the-icons-faicon   "envelope"       :face 'all-the-icons-blue    :v-adjust 0.01))
-          ("read"         . ,(all-the-icons-octicon  "book"           :face 'all-the-icons-lblue   :v-adjust 0.01))
-          ("article"      . ,(all-the-icons-octicon  "file-text"      :face 'all-the-icons-yellow  :v-adjust 0.01))
-          ("web"          . ,(all-the-icons-faicon   "globe"          :face 'all-the-icons-green   :v-adjust 0.01))
-          ("info"         . ,(all-the-icons-faicon   "info-circle"    :face 'all-the-icons-blue    :v-adjust 0.01))
-          ("issue"        . ,(all-the-icons-faicon   "bug"            :face 'all-the-icons-red     :v-adjust 0.01))
-          ("someday"      . ,(all-the-icons-faicon   "calendar-o"     :face 'all-the-icons-cyan    :v-adjust 0.01))
-          ("idea"         . ,(all-the-icons-octicon  "light-bulb"     :face 'all-the-icons-yellow  :v-adjust 0.01))
-          ("emacs"        . ,(all-the-icons-fileicon "emacs"          :face 'all-the-icons-lpurple :v-adjust 0.01))))
-  (org-pretty-tags-global-mode))
+(setq-default org-agenda-custom-commands
+              `((" " "Agenda"
+                 ((agenda ""
+                          ((org-agenda-start-day "-2d")
+                           (org-agenda-span 10)
+                           (org-deadline-warning-days 365)))
+                  (todo ""
+                        ((org-agenda-overriding-header "To Refile")
+                         (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Emails")
+                         (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Projects")
+                         (org-agenda-files '(,(expand-file-name org-capture-projects-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Reading")
+                         (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Cryptography")
+                         (org-agenda-files '(,(expand-file-name org-capture-cryptography-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Groceries")
+                         (org-agenda-files '(,(expand-file-name org-capture-groceries-file)))))
+                 ))
+                ("r" "Review"
+                 ((agenda ""
+                          ((org-agenda-start-day "-7d")
+                           (org-agenda-span 8)
+                           (org-deadline-warning-days 365)))))
+                ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;          Agenda processing          ;
@@ -214,22 +176,12 @@
 
 (setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
 
-(setq org-tag-alist '(("@office" . ?o)
-                      ("UNICAMP" . ?u)
-                      ("@home" . ?h)
-                      ("programming" . ?p)
-                      ("projects" . ?ç)
-                      ("cryptography" . ?c)
-                      ;; (:newline)
-                      ;; ("CANCELLED" . ?c)
-                      ))
-
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 
 (defun jethro/org-archive-done-tasks ()
   "Archive all done tasks."
   (interactive)
-  (org-map-entries 'org-archive-subtree "✔ DONE" 'file))
+  (org-map-entries 'org-archive-subtree "V DONE" 'file))
 (require 'find-lisp)
 
 (add-hook 'org-agenda-mode-hook
@@ -333,13 +285,6 @@
 
 (setq org-agenda-bulk-custom-functions `((,jethro/org-agenda-bulk-process-key jethro/org-agenda-process-inbox-item)))
 
-;; (map! :map org-agenda-mode-map
-;;       "i" #'org-agenda-clock-in
-;;       "I" #'jethro/clock-in-and-advance
-;;       "r" #'jethro/org-process-inbox
-;;       "R" #'org-agenda-refile
-;;       "c" #'jethro/org-inbox-capture)
-
 (defun jethro/advance-todo ()
   (org-todo 'right)
   (remove-hook 'org-clock-in-hook #'jethro/advance-todo))
@@ -349,93 +294,146 @@
   (add-hook 'org-clock-in-hook 'jethro/advance-todo)
   (org-agenda-clock-in))
 
-;; (use-package org-clock-convenience
-;;   :bind (:map org-agenda-mode-map
-;;               ("<S-up>" . org-clock-convenience-timestamp-up)
-;;               ("<S-down>" . org-clock-convenience-timestamp-down)
-;;               ("o" . org-clock-convenience-fill-gap)
-;;               ("e" . org-clock-convenience-fill-gap-both)))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;               Org roam              ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package org-roam :straight t
   :init
-  (setq org-roam-directory "/home/nagata/Common/Backup/Org/roam"
-        org-roam-db-location "/home/nagata/Common/Backup/Org/roam/org-roam.db"
-        org-roam-index-file "/home/nagata/Common/Backup/Org/roam/20210117203010-index.org"
-        org-roam-db-gc-threshold most-positive-fixnum
-        org-roam-graph-exclude-matcher '("Index")
-        org-roam-buffer-width 0.3
-        org-roam-tag-sources '(prop last-directory)
-        org-id-link-to-org-use-id t)
+  (setq org-roam-v2-ack t)
+  (setq-default org-roam-directory (file-truename "/home/nagata/Common/Backup/Org/roam"))
+
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+
   :config
+  ;; bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (define-key org-roam-mode-map (kbd "<f9>") 'org-hide-properties)
+  ;; journal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (setq org-roam-dailies-directory "journal/")
+  (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry
+           "* %?"
+           :if-new (file+head "%<%Y-%m-%d>.org"
+                              "#+TITLE: %<%A, %d %B %Y>\n\n")
+           :unnarrowed t)))
+  ;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (setq org-roam-capture-templates
-        '(("d" "default" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :unnarrowed t
-           :head "#+TITLE: ${title}
-#+ROAM_ALIAS:
-#+ROAM_TAGS:
-#+DATE: %u\n
-- links :: \n\n")
-          ("c" "concept" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "concepts/${slug}"
-           :unnarrowed t
-           :head "#+TITLE: ${title}
-#+ROAM_ALIAS:
-#+ROAM_TAGS:
-#+DATE: %u\n
-- links :: \n\n")
-          ("p" "private" plain (function org-roam-capture--get-point)
-           "%?"
-           :file-name "private/${slug}"
-           :unnarrowed t
-           :head "#+title: ${title}\n")
-          ("r" "recipes" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "recipes/${slug}"
-           :unnarrowed t
-           :head "#+TITLE: ${title}
-#+ROAM_ALIAS:
-#+ROAM_TAGS:
-#+DATE: %u\n
-- links :: \n
-* Ingredients
-* Directions
-* Notes")))
-
-  (setq org-roam-capture-ref-templates
-        '(("r" "ref" plain (function org-roam-capture--get-point)
-           "%?"
+        '(("d" "default" plain "%?"
+           :if-new (file+head "%<%y%m%d%h%m%s>-${slug}.org"
+                              "#+TITLE: ${title}
+#+ROAM_ALIASES:
+#+FILETAGS:
+- links ::\n\n")
            :immediate-finish t
-           :file-name "websites/%<%Y%m%d%H%M%S>-${slug}"
-           :unnarrowed t
-           :head "#+TITLE: ${title}
-#+ROAM_KEY: ${ref}\n
-#+ROAM_TAGS:
-- links ::
-- source :: ${ref}\n\n"))))
+           :unnarrowed t)))
 
-(use-package org-roam-server :straight t)
+  ;; roam buffer ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; for org-roam-buffer-toggle
+  ;; Recommendation in the official manual
+  (add-to-list 'display-buffer-alist
+               '("\\*org-roam\\*"
+                 (display-buffer-in-direction)
+                 (direction . right)
+                 (window-width . 0.3)
+                 (window-height . fit-window-to-buffer)))
 
-(require 'simple-httpd)
-;; (setq httpd-port 1784)
-(require 'org-protocol)
-(require 'org-roam-protocol)
+  ;; mini buffer prompt ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; pretty print
+  (cl-defmethod org-roam-node-directories ((node org-roam-node))
+    (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
+        (format "(%s)" (car (f-split dirs)))
+      ""))
 
-(defun org-roam-start-server()
-  "Start Emacs server and roam server."
+  (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+    (let* ((count (caar (org-roam-db-query
+                         [:select (funcall count source)
+                                  :from links
+                                  :where (= dest $s1)
+                                  :and (= type "id")]
+                         (org-roam-node-id node)))))
+      (format "[%d]" count)))
+
+  (cl-defmethod org-roam-node-filetitle ((node org-roam-node))
+    "Return the file TITLE for the node."
+    (org-roam-get-keyword "TITLE" (org-roam-node-file node)))
+
+  (cl-defmethod org-roam-node-hierarchy ((node org-roam-node))
+    "Return the hierarchy for the node."
+    (let ((title (org-roam-node-title node))
+          (olp (org-roam-node-olp node))
+          (level (org-roam-node-level node))
+          (filetitle (org-roam-node-filetitle node)))
+      (concat
+       (if (> level 0) (concat filetitle " > "))
+       (if (> level 1) (concat (string-join olp " > ") " > "))
+       title))
+    )
+
+  (setq org-roam-node-display-template "${directories:10} ${hierarchy:100} ${tags:40} ${backlinkscount:6}")
+
+  ;; start org roam ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (org-roam-setup)
+  (require 'org-roam-protocol))
+
+(defun org-hide-properties ()
+  "Hide all org-mode headline property drawers in buffer. Could be slow if it has a lot of overlays."
   (interactive)
-  (server-start)
-  (org-roam-server-mode))
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward
+            "^ *:properties:\n\\( *:.+?:.*\n\\)+ *:end:\n" nil t)
+      (let ((ov_this (make-overlay (match-beginning 0) (match-end 0))))
+        (overlay-put ov_this 'display "")
+        (overlay-put ov_this 'hidden-prop-drawer t))))
+  (put 'org-toggle-properties-hide-state 'state 'hidden))
 
-(require 'server)
-(unless (server-running-p)
-  (org-roam-start-server))
+(defun org-show-properties ()
+  "Show all org-mode property drawers hidden by org-hide-properties."
+  (interactive)
+  (remove-overlays (point-min) (point-max) 'hidden-prop-drawer t)
+  (put 'org-toggle-properties-hide-state 'state 'shown))
+
+(defun org-toggle-properties ()
+  "Toggle visibility of property drawers."
+  (interactive)
+  (if (eq (get 'org-toggle-properties-hide-state 'state) 'hidden)
+      (org-show-properties)
+    (org-hide-properties)))
+
+;;   (setq org-roam-capture-ref-templates
+;;         '(("r" "ref" plain (function org-roam-capture--get-point)
+;;            "%?"
+;;            :immediate-finish t
+;;            :file-name "websites/%<%Y%m%d%H%M%S>-${slug}"
+;;            :unnarrowed t
+;;            :head "#+TITLE: ${title}
+;; #+ROAM_KEY: ${ref}\n
+;; #+ROAM_TAGS:
+;; - links ::
+;; - source :: ${ref}\n\n"))))
+
+;; (use-package org-roam-server :straight t)
+
+;; (require 'simple-httpd)
+;; ;; (setq httpd-port 1784)
+;; (require 'org-protocol)
+;; (require 'org-roam-protocol)
+
+;; (defun org-roam-start-server()
+;;   "Start Emacs server and roam server."
+;;   (interactive)
+;;   (server-start)
+;;   (org-roam-server-mode))
+
+;; (require 'server)
+;; (unless (server-running-p)
+;;   (org-roam-start-server))
 
 (use-package deft :straight t
   :after org
@@ -444,72 +442,62 @@
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
   (deft-directory org-roam-directory))
-
 (use-package org-noter :straight t)
 (use-package org-fragtog :straight t :hook (org-mode . org-fragtog-mode))
-(use-package org-journal :straight t
-  :custom
-  (org-journal-dir "/home/nagata/Common/Backup/Org/roam/journal")
-  (org-journal-date-prefix "#+TITLE: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-date-format "%A, %d %B %Y"))
 (use-package org-download :straight t)
-(use-package org-ref :straight t
-    :after org
-    :init
-    (setq org-ref-notes-directory "/home/nagata/Common/Backup/Org/bib/notes.org"
-          org-ref-bibliography-notes "/home/nagata/Common/Backup/Org/bib/articles.org"
-          org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
-          org-ref-pdf-directory "/home/nagata/Common/Backup/Zotero"))
+;; (use-package org-ref :straight t
+;;     :after org
+;;     :init
+;;     (setq org-ref-notes-directory "/home/nagata/Common/Backup/Org/bib/notes.org"
+;;           org-ref-bibliography-notes "/home/nagata/Common/Backup/Org/bib/articles.org"
+;;           org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
+;;           org-ref-pdf-directory "/home/nagata/Common/Backup/Zotero"))
 
-(use-package ivy-bibtex :straight t
-  :after org
-  :init
-  (setq bibtex-format-citation-functions
-        '((org-mode . (lambda (x) (insert (concat
-                                           "\\cite{"
-                                           (mapconcat 'identity x ",")
-                                           "}")) ""))))
-  (setq bibtex-completion-pdf-field "file"
-        bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
-        bibtex-completion-library-path '("/home/nagata/Common/Backup/Zotero/")
-        bibtex-completion-notes-path "/home/nagata/Common/Backup/Org/bib/articles.org"
-        ))
+;; (use-package ivy-bibtex :straight t
+;;   :after org
+;;   :init
+;;   (setq bibtex-format-citation-functions
+;;         '((org-mode . (lambda (x) (insert (concat
+;;                                            "\\cite{"
+;;                                            (mapconcat 'identity x ",")
+;;                                            "}")) ""))))
+;;   (setq bibtex-completion-pdf-field "file"
+;;         bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
+;;         bibtex-completion-library-path '("/home/nagata/Common/Backup/Zotero/")
+;;         bibtex-completion-notes-path "/home/nagata/Common/Backup/Org/bib/articles.org"
+;;         ))
 
-(use-package org-roam-bibtex :straight t
-  :load-path "/home/nagata/Common/Backup/Org/bib/my_library.bib" ;Modify with your own path
-  :hook (org-roam-mode . org-roam-bibtex-mode)
-  :bind (:map org-mode-map
-         (("C-c n a" . orb-note-actions))))
-(setq orb-templates
-      '(("r" "ref" plain (function org-roam-capture--get-point) ""
-         :file-name "${citekey}"
-         :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n" ; <--
-         :unnarrowed t)))
-(setq orb-preformat-keywords   '(("citekey" . "=key=") "title" "url" "file" "author-or-editor" "keywords"))
+;; (use-package org-roam-bibtex :straight t
+;;   :load-path "/home/nagata/Common/Backup/Org/bib/my_library.bib" ;Modify with your own path
+;;   :hook (org-roam-mode . org-roam-bibtex-mode)
+;;   :bind (:map org-mode-map
+;;          (("C-c n a" . orb-note-actions))))
+;; (setq orb-templates
+;;       '(("r" "ref" plain (function org-roam-capture--get-point) ""
+;;          :file-name "${citekey}"
+;;          :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n" ; <--
+;;          :unnarrowed t)))
+;; (setq orb-preformat-keywords   '(("citekey" . "=key=") "title" "url" "file" "author-or-editor" "keywords"))
 
-(setq orb-templates
-      '(("n" "ref+noter" plain (function org-roam-capture--get-point)
-         ""
-         :file-name "bib/%<%Y%m%d%H%M%S>-${slug}"
-         :head "#+TITLE: ${citekey}: ${title}
-#+ROAM_KEY: ${ref}
-#+ROAM_TAGS:
+;; (setq orb-templates
+;;       '(("n" "ref+noter" plain (function org-roam-capture--get-point)
+;;          ""
+;;          :file-name "bib/%<%Y%m%d%H%M%S>-${slug}"
+;;          :head "#+TITLE: ${citekey}: ${title}
+;; #+ROAM_KEY: ${ref}
+;; #+ROAM_TAGS:
 
-- links ::
-- keywords :: ${keywords}\n
-\* ${title}
-:PROPERTIES:
-:Custom_ID: ${citekey}
-:URL: ${url}
-:AUTHOR: ${author-or-editor}
-:NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")
-:NOTER_PAGE:
-:END:"
-)))
-
-(fset 'highlight-investment-table
-   (kmacro-lambda-form [?\M-x ?h ?i ?g ?h ?l ?i ?g ?h ?t ?- ?r ?e ?g ?e ?x ?p return ?E ?T ?F return return ?\M-x ?h ?i ?g ?h ?l ?i ?g ?h ?t ?- ?r ?e ?g ?e ?\C-n return ?F ?I ?I return return ?\M-x ?h ?i ?g ?h ?l ?i ?i backspace backspace ?i ?g ?h ?t ?- ?r ?e ?g ?e ?\C-n return ?S ?t ?o ?c ?k return return ?\M-x ?h ?i ?g ?h ?l ?i ?g ?h ?t ?- ?r ?e ?g ?e ?\C-n return ?F ?i ?x ?e ?d return return] 0 "%d"))
+;; - links ::
+;; - keywords :: ${keywords}\n
+;; \* ${title}
+;; :PROPERTIES:
+;; :Custom_ID: ${citekey}
+;; :URL: ${url}
+;; :AUTHOR: ${author-or-editor}
+;; :NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")
+;; :NOTER_PAGE:
+;; :END:"
+;; )))
 
 ;; (use-package org-transclusion
 ;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
