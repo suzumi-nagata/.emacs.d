@@ -118,14 +118,13 @@
 ;; (global-set-key (kbd "<escape>") #'god-mode-all)
 (global-set-key (kbd "<escape>") #'turn-on-evil-mode)
 
-(global-set-key (kbd "C-c n l") 'org-roam)
-(global-set-key (kbd "C-c n i") 'org-roam-insert)
-(global-set-key (kbd "C-c n b") 'org-roam-switch-to-buffer)
-(global-set-key (kbd "C-c n f") 'org-roam-find-file)
-(global-set-key (kbd "C-c n k") 'org-roam-jump-to-index)
+(global-set-key (kbd "C-c n l") 'org-roam-buffer-toggle)
+(global-set-key (kbd "C-c n i") 'org-roam-node-insert)
+(global-set-key (kbd "C-c n f") 'org-roam-node-find)
+(global-set-key (kbd "C-c n k") (lambda() (interactive)(find-file "~/Org/roam/20210117203010-index.org")))
 (global-set-key (kbd "C-c n ç") 'org-roam-capture)
 (global-set-key (kbd "C-c n d") 'deft)
-(global-set-key (kbd "C-c n j") 'org-journal-new-entry)
+(global-set-key (kbd "C-c n j") 'org-roam-dailies-capture-today)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                  appearance                                 ;
@@ -171,7 +170,7 @@
    '(org-block-end-line ((t (:background "#606c7d"))))
    '(org-block ((t (:background "#323f4f"))))
    '(org-verbatim ((t (:inherit shadow :foreground "DarkGoldenrod1" :box (:line-width 1 :color "grey75" :style pressed-button)))))
-   '(org-roam-link ((t (:inherit org-link :foreground "dark orange"))))
+   ;; '(org-link ((t (:inherit org-link :foreground "dark orange"))))
    '(org-list-dt ((t (:foreground "#97FF62" :weight bold))))
    '(ediff-odd-diff-A ((t (:background "#0a2832"))))
    '(ediff-even-diff-A ((t (:background "#0a2832"))))
@@ -248,8 +247,8 @@
 ;; Makes *scratch* empty.
 (setq initial-scratch-message "")
 ;; Removes *messages* from the buffer.
-;; (setq-default message-log-max nil)
-;; (kill-buffer "*Messages*")
+(setq-default message-log-max nil)
+(kill-buffer "*Messages*")
 ;; Removes *Completions* from buffer after you've opened a file.
 (add-hook 'minibuffer-exit-hook
           '(lambda () (let ((buffer "*Completions*"))
@@ -363,56 +362,6 @@
   (add-hook hook 'show-trailing-whitespace))
 (use-package vterm :straight t)
 
-;; (use-package god-mode
-;;   :straight t
-;;   :init
-;;   (setq god-mode-enable-function-key-translation nil)
-;;   :config
-;;   (setq god-exempt-major-modes nil)
-;;   (setq god-exempt-predicates nil)
-;;   (define-key god-local-mode-map (kbd "C-x C-k") #'kill-current-buffer)
-;;   (define-key god-local-mode-map (kbd "C-x C-1") #'delete-other-windows)
-;;   (define-key god-local-mode-map (kbd "C-x C-2") #'split-window-below)
-;;   (define-key god-local-mode-map (kbd "C-x C-3") #'split-window-right)
-;;   (define-key god-local-mode-map (kbd "C-x C-0") #'delete-window)
-
-;;   (define-key god-local-mode-map (kbd "C-x C-b") 'ivy-switch-buffer)
-;;   (define-key god-local-mode-map (kbd "C-x C-S-b") 'ibuffer)
-
-;;   (define-key god-local-mode-map (kbd "C-c C-u") 'dumb-jump-go)
-;;   (define-key god-local-mode-map (kbd "C-c C-i") 'ag-project)
-;;   (define-key god-local-mode-map (kbd "C-c C-o") 'xref-find-definitions)
-;;   (define-key god-local-mode-map (kbd "C-c C-p") 'xref-pop-marker-stack)
-;;   (define-key god-local-mode-map (kbd "C-c C-ç") 'xref-find-references)
-;;   (define-key god-local-mode-map (kbd "C-c C-j") 'lsp-ivy-workspace-symbol)
-
-;;   (define-key god-local-mode-map (kbd "C-<f12>") 'org-agenda)
-
-;;   (define-key god-local-mode-map (kbd "z") 'repeat)
-;;   (define-key god-local-mode-map (kbd "i") 'god-mode-all)
-;;   (define-key god-local-mode-map (kbd "I") 'mortal-mode)
-
-;;   (god-mode)
-;;   )
-
-;; (define-minor-mode mortal-mode
-;;   "Allow temporary departures from god-mode."
-;;   :lighter " mortal"
-;;   :keymap '(([return] . (lambda ()
-;;                           "Exit mortal-mode and resume god mode." (interactive)
-;;                           (god-local-mode-resume)
-;;                           (mortal-mode 0))))
-;;   (when mortal-mode
-;;     (god-local-mode-pause)))
-
-;; (defun my-god-mode-update-cursor ()
-;;   (setq cursor-type (if (or god-local-mode buffer-read-only)
-;;                         'box
-;;                       'bar)))
-
-;; (add-hook 'god-mode-enabled-hook #'my-god-mode-update-cursor)
-;; (add-hook 'god-mode-disabled-hook #'my-god-mode-update-cursor)
-
 (defun close-wrong-buffer-and-magit ()
   "Close current buffer and find file from current path."
   (interactive)
@@ -438,8 +387,13 @@
   :config
   (evil-define-key 'normal global-map "q" 'er/expand-region)
   (evil-define-key 'normal global-map "ç" 'other-window)
-  (evil-define-key 'normal global-map "a" 'evil-first-non-blank)
-  (evil-define-key 'normal global-map "e" 'evil-end-of-visual-line))
+  (evil-define-key 'normal global-map (kbd "C-a") 'evil-beginning-of-line)
+  (evil-define-key 'normal global-map (kbd "C-e") 'evil-last-non-blank)
+  (evil-define-key 'normal global-map (kbd "C-v") 'golden-ratio-scroll-screen-down)
+  (evil-define-key 'normal global-map (kbd "M-v") 'golden-ratio-scroll-screen-up)
+  (define-key org-agenda-mode-map "j" 'evil-next-line)
+  (define-key org-agenda-mode-map "k" 'evil-previous-line)
+  )
 
 (use-package framemove
   :config (setq framemove-hook-into-windmove t)
@@ -461,6 +415,26 @@
   (setq-default evil-collection-company-use-tng nil)
   (setq-default evil-collection-calendar-want-org-bindings t)
   (setq-default evil-collection-outline-bind-tab-p t)
+  (setq evil-collection-mode-list
+        '(2048-game ag alchemist anaconda-mode apropos arc-mode auto-package-update bm bookmark
+                    (buff-menu "buff-menu")
+                    calc calendar cider cmake-mode comint company compile consult
+                    (custom cus-edit)
+                    cus-theme dashboard daemons deadgrep debbugs debug devdocs dictionary diff-mode dired dired-sidebar disk-usage distel doc-view docker ebib edbi edebug eglot explain-pause-mode elfeed elisp-mode elisp-refs elisp-slime-nav embark emms epa ert eshell eval-sexp-fu evil-mc eww finder flycheck flymake free-keys geiser ggtags git-timemachine gnus go-mode grep guix hackernews helm help helpful hg-histedit hungry-delete ibuffer image image-dired image+ imenu imenu-list
+                    (indent "indent")
+                    indium info ivy js2-mode leetcode lispy log-edit log-view lsp-ui-imenu lua-mode kotlin-mode macrostep man magit magit-todos monky mpdel mu4e mu4e-conversation neotree newsticker notmuch nov
+                    (occur replace)
+                    omnisharp org-present zmusic osx-dictionary outline p4
+                    (package-menu package)
+                    pass
+                    (pdf pdf-view)
+                    popup proced
+                    (process-menu simple)
+                    prodigy profiler python quickrun racer racket-describe realgud reftex restclient rg ripgrep rjsx-mode robe rtags ruby-mode scroll-lock sh-script shortdoc simple slime sly speedbar tab-bar tablist tabulated-list tar-mode telega
+                    (term term ansi-term multi-term)
+                    tetris thread tide timer-list transmission trashed tuareg typescript-mode vc-annotate vc-dir vc-git vdiff view vlf vterm w3m wdired wgrep which-key woman xref youtube-dl
+                    (ztree ztree-diff)
+                    xwidget))
   (evil-collection-init))
 
 (use-package evil-easymotion
@@ -603,6 +577,16 @@
   :after lsp-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;                 rust                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package rust-mode :straight t
+  :config
+  (add-hook 'rust-mode-hook
+            (lambda () (setq indent-tabs-mode nil)))
+  (setq rust-format-on-save t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                ispell               ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -639,8 +623,8 @@
                                         ;         end of init commands        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(find-file org-roam-index-file)
-(org-roam)
+(org-roam-setup)
+(org-agenda nil " ")
 (kill-buffer "*scratch*")
 
 (provide 'init)
