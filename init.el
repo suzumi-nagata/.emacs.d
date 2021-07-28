@@ -625,6 +625,10 @@
 (use-package flyspell-correct-ivy :straight t
   :after flyspell-correct)
 
+(use-package flyspell :straight t
+  :config
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;             global hooks            ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
