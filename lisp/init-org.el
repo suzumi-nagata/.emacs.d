@@ -149,7 +149,8 @@
                  ((agenda ""
                           ((org-agenda-start-day "-7d")
                            (org-agenda-span 8)
-                           (org-deadline-warning-days 365)))))
+                           (org-deadline-warning-days 365)
+                           (org-agenda-archives-mode t)))))
                 ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
