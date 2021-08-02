@@ -107,10 +107,10 @@
                :children
                (("Send"
                  :keys "s"
-                 :template ("* > TODO [#A] Send %^{recipient}: %^{subject}"))
+                 :template ("* > TODO [#A] Send email to %^{recipient}: %^{subject}"))
                 ("Reply"
                  :keys "r"
-                 :template ("* > TODO [#A] Reply %^{recipient}: %^{subject}"))))
+                 :template ("* > TODO [#A] Reply email to %^{recipient}: %^{subject}"))))
               ("Groceries"
                :keys "g"
                :file org-capture-groceries-file
@@ -334,6 +334,19 @@
            :immediate-finish t
            :unnarrowed t)))
 
+;;   (setq org-roam-capture-ref-templates
+;;         '(("r" "ref" plain
+;;            "%?"
+;;            :if-new (file+head "websites/%<%Y%m%d%H%M%S>-${slug}.org"
+;;                               "#+TITLE: ${title}
+;; #+ROAM_KEY: ${ref}
+;; #+ROAM_ALIASES:
+;; #+FILETAGS:
+;; - links ::
+;; - source :: ${ref}\n\n")
+;;            :immediate-finish t
+;;            :unnarrowed t)))
+
   ;; roam buffer ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; for org-roam-buffer-toggle
   ;; Recommendation in the official manual
@@ -407,34 +420,16 @@
       (org-show-properties)
     (org-hide-properties)))
 
-;;   (setq org-roam-capture-ref-templates
-;;         '(("r" "ref" plain (function org-roam-capture--get-point)
-;;            "%?"
-;;            :immediate-finish t
-;;            :file-name "websites/%<%Y%m%d%H%M%S>-${slug}"
-;;            :unnarrowed t
-;;            :head "#+TITLE: ${title}
-;; #+ROAM_KEY: ${ref}\n
-;; #+ROAM_TAGS:
-;; - links ::
-;; - source :: ${ref}\n\n"))))
+(use-package websocket :after org-roam
+  :straight (:host github :repo "ahyatt/emacs-websocket" :branch "main"))
 
-;; (use-package org-roam-server :straight t)
+(use-package simple-httpd :straight t
+  :after org-roam)
 
-;; (require 'simple-httpd)
-;; ;; (setq httpd-port 1784)
-;; (require 'org-protocol)
-;; (require 'org-roam-protocol)
-
-;; (defun org-roam-start-server()
-;;   "Start Emacs server and roam server."
-;;   (interactive)
-;;   (server-start)
-;;   (org-roam-server-mode))
-
-;; (require 'server)
-;; (unless (server-running-p)
-;;   (org-roam-start-server))
+(use-package org-roam-ui
+  :straight (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :after org-roam
+  :hook (org-roam . org-roam-ui-mode))
 
 (use-package deft :straight t
   :after org

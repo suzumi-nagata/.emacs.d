@@ -211,8 +211,8 @@
 ;; Show parenthesis match
 (show-paren-mode 1)
 ;; Disable the bell animation
-(setq visible-bell nil
-      ring-bell-function #'ignore)
+(setq visible-bell nil)
+(setq ring-bell-function #'ignore)
 ;; Overwrite selected text
 (delete-selection-mode t)
 ;; Disable the startup screen
