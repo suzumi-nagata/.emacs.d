@@ -623,6 +623,9 @@
                                         ;         end of init commands        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(unless (server-running-p)
+  (server-start))
+
 (org-roam-setup)
 (org-agenda nil " ")
 (kill-buffer "*scratch*")
