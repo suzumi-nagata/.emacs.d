@@ -391,8 +391,10 @@
   (evil-define-key 'normal global-map (kbd "C-e") 'evil-last-non-blank)
   (evil-define-key 'normal global-map (kbd "C-v") 'golden-ratio-scroll-screen-down)
   (evil-define-key 'normal global-map (kbd "M-v") 'golden-ratio-scroll-screen-up)
+  (define-key org-agenda-mode-map "h" 'evil-backward-char)
   (define-key org-agenda-mode-map "j" 'evil-next-line)
   (define-key org-agenda-mode-map "k" 'evil-previous-line)
+  (define-key org-agenda-mode-map "l" 'evil-forward-char)
   )
 
 (use-package framemove
