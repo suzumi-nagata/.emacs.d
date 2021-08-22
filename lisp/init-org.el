@@ -321,7 +321,10 @@
         '(("d" "default" entry
            "* %?"
            :if-new (file+head "%<%Y-%m-%d>.org"
-                              "#+TITLE: %<%A, %d %B %Y>\n\n")
+                              "#+TITLE: %<%A, %d %B %Y>
+#+FILETAGS: Journal
+
+")
            :unnarrowed t)))
   ;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (setq org-roam-capture-templates
