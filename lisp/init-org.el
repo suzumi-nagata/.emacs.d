@@ -329,27 +329,18 @@
   ;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (setq org-roam-capture-templates
         '(("d" "default" plain "%?"
-           :if-new (file+head "%<%y%m%d%h%m%s>-${slug}.org"
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+TITLE: ${title}
 #+ROAM_ALIASES:
 #+FILETAGS:
 - links ::\n\n")
            :immediate-finish t
+           :unnarrowed t)
+
+          ("r" "bibliography reference" plain
+           (file "~/.emacs.d/templates/org-roam-bib-template.org")
+           :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)))
-
-;;   (setq org-roam-capture-ref-templates
-;;         '(("r" "ref" plain
-;;            "%?"
-;;            :if-new (file+head "websites/%<%Y%m%d%H%M%S>-${slug}.org"
-;;                               "#+TITLE: ${title}
-;; #+ROAM_KEY: ${ref}
-;; #+ROAM_ALIASES:
-;; #+FILETAGS:
-;; - links ::
-;; - source :: ${ref}\n\n")
-;;            :immediate-finish t
-;;            :unnarrowed t)))
-
   ;; roam buffer ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; for org-roam-buffer-toggle
   ;; Recommendation in the official manual
@@ -395,8 +386,11 @@
   (setq org-roam-node-display-template "${directories:10} ${hierarchy:100} ${tags:40} ${backlinkscount:6}")
 
   ;; start org roam ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (org-roam-setup)
-  (require 'org-roam-protocol))
+  (org-roam-db-autosync-mode))
+
+(use-package org-roam-protocol
+  :after org-protocol
+  :config (require 'org-protocol))
 
 (defun org-hide-properties ()
   "Hide all org-mode headline property drawers in buffer. Could be slow if it has a lot of overlays."
@@ -449,27 +443,48 @@
 (use-package org-noter :straight t)
 (use-package org-fragtog :straight t :hook (org-mode . org-fragtog-mode))
 (use-package org-download :straight t)
-;; (use-package org-ref :straight t
-;;     :after org
-;;     :init
-;;     (setq org-ref-notes-directory "/home/nagata/Common/Backup/Org/bib/notes.org"
-;;           org-ref-bibliography-notes "/home/nagata/Common/Backup/Org/bib/articles.org"
-;;           org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
-;;           org-ref-pdf-directory "/home/nagata/Common/Backup/Zotero"))
 
-;; (use-package ivy-bibtex :straight t
-;;   :after org
-;;   :init
-;;   (setq bibtex-format-citation-functions
-;;         '((org-mode . (lambda (x) (insert (concat
-;;                                            "\\cite{"
-;;                                            (mapconcat 'identity x ",")
-;;                                            "}")) ""))))
-;;   (setq bibtex-completion-pdf-field "file"
-;;         bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
-;;         bibtex-completion-library-path '("/home/nagata/Common/Backup/Zotero/")
-;;         bibtex-completion-notes-path "/home/nagata/Common/Backup/Org/bib/articles.org"
-;;         ))
+(use-package org-ref :straight t
+    :after org
+    :init
+    (setq org-ref-notes-directory "/home/nagata/Common/Backup/Org/bib/notes.org"
+          org-ref-bibliography-notes "/home/nagata/Common/Backup/Org/bib/articles.org"
+          org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
+          org-ref-pdf-directory "/home/nagata/Common/Backup/Zotero"))
+
+(use-package ivy-bibtex :straight t
+  :after org
+  :init
+  (setq bibtex-format-citation-functions
+        '((org-mode . (lambda (x) (insert (concat
+                                           "\\cite{"
+                                           (mapconcat 'identity x ",")
+                                           "}")) ""))))
+  (setq bibtex-completion-pdf-field "file"
+        bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
+        bibtex-completion-library-path '("/home/nagata/Common/Backup/Zotero/")
+        bibtex-completion-notes-path "/home/nagata/Common/Backup/Org/bib/articles.org"
+        bibtex-completion-notes-template-multiple-files
+        (concat
+         "#+title: ${title}\n"
+         "#+roam_key: cite:${=key=}\n"
+         "* TODO Notes\n"
+         ":PROPERTIES:\n"
+         ":Custom_ID: ${=key=}\n"
+         ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+         ":AUTHOR: ${author-abbrev}\n"
+         ":JOURNAL: ${journaltitle}\n"
+         ":DATE: ${date}\n"
+         ":YEAR: ${year}\n"
+         ":DOI: ${doi}\n"
+         ":URL: ${url}\n"
+         ":END:\n\n"
+         )))
+
+(use-package org-roam-bibtex :straight t
+  :after org-roam
+  :config
+  (require 'org-ref))
 
 ;; (use-package org-roam-bibtex :straight t
 ;;   :load-path "/home/nagata/Common/Backup/Org/bib/my_library.bib" ;Modify with your own path
