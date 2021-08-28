@@ -124,6 +124,7 @@
 (global-set-key (kbd "C-c n k") (lambda() (interactive)(find-file "~/Org/roam/20210117203010-index.org")))
 (global-set-key (kbd "C-c n ç") 'org-roam-capture)
 (global-set-key (kbd "C-c n d") 'deft)
+(global-set-key (kbd "C-c n a") 'orb-note-actions)
 (global-set-key (kbd "C-c n j") 'org-roam-dailies-capture-today)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -628,7 +629,7 @@
 (unless (server-running-p)
   (server-start))
 
-(org-roam-setup)
+(org-roam-db-autosync-enable)
 (org-agenda nil " ")
 (kill-buffer "*scratch*")
 
