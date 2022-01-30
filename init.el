@@ -282,7 +282,7 @@
 
 (setq-default display-line-numbers-type 'relative)
 (setq-default display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;        produuctivity packages       ;
