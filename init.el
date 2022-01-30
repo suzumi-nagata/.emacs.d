@@ -587,11 +587,6 @@
                                         ;                 rust                ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package rust-mode :straight t
-  :config
-  (add-hook 'rust-mode-hook
-            (lambda () (setq indent-tabs-mode nil)))
-  (setq rust-format-on-save t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                ispell               ;
