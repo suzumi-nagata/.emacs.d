@@ -117,7 +117,6 @@
 
 (global-set-key (kbd "C-o") 'open-line-with-reindent)
 
-;; (global-set-key (kbd "<escape>") #'god-mode-all)
 (global-set-key (kbd "<escape>") #'turn-on-evil-mode)
 
 (global-set-key (kbd "C-c n l") 'org-roam-buffer-toggle)
