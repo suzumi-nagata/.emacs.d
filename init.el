@@ -128,6 +128,7 @@
 (global-set-key (kbd "C-c n a") 'orb-note-actions)
 (global-set-key (kbd "C-c n j") 'org-roam-dailies-capture-today)
 
+(global-set-key (kbd "C-c M-e") 'emojify-insert-emoji)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                  appearance                                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
