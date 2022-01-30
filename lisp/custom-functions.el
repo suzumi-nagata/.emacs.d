@@ -190,13 +190,7 @@ Otherwise, call `backward-kill-word'."
 
 (defvar projects-roots-path)
 (setq projects-roots-path '(("downloads" . "~/Downloads")
-                            ("backup" . "~/Common/Backup")
                             ("init" . "~/.emacs.d")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/c")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/python")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/go")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Common/Projects/Programming/js")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/.config")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Org")))
 
