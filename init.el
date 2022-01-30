@@ -509,8 +509,8 @@
 (add-hook 'TeX-after-compilation-finished-functions
            #'TeX-revert-document-buffer)
 
-(use-package company-bibtex :straight t
-  :config (add-to-list 'company-backends 'company-bibtex))
+;; (use-package company-bibtex :straight t
+;;   :config (add-to-list 'company-backends 'company-bibtex))
 
 (use-package auctex-latexmk :straight t
   :init (with-eval-after-load 'tex (auctex-latexmk-setup))
