@@ -501,38 +501,6 @@
   :config
   (require 'org-ref))
 
-;; (use-package org-roam-bibtex :straight t
-;;   :load-path "/home/nagata/Common/Backup/Org/bib/my_library.bib" ;Modify with your own path
-;;   :hook (org-roam-mode . org-roam-bibtex-mode)
-;;   :bind (:map org-mode-map
-;;          (("C-c n a" . orb-note-actions))))
-;; (setq orb-templates
-;;       '(("r" "ref" plain (function org-roam-capture--get-point) ""
-;;          :file-name "${citekey}"
-;;          :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n" ; <--
-;;          :unnarrowed t)))
-;; (setq orb-preformat-keywords   '(("citekey" . "=key=") "title" "url" "file" "author-or-editor" "keywords"))
-
-;; (setq orb-templates
-;;       '(("n" "ref+noter" plain (function org-roam-capture--get-point)
-;;          ""
-;;          :file-name "bib/%<%Y%m%d%H%M%S>-${slug}"
-;;          :head "#+TITLE: ${citekey}: ${title}
-;; #+ROAM_KEY: ${ref}
-;; #+ROAM_TAGS:
-
-;; - links ::
-;; - keywords :: ${keywords}\n
-;; \* ${title}
-;; :PROPERTIES:
-;; :Custom_ID: ${citekey}
-;; :URL: ${url}
-;; :AUTHOR: ${author-or-editor}
-;; :NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")
-;; :NOTER_PAGE:
-;; :END:"
-;; )))
-
 ;; (use-package org-transclusion
 ;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
 ;;   :config
