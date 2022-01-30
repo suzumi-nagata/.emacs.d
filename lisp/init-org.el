@@ -327,6 +327,7 @@
 ")
            :unnarrowed t)))
   ;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Normal templates
   (setq org-roam-capture-templates
         '(("d" "default" plain "%?"
            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
@@ -341,6 +342,20 @@
            (file "~/.emacs.d/templates/org-roam-bib-template.org")
            :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)))
+
+  ;; Org roam protocol templates
+  (setq org-roam-capture-ref-templates
+        '(("r" "ref" plain "%?"
+           :if-new (file+head "websites/%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+TITLE: ${title}
+#+FILETAGS:
+- source :: ${ref}
+- links ::\n\n"
+)
+           :immediate-finish t
+           :unnarrowed t
+           )))
+
   ;; roam buffer ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; for org-roam-buffer-toggle
   ;; Recommendation in the official manual
