@@ -394,6 +394,8 @@
   (evil-define-key 'normal global-map (kbd "C-e") 'evil-last-non-blank)
   (evil-define-key 'normal global-map (kbd "C-v") 'golden-ratio-scroll-screen-down)
   (evil-define-key 'normal global-map (kbd "M-v") 'golden-ratio-scroll-screen-up)
+  ;; (evil-define-key 'normal global-map (kbd "y") 'kill-ring-save)
+  (evil-define-key 'normal global-map (kbd "p") 'yank)
   (define-key org-agenda-mode-map "h" 'evil-backward-char)
   (define-key org-agenda-mode-map "j" 'evil-next-line)
   (define-key org-agenda-mode-map "k" 'evil-previous-line)
