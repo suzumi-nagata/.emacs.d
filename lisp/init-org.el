@@ -403,9 +403,9 @@
   ;; start org roam ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (org-roam-db-autosync-mode))
 
+(require 'org-protocol)
 (use-package org-roam-protocol
-  :after org-protocol
-  :config (require 'org-protocol))
+  :after org-protocol)
 
 (defun org-hide-properties ()
   "Hide all org-mode headline property drawers in buffer. Could be slow if it has a lot of overlays."
