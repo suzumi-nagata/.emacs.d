@@ -66,6 +66,7 @@
 (global-set-key (kbd "C-c R") 'query-replace)
 
 (global-set-key (kbd "C-c b") (lambda() (interactive) (my-insert-pair  "\[" "\]")))
+(global-set-key (kbd "C-c v") (lambda() (interactive) (my-insert-pair  "\{" "\}")))
 (global-set-key (kbd "C-c c") 'insert-curly-braces)
 (global-set-key (kbd "C-c p") 'insert-parentheses)
 (global-set-key (kbd "C-c e") (lambda() (interactive) (my-insert-pair  "\"" "\"")))
