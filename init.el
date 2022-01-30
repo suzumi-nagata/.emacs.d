@@ -62,7 +62,6 @@
 (global-set-key (kbd "C-c ç") 'org-capture)
 (global-set-key (kbd "C-c d") 'duplicate-line)
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c q") 'mark-next-like-this)
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c R") 'query-replace)
 
@@ -80,6 +79,7 @@
 (global-set-key (kbd "C-M-p") 'xref-pop-marker-stack)
 
 (global-set-key (kbd "C-q") 'er/expand-region)
+(global-set-key (kbd "C-r") 'mark-next-like-this)
 (global-set-key (kbd "C-ç") 'other-window)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
