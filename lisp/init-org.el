@@ -11,7 +11,7 @@
 (setq-default major-mode 'org-mode)
 (setq initial-major-mode 'org-mode)
 
-(setq org-directory "/home/nagata/Common/Backup/Org/"
+(setq org-directory "/home/nagata/Org/"
       org-ellipsis "⬎"
       org-archive-location (concat "archive/" "%s_archive::")
       org-log-into-drawer t
@@ -302,7 +302,7 @@
 (use-package org-roam :straight t
   :init
   (setq org-roam-v2-ack t)
-  (setq-default org-roam-directory (file-truename "/home/nagata/Common/Backup/Org/roam"))
+  (setq-default org-roam-directory (file-truename "/home/nagata/Org/roam"))
 
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
@@ -462,10 +462,10 @@
 (use-package org-ref :straight t
     :after org
     :init
-    (setq org-ref-notes-directory "/home/nagata/Common/Backup/Org/bib/notes.org"
-          org-ref-bibliography-notes "/home/nagata/Common/Backup/Org/bib/articles.org"
-          org-ref-default-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
-          org-ref-pdf-directory "/home/nagata/Common/Backup/Zotero"))
+    (setq org-ref-notes-directory "/home/nagata/Org/bib/notes.org"
+          org-ref-bibliography-notes "/home/nagata/Org/bib/articles.org"
+          org-ref-default-bibliography '("/home/nagata/Org/bib/my_library.bib")
+          org-ref-pdf-directory "/home/nagata/Backup/Zotero"))
 
 (use-package ivy-bibtex :straight t
   :after org
@@ -476,9 +476,9 @@
                                            (mapconcat 'identity x ",")
                                            "}")) ""))))
   (setq bibtex-completion-pdf-field "file"
-        bibtex-completion-bibliography '("/home/nagata/Common/Backup/Org/bib/my_library.bib")
-        bibtex-completion-library-path '("/home/nagata/Common/Backup/Zotero/")
-        bibtex-completion-notes-path "/home/nagata/Common/Backup/Org/bib/articles.org"
+        bibtex-completion-bibliography '("/home/nagata/Org/bib/my_library.bib")
+        bibtex-completion-library-path '("/home/nagata/Backup/Zotero/")
+        bibtex-completion-notes-path "/home/nagata/Org/bib/articles.org"
         bibtex-completion-notes-template-multiple-files
         (concat
          "#+title: ${title}\n"
