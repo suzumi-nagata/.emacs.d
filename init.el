@@ -625,6 +625,8 @@
                                         ;         end of init commands        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq-default auto-save-visited-mode t)
+
 (unless (server-running-p)
   (server-start))
 
