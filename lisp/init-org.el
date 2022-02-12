@@ -18,7 +18,7 @@
       org-src-fontify-natively t
       org-export-coding-system 'utf-8
       org-use-sub-superscripts "{}"
-      org-startup-folded "fold"
+      org-startup-folded t
       org-agenda-window-setup 'current-window
       org-refile-targets '((org-agenda-files :level . 1))
       ;; org-tags-column 55
