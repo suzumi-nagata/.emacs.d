@@ -444,6 +444,10 @@
                     xwidget))
   (evil-collection-init))
 
+(use-package evil-org :straight t
+  :after org
+  :hook (org-mode . evil-org-mode))
+
 (use-package evil-easymotion
   :straight t
   :config
