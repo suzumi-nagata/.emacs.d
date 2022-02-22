@@ -653,7 +653,8 @@
 (org-agenda nil " ")
 (kill-buffer "*scratch*")
 
-(provide 'init)
-;;; init.el ends here
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+(provide 'init)
+;;; init.el ends here
