@@ -446,6 +446,8 @@
 
 (use-package evil-org :straight t
   :after org
+  :config
+  (evil-org-set-key-theme '(textobjects navigation todo))
   :hook (org-mode . evil-org-mode))
 
 (use-package evil-easymotion
