@@ -294,6 +294,8 @@
   (setq ivy-ignore-buffers '("\\` " "\\`\\*"))
   (setq ivy-count-format "%d/%d ")
   (setq ivy-initial-inputs-alist nil))
+(use-package counsel :straight t
+  :bind (("M-x" . counsel-M-x)))
 ;; IDO-style directory navigation
 (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
 (define-key ivy-minibuffer-map (kbd "<tab>") #'ivy-partial-or-done)
@@ -478,6 +480,11 @@
 (save-place-mode 1)
 
 (setq global-auto-revert-non-file-buffers t)
+
+(use-package smex :straight t
+  :config
+  (require 'smex)
+  (smex-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
