@@ -230,8 +230,6 @@
 (winner-mode)
 ;; Raise undo-limit to 80Mb
 (setq undo-limit 80000000)
-;; Interpret CamelCase as two words
-(setq-default global-subword-mode 1)
 ;; Smooth scrolling lines
 (setq scroll-conservatively 100)
 (setq split-height-threshold nil)
@@ -311,7 +309,9 @@
 (use-package swiper :straight t)
 (use-package avy :straight t)
 (use-package sudo-edit :straight t)
-(use-package subword :straight t)
+(use-package subword :straight t
+  :config
+  (global-subword-mode 1))
 (use-package rainbow-mode :straight t :hook prog-mode)
 (use-package rainbow-delimiters :straight t :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 (use-package dumb-jump :straight t)
