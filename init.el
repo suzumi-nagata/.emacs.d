@@ -497,6 +497,10 @@
   (require 'smex)
   (smex-initialize))
 
+(use-package insert-shebang :straight t :defer 1)
+
+(use-package x509-mode :straight t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -566,10 +570,6 @@
 
   ;; Compile to PDF when `TeX-PDF-mode' is active.
   (setq auctex-latexmk-inherit-TeX-PDF-mode t))
-
-(use-package insert-shebang :straight t :defer 1)
-
-(use-package x509-mode :straight t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                 lsp                 ;
