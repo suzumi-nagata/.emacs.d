@@ -204,5 +204,41 @@ Otherwise, call `backward-kill-word'."
   (find-file (cdr (assoc project projects-roots-path)))
   (close-wrong-buffer-and-find-file))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;      Org agenda last day files      ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun org-journal-last-files (org-journal-file-path)
+  "Return a list with the last 8 days from the files in ORG-JOURNAL-FILE-PATH."
+  (interactive)
+  (let ((full-path-name (expand-file-name org-journal-file-path))
+        (current-date-delta 0)
+        (journal-files-regex "^\\("))
+    (while (> current-date-delta -8)
+      (setq journal-files-regex
+            (concat journal-files-regex
+                    (format-time-string "%Y-%m-%d"
+                                        ;; multiply current-date-delta with seconds in a day
+                                        (time-add (current-time) (* current-date-delta 86400)))))
+      (setq current-date-delta (1- current-date-delta))
+      (if (not (eq current-date-delta -8))
+          (setq journal-files-regex (concat journal-files-regex "\\|"))
+        (setq journal-files-regex (concat journal-files-regex "\\)"))
+        )
+      )
+    (directory-files full-path-name 1 journal-files-regex)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Reverse characters in a line. Taken from:
+;; https://emacs.stackexchange.com/questions/38156/reversing-the-order-of-letters-characters-of-a-selected-region
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun horizontal-reverse-region (beg end)
+ "Reverse characters between BEG and END."
+ (interactive "r")
+ (let ((region (buffer-substring beg end)))
+   (delete-region beg end)
+   (insert (nreverse region))))
+
 (provide 'custom-functions)
 ;;; custom-functions.el ends here
