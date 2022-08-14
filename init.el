@@ -132,6 +132,7 @@
 (global-set-key (kbd "C-c n j") 'org-roam-dailies-capture-today)
 
 (global-set-key (kbd "C-c M-e") 'emojify-insert-emoji)
+(global-set-key (kbd "C-c M-t") 'google-translate-query-translate)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                  appearance                                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -416,6 +417,13 @@
 (use-package google-this :straight t
   :config
   (google-this-mode 1))
+
+(use-package google-translate :straight t
+  :config
+  ;; Seems like this is an ongoing problem with google api updates,
+  ;; see: https://github.com/atykhonov/google-translate/issues/52
+  (defun google-translate--search-tkk () "Search TKK." (list 430675 2721866130))
+  (setq google-translate-backend-method 'curl))
 
 (use-package evil-surround :straight t
   :config
