@@ -581,8 +581,15 @@
   (add-hook 'c++-mode-hook #'lsp-deferred)
   (add-hook 'python-mode-hook #'lsp-deferred)
   (add-hook 'go-mode-hook #'lsp-deferred)
+  (add-hook 'sh-mode-hook #'lsp-deferred)
+  (add-hook 'rustic-mode-hook #'lsp-deferred)
+  (add-hook 'java-mode-hook #'lsp-deferred)
   (setq gc-cons-threshold 100000000)
   (setq lsp-file-watch-threshold 20000)
+  :config
+  (setq lsp-rust-analyzer-cargo-watch-command "clippy")
+  (setq lsp-rust-analyzer-server-display-inlay-hints t)
+  (setq lsp-eldoc-render-all t)
   :commands (lsp lsp-deferred))
 
 (use-package lsp-ui :straight t
@@ -623,13 +630,67 @@
                                         ;                python               ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package lsp-python-ms :straight t
-  :after lsp-mode)
+(use-package pyvenv :straight t
+  :config
+  (setq pyvenv-workon "emacs")  ; Default venv
+  (pyvenv-tracking-mode 1))
+
+(add-to-list 'exec-path "/home/nagata/.local/bin")
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-11-openjdk/")
+
+(lsp-register-custom-settings
+ '(("pyls.plugins.pyls_mypy.enabled" t t)
+   ("pyls.plugins.pyls_mypy.live_mode" nil t)
+   ("pyls.plugins.pyls_black.enabled" t t)
+   ("pyls.plugins.pyls_isort.enabled" t t)
+
+   ;; Disable these as they're duplicated by flake8
+   ("pyls.plugins.pycodestyle.enabled" nil t)
+   ("pyls.plugins.mccabe.enabled" nil t)
+   ("pyls.plugins.pyflakes.enabled" nil t)))
+
+;; (use-package lsp-python-ms :straight t
+;;   :after lsp-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;                 java                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package lsp-java :straight t
+  :config
+  (setq lsp-java-java-path "java"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                 rust                ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package rustic :straight t
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                ispell               ;
