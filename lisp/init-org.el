@@ -102,6 +102,14 @@
                :template ("* > TODO [[%:link][%:description]]\n\n %i")
                :immediate-finish t
                )
+              ("org-html"
+               :keys "h"
+               :file org-capture-todo-file
+               :prepend t
+               :type entry
+               :headline "Web Captures"
+               :template ("* > TODO [[%:link][%:description]]\n\n%?%:initial")
+               )
               ("Email"
                :keys "e"
                :file org-capture-email-file
@@ -342,7 +350,6 @@
         '(("d" "default" plain "%?"
            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+TITLE: ${title}
-#+ROAM_ALIASES:
 #+FILETAGS:
 - links ::\n\n")
            :immediate-finish t
@@ -362,7 +369,7 @@
 - source :: ${ref}
 - links ::\n\n"
 )
-           :immediate-finish t
+           ;; :immediate-finish t
            :unnarrowed t
            )))
 
