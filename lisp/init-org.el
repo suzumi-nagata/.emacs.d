@@ -33,10 +33,14 @@
       )
 
 (defvar org-agenda-directory (concat org-directory "agenda/"))
-(setq org-agenda-files (list org-agenda-directory))
+(defvar org-journal-last-eight-days-files (org-journal-last-files (concat org-directory "roam/journal/")))
+;; (setq org-agenda-files (append org-agenda-directory org-journal-last-eight-days-files))
+(setq org-agenda-files (append (list org-agenda-directory) org-journal-last-eight-days-files))
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
+(defvar org-capture-wishlist-file (concat org-agenda-directory "wishlist.org"))
 (defvar org-capture-reading-file (concat org-agenda-directory "reading.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "email.org"))
+(defvar org-capture-professional-file (concat org-agenda-directory "professional.org"))
 (defvar org-capture-groceries-file (concat org-agenda-directory "groceries.org"))
 (defvar org-capture-projects-file (concat org-agenda-directory "projects.org"))
 (defvar org-capture-cryptography-file (concat org-agenda-directory "cryptography.org"))
@@ -127,11 +131,17 @@
                            (org-agenda-span 10)
                            (org-deadline-warning-days 365)))
                   (todo ""
+                        ((org-agenda-overriding-header "Wishlist")
+                         (org-agenda-files '(,(expand-file-name org-capture-wishlist-file)))))
+                  (todo ""
                         ((org-agenda-overriding-header "To Refile")
                          (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
                   (todo ""
                         ((org-agenda-overriding-header "Emails")
                          (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Carrer")
+                         (org-agenda-files '(,(expand-file-name org-capture-professional-file)))))
                   (todo ""
                         ((org-agenda-overriding-header "Projects")
                          (org-agenda-files '(,(expand-file-name org-capture-projects-file)))))
@@ -319,12 +329,12 @@
   (setq org-roam-dailies-directory "journal/")
   (setq org-roam-dailies-capture-templates
         '(("d" "default" entry
-           "* %?"
+           "* %t %?"
            :if-new (file+head "%<%Y-%m-%d>.org"
                               "#+TITLE: %<%A, %d %B %Y>
 #+FILETAGS: Journal
 
-")
+\n")
            :unnarrowed t)))
   ;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Normal templates
