@@ -22,3 +22,11 @@ tramp
 transient
 %backup%*
 session.*
+eclipse.jdt.ls/
+org-roam.db
+org-roam.db-bkp
+places
+request/
+smex-items
+url/
+workspace/
