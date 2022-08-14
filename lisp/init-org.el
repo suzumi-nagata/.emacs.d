@@ -525,5 +525,14 @@
                              (ispell-change-dictionary "en_US")
                              (flyspell-mode)))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((java . t)))
+
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (member lang '("C" "java" "sh"))))
+
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
 (provide 'init-org)
 ;;; init-org.el ends here
