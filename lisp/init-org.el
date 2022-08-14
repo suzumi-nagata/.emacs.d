@@ -3,7 +3,7 @@
 ;;; Code:
 
 (straight-override-recipe
-   '(org :type git :host github :repo "emacsmirror/org" :no-build t))
+   '(org :type git :host github :repo "emacsmirror/org"))
 (use-package org :straight t)
 
 (require 'org)
