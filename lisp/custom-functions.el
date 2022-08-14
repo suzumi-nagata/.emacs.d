@@ -181,7 +181,7 @@ Otherwise, call `backward-kill-word'."
 
 (require 'cl-lib)
 
-(defun alist-project-files (full-file-path )
+(defun alist-project-files (full-file-path)
   "Build an alist from the files in FULL-FILE-PATH."
   (interactive)
   (let ((full-path-name (expand-file-name full-file-path)))
