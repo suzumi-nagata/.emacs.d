@@ -39,7 +39,6 @@
 (setq org-agenda-files (append (list org-agenda-directory) org-journal-last-eight-days-files))
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
 (defvar org-capture-wishlist-file (concat org-agenda-directory "wishlist.org"))
-(defvar org-capture-reading-file (concat org-agenda-directory "reading.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "email.org"))
 (defvar org-capture-professional-file (concat org-agenda-directory "professional.org"))
 (defvar org-capture-groceries-file (concat org-agenda-directory "groceries.org"))
@@ -144,11 +143,11 @@
                            (org-agenda-span 10)
                            (org-deadline-warning-days 365)))
                   (todo ""
-                        ((org-agenda-overriding-header "Wishlist")
-                         (org-agenda-files '(,(expand-file-name org-capture-wishlist-file)))))
-                  (todo ""
                         ((org-agenda-overriding-header "To Refile")
                          (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Wishlist")
+                         (org-agenda-files '(,(expand-file-name org-capture-wishlist-file)))))
                   (todo ""
                         ((org-agenda-overriding-header "Emails")
                          (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
@@ -158,15 +157,6 @@
                   (todo ""
                         ((org-agenda-overriding-header "Projects")
                          (org-agenda-files '(,(expand-file-name org-capture-projects-file)))))
-                  (todo ""
-                        ((org-agenda-overriding-header "Reading")
-                         (org-agenda-files '(,(expand-file-name org-capture-reading-file)))))
-                  (todo ""
-                        ((org-agenda-overriding-header "Cryptography")
-                         (org-agenda-files '(,(expand-file-name org-capture-cryptography-file)))))
-                  (todo ""
-                        ((org-agenda-overriding-header "Groceries")
-                         (org-agenda-files '(,(expand-file-name org-capture-groceries-file)))))
                  ))
                 ("r" "Review"
                  ((agenda ""
