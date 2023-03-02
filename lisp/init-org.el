@@ -132,7 +132,7 @@
                :keys "g"
                :file org-capture-groceries-file
                :type entry
-               :template ("* > TODO %?")
+               :template ("* %?")
                )
               )))
 
