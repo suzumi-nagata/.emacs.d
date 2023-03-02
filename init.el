@@ -40,6 +40,9 @@
 ;; add ~/.emacs.d/lisp to load the rest of configuration files
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
+;; Disable native comp warnings
+(setq-default warning-minimum-level :emergency)
+
 (require 'custom-functions)
 (my/autosave-backup-dirs)
 
