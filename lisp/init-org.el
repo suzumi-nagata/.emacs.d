@@ -20,8 +20,9 @@
       org-use-sub-superscripts "{}"
       org-startup-folded t
       org-agenda-window-setup 'current-window
-      org-refile-targets '((org-agenda-files :level . 1))
-      ;; org-tags-column 55
+      org-refile-targets '((nil :maxlevel . 3)
+                           (org-agenda-files :level . 1))
+      org-tags-column 80
       org-noter-notes-window-location 'other-frame
       org-format-latex-options (plist-put org-format-latex-options :scale 1.7)
       org-roam-server-port 1784
