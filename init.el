@@ -612,6 +612,7 @@
 (use-package dap-mode :straight t)
 ;TODO: add dap support to c, c++
 ;; (require 'dap-lldb)
+(require 'dap-cpptools)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                golang               ;
@@ -667,6 +668,29 @@
 (use-package lsp-java :straight t
   :config
   (setq lsp-java-java-path "java"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                        ;               flutter               ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (with-eval-after-load "dart-mode"
+;;   (define-key dart-mode-map (kbd "C-c C-o") 'dart-format-buffer))
+
+(use-package dart-mode :straight t
+  :config
+  (require 'reformatter)
+  (reformatter-define dart-format
+    :program "dart"
+    :args '("format"))
+  (add-hook 'before-save-hook 'dart-format-buffer))
+
+(use-package lsp-dart :straight t
+  :config
+  (setq lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
+  (with-eval-after-load "projectile"
+  (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
+  (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+  (setq lsp-auto-guess-root t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                 rust                ;
