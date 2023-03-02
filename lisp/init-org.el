@@ -353,7 +353,20 @@
           ("r" "bibliography reference" plain
            (file "~/.emacs.d/templates/org-roam-bib-template.org")
            :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
-           :unnarrowed t)))
+           :unnarrowed t)
+
+          ("c" "cooking recipe" plain "%?"
+           :if-new (file+head "recipes/%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+TITLE: ${title}
+#+FILETAGS:
+- links ::
+
+* Ingredients
+* Directions
+* Tips
+")
+           :unnarrowed t)
+          ))
 
   ;; Org roam protocol templates
   (setq org-roam-capture-ref-templates
