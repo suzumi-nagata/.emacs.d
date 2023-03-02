@@ -65,9 +65,13 @@
                         "V DONE(d)"
                         "X CXLD(c@)"))))
 
+(setq org-priority-lowest ?E)
+
 (setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
                            (?B . (:foreground "yellow"))
-                           (?C . (:foreground "green"))))
+                           (?C . (:foreground "green"))
+                           (?D . (:foreground "blue"))
+                           (?E . (:foreground "gray"))))
 
 (setq org-todo-keyword-faces
       '(("> TODO" . "tomato")
