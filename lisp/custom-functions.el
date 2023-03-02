@@ -234,11 +234,19 @@ Otherwise, call `backward-kill-word'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun horizontal-reverse-region (beg end)
- "Reverse characters between BEG and END."
+  "Reverse characters between BEG and END."
  (interactive "r")
  (let ((region (buffer-substring beg end)))
    (delete-region beg end)
    (insert (nreverse region))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             ; Make the bg transparent (for pretty terminals) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun make-bg-transparent ()
+  "Make the background of Emacs transparent."
+  (interactive)
+  (set-face-background 'default "unspecified-bg" (selected-frame)))
 
 (provide 'custom-functions)
 ;;; custom-functions.el ends here
