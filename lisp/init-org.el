@@ -29,8 +29,10 @@
       org-habit-graph-column 70
       org-display-remote-inline-images 'download
       org-adapt-indentation t
+      org-edit-src-content-indentation 0
       org-agenda-block-separator nil
       org-agenda-start-with-log-mode t
+      org-tags-sort-function 'org-string-collate-lessp
       )
 
 (defvar org-agenda-directory (concat org-directory "agenda/"))
