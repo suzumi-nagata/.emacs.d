@@ -70,6 +70,7 @@
 
 (global-set-key (kbd "C-c b") (lambda() (interactive) (my-insert-pair  "\[" "\]")))
 (global-set-key (kbd "C-c v") (lambda() (interactive) (my-insert-pair  "\{" "\}")))
+(global-set-key (kbd "C-c u") (lambda() (interactive) (my-insert-pair  "\<" "\>")))
 (global-set-key (kbd "C-c c") 'insert-curly-braces)
 (global-set-key (kbd "C-c p") 'insert-parentheses)
 (global-set-key (kbd "C-c e") (lambda() (interactive) (my-insert-pair  "\"" "\"")))
@@ -682,7 +683,28 @@
 
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook)
+
+  (with-eval-after-load 'dap-cpptools
+    ;; Add a template specific for debugging Rust programs.
+    ;; It is used for new projects, where I can M-x dap-edit-debug-template
+    (dap-register-debug-template "Rust::CppTools Run Configuration"
+                                 (list :type "cppdbg"
+                                       :request "launch"
+                                       :name "Rust::Run"
+                                       :MIMode "gdb"
+                                       :miDebuggerPath "rust-gdb"
+                                       :environment []
+                                       :program "${workspaceFolder}/target/debug/hello / replace with binary"
+                                       :cwd "${workspaceFolder}"
+                                       :console "external"
+                                       :dap-compilation "cargo build"
+                                       :dap-compilation-dir "${workspaceFolder}")))
+
+  (with-eval-after-load 'dap-mode
+    (setq dap-default-terminal-kind "integrated") ;; Make sure that terminal programs open a term for I/O in an Emacs buffer
+    (dap-auto-configure-mode +1))
+  )
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm, but don't try to
