@@ -352,6 +352,30 @@
            :immediate-finish t
            :unnarrowed t)
 
+          ("c" "course" plain "%?"
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+TITLE: ${title}
+#+FILETAGS: course
+- equivalent course ::
+- links ::
+
+* Syllabus
+* References
+* Classes
+  Tuesday: 21:00 - 23:00
+  Thursday: 19:00 - 21:00
+* Dates [/]
+* Grades:
+  | Grade | Range      |
+  |-------+------------|
+  | A     | 8.5 - 10.0 |
+  | B     | 7.0 - 8.5  |
+  | C     | 5.0 - 7.0  |
+  | D     | < 5.0      |
+")
+           :immediate-finish t
+           :unnarrowed t)
+
           ("r" "bibliography reference" plain
            (file "~/.emacs.d/templates/org-roam-bib-template.org")
            :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
