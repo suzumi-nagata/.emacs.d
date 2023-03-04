@@ -84,6 +84,7 @@
 (global-set-key (kbd "C-c x o") 'xref-find-definitions)
 (global-set-key (kbd "C-c x p") 'xref-pop-marker-stack)
 (global-set-key (kbd "C-c x j") 'lsp-ivy-workspace-symbol)
+(global-set-key (kbd "C-c x l") 'lsp-execute-code-action)
 (global-set-key (kbd "C-M-p") 'xref-pop-marker-stack)
 
 (global-set-key (kbd "C-q") 'er/expand-region)
@@ -702,7 +703,7 @@
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
               ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
+              ;; ("C-c C-c a" . lsp-execute-code-action)
               ("C-c C-c r" . lsp-rename)
               ("C-c C-c q" . lsp-workspace-restart)
               ("C-c C-c Q" . lsp-workspace-shutdown)
