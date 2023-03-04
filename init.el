@@ -509,7 +509,7 @@
 
 (use-package yaml-mode :straight t)
 
-(use-package reformatter :straight t)
+;; (use-package reformatter :straight t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
@@ -680,11 +680,13 @@
 
 (use-package dart-mode :straight t
   :config
-  (require 'reformatter)
-  (reformatter-define dart-format
-    :program "dart"
-    :args '("format"))
-  (add-hook 'before-save-hook 'dart-format-buffer))
+  ;; (require 'reformatter)
+  ;; (reformatter-define dart-format
+  ;;   :program "dart"
+  ;;   :args '("format"))
+  ;; (add-hook 'before-save-hook 'dart-format-buffer)
+
+  )
 
 (use-package lsp-dart :straight t
   :config
