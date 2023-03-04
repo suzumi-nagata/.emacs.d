@@ -114,6 +114,7 @@
 (global-set-key (kbd "<f6>") 'x509-viewasn1)
 (global-set-key (kbd "<f7>") 'x509-viewcrl)
 (global-set-key (kbd "<f8>") 'x509-viewcert)
+(global-set-key (kbd "<f9>") 'copy-current-line-position-to-clipboard)
 (global-set-key (kbd "<f10>") 'lsp-workspace-restart)
 (global-set-key (kbd "<f11>") 'find-magit-project-root)
 (global-set-key (kbd "<f12>") 'org-agenda)
