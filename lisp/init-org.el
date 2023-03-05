@@ -26,6 +26,7 @@
       org-noter-notes-window-location 'other-frame
       org-format-latex-options (plist-put org-format-latex-options :scale 1.7)
       org-roam-server-port 1784
+      org-startup-with-inline-images 'inlineimages
       org-habit-graph-column 70
       org-display-remote-inline-images 'download
       org-adapt-indentation t
@@ -583,6 +584,8 @@
   (not (member lang '("C" "java" "sh" "mermaid"))))
 
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
+(add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
 (provide 'init-org)
 ;;; init-org.el ends here
