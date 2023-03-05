@@ -566,12 +566,21 @@
                              (ispell-change-dictionary "en_US")
                              (flyspell-mode)))
 
+(use-package mermaid-mode :straight t)
+
+(setenv "PUPPETEER_EXECUTABLE_PATH" "/usr/bin/chromium")
+
+(use-package ob-mermaid :straight t
+  :config
+  (setq ob-mermaid-cli-path "/usr/bin/mmdc"))
+
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((java . t)))
+ '((java . t)
+   (mermaid . t)))
 
 (defun my-org-confirm-babel-evaluate (lang body)
-  (not (member lang '("C" "java" "sh"))))
+  (not (member lang '("C" "java" "sh" "mermaid"))))
 
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
