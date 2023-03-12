@@ -554,7 +554,7 @@
 
 (use-package company-reftex :straight t)
 (use-package company-auctex :straight t)
-;; (use-package latex-preview-pane :straight t)
+(use-package latex-preview-pane :straight t)
 
 (pdf-loader-install)
 
