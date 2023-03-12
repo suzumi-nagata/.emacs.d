@@ -37,9 +37,9 @@
       )
 
 (defvar org-agenda-directory (concat org-directory "agenda/"))
-(defvar org-journal-last-eight-days-files (org-journal-last-files (concat org-directory "roam/journal/")))
+;; (defvar org-journal-last-eight-days-files (org-journal-last-files (concat org-directory "roam/journal/")))
 ;; (setq org-agenda-files (append org-agenda-directory org-journal-last-eight-days-files))
-(setq org-agenda-files (append (list org-agenda-directory) org-journal-last-eight-days-files))
+;; (setq org-agenda-files (append (list org-agenda-directory) org-journal-last-eight-days-files))
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
 (defvar org-capture-wishlist-file (concat org-agenda-directory "wishlist.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "email.org"))
