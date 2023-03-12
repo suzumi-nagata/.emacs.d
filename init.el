@@ -85,7 +85,9 @@
 (global-set-key (kbd "C-c x p") 'xref-pop-marker-stack)
 (global-set-key (kbd "C-c x j") 'lsp-ivy-workspace-symbol)
 (global-set-key (kbd "C-c x l") 'lsp-execute-code-action)
+
 (global-set-key (kbd "C-M-p") 'xref-pop-marker-stack)
+(global-set-key (kbd "C-M-'") 'org-toggle-inline-images)
 
 (global-set-key (kbd "C-q") 'er/expand-region)
 (global-set-key (kbd "C-r") 'mark-next-like-this)
