@@ -414,6 +414,8 @@
   (define-key org-agenda-mode-map "j" 'evil-next-line)
   (define-key org-agenda-mode-map "k" 'evil-previous-line)
   (define-key org-agenda-mode-map "l" 'evil-forward-char)
+  (define-key org-agenda-mode-map "f" 'org-agenda-redo-all)
+  (define-key org-agenda-mode-map "a" 'org-agenda-redo-all)
   )
 
 (use-package framemove
