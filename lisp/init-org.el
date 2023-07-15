@@ -24,7 +24,7 @@
                            (org-agenda-files :level . 1))
       org-tags-column 80
       org-noter-notes-window-location 'other-frame
-      org-format-latex-options (plist-put org-format-latex-options :scale 1.7)
+      org-format-latex-options (plist-put org-format-latex-options :scale 1.8)
       org-roam-server-port 1784
       org-startup-with-inline-images 'inlineimages
       org-habit-graph-column 70
