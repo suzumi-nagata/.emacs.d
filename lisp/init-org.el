@@ -40,6 +40,18 @@
 ;; (defvar org-journal-last-eight-days-files (org-journal-last-files (concat org-directory "roam/journal/")))
 ;; (setq org-agenda-files (append org-agenda-directory org-journal-last-eight-days-files))
 ;; (setq org-agenda-files (append (list org-agenda-directory) org-journal-last-eight-days-files))
+
+(defvar org-study-backlog-file (concat org-directory "roam/" "20221121131908-study_backlog.org"))
+
+;; (defvar org-mo611-file (concat org-directory "roam/" "20230304135847-unicamp_mo611_teleprocessamento_e_redes.org"))
+;; (defvar org-mo601-file (concat org-directory "roam/" "20230304142110-unicamp_mo601_arquitetura_de_computadores_ii.org"))
+
+(setq org-agenda-files (list org-agenda-directory
+                             org-study-backlog-file
+                             ;; org-mo611-file
+                             ;; org-mo601-file
+                             ))
+
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
 (defvar org-capture-wishlist-file (concat org-agenda-directory "wishlist.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "email.org"))
