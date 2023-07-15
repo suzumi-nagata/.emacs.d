@@ -549,8 +549,7 @@
   :config
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
-  (setq TeX-save-query nil)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)))
+  (setq TeX-save-query nil))
 
 (use-package company-reftex :straight t)
 (use-package company-auctex :straight t)
