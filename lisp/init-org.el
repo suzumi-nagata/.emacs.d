@@ -215,7 +215,7 @@
 
 (add-hook 'org-agenda-mode-hook
           (lambda ()
-            (local-set-key (kbd "f") 'jethro/org-process-inbox)))
+            (local-set-key (kbd "i") 'jethro/org-process-inbox)))
 
 (defun jethro/org-process-inbox ()
   "Called in org-agenda-mode, processes all inbox items."
