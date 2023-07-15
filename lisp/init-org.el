@@ -514,6 +514,15 @@
 
 (use-package deft :straight t
   :after org
+  :config
+  ;; Overwrite `deft-current-files` for the `deft-buffer-setup` and limit it to 30 entries
+  (defun anks-deft-limiting-fn (orig-fun &rest args)
+    (let
+        ((deft-current-files (-take 30 deft-current-files)))
+      (apply orig-fun args)))
+
+  (advice-add 'deft-buffer-setup :around #'anks-deft-limiting-fn)
+  (setq deft-file-limit 30)
   :custom
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
