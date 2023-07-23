@@ -46,19 +46,13 @@
 ;; (defvar org-mo611-file (concat org-directory "roam/" "20230304135847-unicamp_mo611_teleprocessamento_e_redes.org"))
 ;; (defvar org-mo601-file (concat org-directory "roam/" "20230304142110-unicamp_mo601_arquitetura_de_computadores_ii.org"))
 
-(setq org-agenda-files (list org-agenda-directory
-                             org-study-backlog-file
-                             ;; org-mo611-file
-                             ;; org-mo601-file
-                             ))
+(setq org-agenda-files (append (directory-files-recursively org-agenda-directory ".org$")
+                        (list org-study-backlog-file)))
 
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
-(defvar org-capture-wishlist-file (concat org-agenda-directory "wishlist.org"))
-(defvar org-capture-email-file (concat org-agenda-directory "email.org"))
-(defvar org-capture-professional-file (concat org-agenda-directory "professional.org"))
-(defvar org-capture-groceries-file (concat org-agenda-directory "groceries.org"))
-(defvar org-capture-projects-file (concat org-agenda-directory "projects.org"))
-(defvar org-capture-cryptography-file (concat org-agenda-directory "cryptography.org"))
+(defvar org-capture-wishlist-file (concat org-agenda-directory "3-resources/wishlist/wishlist.org"))
+(defvar org-capture-email-file (concat org-agenda-directory "2-areas/emailing/email.org"))
+(defvar org-capture-professional-file (concat org-agenda-directory "2-areas/professional/listings.org"))
 
 (use-package org-bullets :straight t
   :init (setq org-bullets-bullet-list '("⬢" "✤" "◉" "❄" "✧" "▶" "◆" "✿" "✸"))
@@ -142,12 +136,6 @@
                 ("Reply"
                  :keys "r"
                  :template ("* > TODO [#A] Reply email to %^{recipient}: %^{subject}"))))
-              ("Groceries"
-               :keys "g"
-               :file org-capture-groceries-file
-               :type entry
-               :template ("* %?")
-               )
               )))
 
 ;TODO: Migrate to Super agenda
@@ -169,9 +157,6 @@
                   (todo ""
                         ((org-agenda-overriding-header "Carrer")
                          (org-agenda-files '(,(expand-file-name org-capture-professional-file)))))
-                  (todo ""
-                        ((org-agenda-overriding-header "Projects")
-                         (org-agenda-files '(,(expand-file-name org-capture-projects-file)))))
                  ))
                 ("r" "Review"
                  ((agenda ""
