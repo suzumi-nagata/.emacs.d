@@ -2,10 +2,10 @@
 - keywords :: %^{keywords}
 
 * %^{title}
-:PROPERTIES:
-:Custom_ID: %^{citekey}
-:URL: %^{url}
-:AUTHOR: %^{author}
-:NOTER_DOCUMENT: %^{file}
-:NOTER_PAGE:
-:END:
+  :PROPERTIES:
+  :Custom_ID: %^{citekey}
+  :URL: %^{url}
+  :AUTHOR: %^{author}
+  :NOTER_DOCUMENT: %^{file}
+  :NOTER_PAGE:
+  :END:
