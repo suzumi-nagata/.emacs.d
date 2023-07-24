@@ -194,9 +194,6 @@ Otherwise, call `backward-kill-word'."
                             ("init" . "~/.emacs.d")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/.config")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/go")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/c")))
-(setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/java")))
 (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Org")))
 
 (defun find-file-project-root (project)
