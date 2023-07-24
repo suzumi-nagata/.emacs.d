@@ -36,6 +36,12 @@
       org-tags-sort-function 'org-string-collate-lessp
       )
 
+(setq org-agenda-sorting-strategy
+  '((agenda time-up priority-down category-keep)
+    (todo   priority-down category-keep)
+    (tags   priority-down category-keep)
+    (search category-keep)))
+
 (defvar org-agenda-directory (concat org-directory "agenda/"))
 ;; (defvar org-journal-last-eight-days-files (org-journal-last-files (concat org-directory "roam/journal/")))
 ;; (setq org-agenda-files (append org-agenda-directory org-journal-last-eight-days-files))
