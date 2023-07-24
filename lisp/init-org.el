@@ -550,13 +550,15 @@
 (use-package org-fragtog :straight t :hook (org-mode . org-fragtog-mode))
 (use-package org-download :straight t)
 
+(use-package citar :straight t)
+
 (use-package org-ref :straight t
     :after org
     :init
     (setq org-ref-notes-directory "/home/nagata/Org/roam/bib/"
           ;; org-ref-bibliography-notes "/home/nagata/Org/bib/articles.org"
           org-ref-default-bibliography '("/home/nagata/Org/bib/my_library.bib")
-          org-ref-pdf-directory "/home/nagata/Backup/Zotero"))
+          org-ref-pdf-directory "/home/nagata/Zotero"))
 
 (use-package ivy-bibtex :straight t
   :after org
@@ -568,7 +570,7 @@
                                            "}")) ""))))
   (setq bibtex-completion-pdf-field "file"
         bibtex-completion-bibliography '("/home/nagata/Org/bib/my_library.bib")
-        bibtex-completion-library-path '("/home/nagata/Backup/Zotero/")
+        bibtex-completion-library-path '("/home/nagata/Zotero/")
         bibtex-completion-notes-path "/home/nagata/Org/roam/bib/"
         bibtex-completion-notes-template-multiple-files
         (concat
@@ -590,7 +592,11 @@
 (use-package org-roam-bibtex :straight t
   :after org-roam
   :config
-  (require 'org-ref))
+  (require 'org-ref)
+  (org-roam-bibtex-mode 1)
+  (setq orb-preformat-keywords '("url" "title" "file" "keywords" "citekey" "author" "date"))
+  (setq orb-abbreviate-file-name nil)
+  )
 
 ;; (use-package org-transclusion
 ;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
