@@ -501,6 +501,7 @@
 (save-place-mode 1)
 
 (setq global-auto-revert-non-file-buffers t)
+(setq global-auto-revert-mode t)
 
 (use-package smex :straight t
   :config
