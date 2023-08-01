@@ -59,6 +59,7 @@
 (defvar org-capture-wishlist-file (concat org-agenda-directory "3-resources/wishlist/wishlist.org"))
 (defvar org-capture-email-file (concat org-agenda-directory "2-areas/emailing/email.org"))
 (defvar org-capture-professional-file (concat org-agenda-directory "2-areas/professional/listings.org"))
+(defvar org-capture-groceries-file (concat org-agenda-directory "2-areas/home/groceries.org"))
 
 (use-package org-bullets :straight t
   :init (setq org-bullets-bullet-list '("⬢" "✤" "◉" "❄" "✧" "▶" "◆" "✿" "✸"))
@@ -142,6 +143,13 @@
                 ("Reply"
                  :keys "r"
                  :template ("* > TODO [#A] Reply email to %^{recipient}: %^{subject}"))))
+              ("Groceries"
+               :keys "g"
+               :file org-capture-groceries-file
+               :headline "Inbox"
+               :type entry
+               :template ("* %?")
+               )
               )))
 
 ;TODO: Migrate to Super agenda
