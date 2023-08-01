@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: right arrow
+# key: >arr
+# --
+\rightarrow $0

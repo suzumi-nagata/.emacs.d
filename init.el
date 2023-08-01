@@ -70,6 +70,8 @@
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c R") 'query-replace)
+(global-set-key (kbd "C-c l") (lambda() (interactive) (yas-deactivate-extra-mode 'latex-mode) (message "latex snippets deactivated")))
+(global-set-key (kbd "C-c L") (lambda() (interactive) (yas-activate-extra-mode 'latex-mode) (message "latex snippets activated")))
 
 (global-set-key (kbd "C-c b") (lambda() (interactive) (my-insert-pair  "\[" "\]")))
 (global-set-key (kbd "C-c v") (lambda() (interactive) (my-insert-pair  "\{" "\}")))

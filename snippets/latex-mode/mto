@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: maps to
+# key: mto
+# --
+\mapsto $0
