@@ -388,6 +388,25 @@
            :immediate-finish t
            :unnarrowed t)
 
+          ("p" "presentation" plain "%?"
+           :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+TITLE: ${title}
+#+Author: Vitor Nagata
+#+Email: nagatavit@gmail.com
+#+FILETAGS: presentation
+
+#+REVEAL_INIT_OPTIONS: width:1920, height:1080, margin: 0.1, transition: 'slide',
+#+OPTIONS: toc:1 timestamp:nil
+#+REVEAL_THEME: dracula
+#+REVEAL_PLUGINS: (markdown notes)
+
+* Introduction
+* Contents
+* Conclusion
+")
+           :immediate-finish t
+           :unnarrowed t)
+
           ("r" "bibliography reference" plain
            (file "~/.emacs.d/templates/org-roam-bib-template.org")
            :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
@@ -606,6 +625,11 @@
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+
+(use-package ox-reveal :straight t
+  :config
+  (setq org-reveal-root "file:///home/nagata/Repos/reveal.js/")
+  )
 
 (provide 'init-org)
 ;;; init-org.el ends here
