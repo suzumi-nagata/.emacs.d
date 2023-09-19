@@ -553,8 +553,8 @@
 (use-package org-ref :straight t
     :after org
     :init
-    (setq org-ref-notes-directory "/home/nagata/Org/bib/notes.org"
-          org-ref-bibliography-notes "/home/nagata/Org/bib/articles.org"
+    (setq org-ref-notes-directory "/home/nagata/Org/roam/bib/"
+          ;; org-ref-bibliography-notes "/home/nagata/Org/bib/articles.org"
           org-ref-default-bibliography '("/home/nagata/Org/bib/my_library.bib")
           org-ref-pdf-directory "/home/nagata/Backup/Zotero"))
 
@@ -569,22 +569,22 @@
   (setq bibtex-completion-pdf-field "file"
         bibtex-completion-bibliography '("/home/nagata/Org/bib/my_library.bib")
         bibtex-completion-library-path '("/home/nagata/Backup/Zotero/")
-        bibtex-completion-notes-path "/home/nagata/Org/bib/articles.org"
+        bibtex-completion-notes-path "/home/nagata/Org/roam/bib/"
         bibtex-completion-notes-template-multiple-files
         (concat
          "#+title: ${title}\n"
          "#+roam_key: cite:${=key=}\n"
-         "* TODO Notes\n"
-         ":PROPERTIES:\n"
-         ":Custom_ID: ${=key=}\n"
-         ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-         ":AUTHOR: ${author-abbrev}\n"
-         ":JOURNAL: ${journaltitle}\n"
-         ":DATE: ${date}\n"
-         ":YEAR: ${year}\n"
-         ":DOI: ${doi}\n"
-         ":URL: ${url}\n"
-         ":END:\n\n"
+         "* Notes\n"
+         "  :PROPERTIES:\n"
+         "  :Custom_ID: ${=key=}\n"
+         "  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+         "  :AUTHOR: ${author-abbrev}\n"
+         "  :JOURNAL: ${journaltitle}\n"
+         "  :DATE: ${date}\n"
+         "  :YEAR: ${year}\n"
+         "  :DOI: ${doi}\n"
+         "  :URL: ${url}\n"
+         "  :END:\n\n"
          )))
 
 (use-package org-roam-bibtex :straight t
