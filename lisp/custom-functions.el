@@ -133,6 +133,7 @@ Otherwise, call `backward-kill-word'."
   (add-hook hook 'show-trailing-whitespace))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
 
 (defun my/autosave-backup-dirs()
   (let ((emacs-bkp-dir (expand-file-name "emacs-backups/" user-emacs-directory)))
