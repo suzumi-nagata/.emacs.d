@@ -603,6 +603,9 @@
   (setq gc-cons-threshold 100000000)
   (setq lsp-file-watch-threshold 20000)
   :config
+  (setq lsp-ui-doc-enable t)
+  (setq lsp-ui-doc-show-with-cursor t)
+  (setq lsp-eldoc-enable-hover nil)
   (setq lsp-rust-analyzer-cargo-watch-command "clippy")
   (setq lsp-rust-analyzer-server-display-inlay-hints t)
   (setq lsp-eldoc-render-all t)
