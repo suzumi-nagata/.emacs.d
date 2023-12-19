@@ -746,8 +746,7 @@ See URL `https://github.com/golangci/golangci-lint'."
 
 (use-package rustic :straight t
   :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
+              ("M-?" . lsp-ui-imenu)
               ("C-c C-c l" . flycheck-list-errors)
               ;; ("C-c C-c a" . lsp-execute-code-action)
               ("C-c C-c r" . lsp-rename)
