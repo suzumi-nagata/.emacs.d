@@ -629,12 +629,46 @@
                                         ;                golang               ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(require 'flycheck)
+(defvar-local flycheck-local-checkers nil)
+(defun +flycheck-checker-get(fn checker property)
+  (or (alist-get property (alist-get checker flycheck-local-checkers))
+      (funcall fn checker property)))
+(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
+
 (use-package go-mode :straight t
   :config
   (add-hook 'go-mode-hook #'lsp-deferred)
   (add-to-list 'auto-mode-alist (cons "\\.go\\'" 'go-mode))
   (add-hook 'before-save-hook 'gofmt-before-save)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t)
+
+  (flycheck-define-checker golangci-lint
+    "A Go syntax checker using golangci-lint that's 5x faster than gometalinter
+
+See URL `https://github.com/golangci/golangci-lint'."
+    :command ("golangci-lint" "run" "--out-format=checkstyle" "--deadline=1m" ".")
+    :error-parser flycheck-parse-checkstyle
+    :error-patterns
+    ((error line-start (file-name) ":" line ":" column ": " (message) line-end)
+     (error line-start (file-name) ":" line ":" (message) line-end))
+    :modes go-mode
+    :predicate flycheck-buffer-saved-p)
+  (add-to-list 'flycheck-checkers 'golangci-lint)
+
+  (defun dsh/flycheck-golangci-lint-setup ()
+    (setq flycheck-local-checkers
+          '((lsp . ((next-checkers . ((warning . golangci-lint))))))))
+  (add-hook 'go-mode-hook #'dsh/flycheck-golangci-lint-setup)
   )
+
+
+;; (use-package flycheck-golangci-lint
+;;   :straight t
+;;   :hook
+;;   (go-mode . (lambda()
+;;                (flycheck-golangci-lint-setup)
+;;                (setq flycheck-local-checkers '((lsp . ((next-checkers . ((warning . golangci-lint))))))))))
 
 (use-package exec-path-from-shell :straight t
   :config
