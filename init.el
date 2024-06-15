@@ -52,7 +52,7 @@
 (require 'org-protocol-capture-html)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                             Global Keybindings                              ;
+                                        ;                             Global Keybindings                              ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
@@ -144,7 +144,7 @@
 (global-set-key (kbd "C-c M-e") 'emojify-insert-emoji)
 (global-set-key (kbd "C-c M-t") 'google-translate-query-translate)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                  appearance                                 ;
+                                        ;                                  appearance                                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Default font
@@ -158,7 +158,7 @@
       (use-package dracula-theme
         :straight (dracula-theme :type git :host github :repo "dracula/emacs"
                                  :fork (:host github
-                                        :repo "nagatavit/dracula")))
+                                              :repo "nagatavit/dracula")))
       (load-theme 'dracula t))
   (progn
     (use-package monokai-theme :straight t)
@@ -196,15 +196,15 @@
    ))
 
 (set-face-attribute  'mode-line
-              nil
-              :foreground "LawnGreen"
-              :background "#0a2832"
-              :box '(:line-width 1 :style released-button))
+                     nil
+                     :foreground "LawnGreen"
+                     :background "#0a2832"
+                     :box '(:line-width 1 :style released-button))
 (set-face-attribute  'mode-line-inactive
-              nil
-              :foreground "ForestGreen"
-              :background "gray4"
-              :box '(:line-width 1 :style released-button))
+                     nil
+                     :foreground "ForestGreen"
+                     :background "gray4"
+                     :box '(:line-width 1 :style released-button))
 
 ;; GUI
 (when (display-graphic-p)
@@ -217,7 +217,7 @@
   (set-face-attribute 'region nil :background "blue")
   )
 
-; General Appearance ;;;;;;;;;;;;;;;;;;
+                                        ; General Appearance ;;;;;;;;;;;;;;;;;;
 
 ;; Disable the scroll bar
 (scroll-bar-mode -1)
@@ -331,7 +331,9 @@
 (use-package sudo-edit :straight t)
 (use-package projectile :straight t
   :init (projectile-mode +1)
-  :bind (:map projectile-mode-map ("M-s" . projectile-command-map)))
+  :bind (:map projectile-mode-map ("M-s" . projectile-command-map))
+  :config
+  (setq-default projectile-ignored-projects '("~/")))
 
 (use-package ibuffer-vc :straight t
   :config
@@ -369,8 +371,8 @@
   (setq git-commit-summary-max-length 50)
   (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   (add-hook 'git-commit-mode-hook #'(lambda ()
-                                    (ispell-change-dictionary "en_US")
-                                    (flyspell-mode))))
+                                      (ispell-change-dictionary "en_US")
+                                      (flyspell-mode))))
 (require 'ispell)
 (setq ispell-program-name "/usr/bin/aspell")
 
@@ -385,8 +387,8 @@
   "Close current buffer and find file from current path."
   (interactive)
   (let ((dirname (buffer-name)))
-  (magit-status)
-  (kill-buffer dirname)))
+    (magit-status)
+    (kill-buffer dirname)))
 (defun find-magit-project-root (project)
   "Open magit starting from a PROJECT root."
   (interactive (list (completing-read
@@ -459,7 +461,7 @@
                     omnisharp org-present zmusic osx-dictionary outline p4
                     (package-menu package)
                     pass
-                    (pdf pdf-view)
+                    ;; (pdf pdf-view)
                     popup proced
                     (process-menu simple)
                     prodigy profiler python quickrun racer racket-describe realgud reftex restclient rg ripgrep rjsx-mode robe rtags ruby-mode scroll-lock sh-script shortdoc simple slime sly speedbar tab-bar tablist tabulated-list tar-mode telega
@@ -494,9 +496,9 @@
   (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                    :background nil
-                    :height 100
-                    :italic t)))
+                   :background nil
+                   :height 100
+                   :italic t)))
   :config
   (global-blamer-mode 1))
 
@@ -584,10 +586,10 @@
 
 ;; Update PDF buffers after successful LaTeX runs
 (add-hook 'TeX-after-compilation-finished-functions
-           #'TeX-revert-document-buffer)
+          #'TeX-revert-document-buffer)
 
-;; (use-package company-bibtex :straight t
-;;   :config (add-to-list 'company-backends 'company-bibtex))
+(use-package company-bibtex :straight t
+  :config (add-to-list 'company-backends 'company-bibtex))
 
 (use-package auctex-latexmk :straight t
   :init (with-eval-after-load 'tex (auctex-latexmk-setup))
@@ -774,7 +776,7 @@ See URL `https://github.com/golangci/golangci-lint'."
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                                        ;                 rust                ;
+;;                                    rust                                    ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package rustic :straight t
@@ -868,7 +870,7 @@ See URL `https://github.com/golangci/golangci-lint'."
   (server-start))
 
 (org-roam-db-autosync-enable)
-(org-agenda nil " ")
+(org-agenda nil "1")
 (kill-buffer "*scratch*")
 
 (put 'upcase-region 'disabled nil)
