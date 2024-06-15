@@ -516,7 +516,21 @@
 
 (use-package yaml-mode :straight t)
 
-;; (use-package reformatter :straight t)
+(use-package gitlab-ci-mode :straight t)
+
+(use-package web-mode :straight t)
+
+(use-package impatient-mode :straight t)
+
+;; (use-package format-all :straight t)
+
+(use-package corfu :straight t)
+
+(use-package apheleia :straight t)
+
+(use-package treesit-auto :straight t
+  :config
+  (global-treesit-auto-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
@@ -600,6 +614,7 @@
   (add-hook 'sh-mode-hook #'lsp-deferred)
   (add-hook 'rustic-mode-hook #'lsp-deferred)
   (add-hook 'java-mode-hook #'lsp-deferred)
+  (add-hook 'typescript-ts-mode-hook #'lsp-deferred)
   (setq gc-cons-threshold 100000000)
   (setq lsp-file-watch-threshold 20000)
   :config
@@ -621,9 +636,27 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package dap-mode :straight t)
-;TODO: add dap support to c, c++
+                                        ;TODO: add dap support to c, c++
 ;; (require 'dap-lldb)
 (require 'dap-cpptools)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                  ts-react                                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package coverlay :straight t)
+(use-package origami :straight t)
+(use-package css-in-js-mode :straight '(css-in-js-mode :type git
+                                                       :host github
+                                                       :repo "orzechowskid/tree-sitter-css-in-js"))
+
+;; requires tree sitter, and system packages:
+;; https://archlinux.org/packages/extra/any/typescript/
+(use-package typescript-ts-mode
+  :config
+  (add-hook 'typescript-ts-mode #'apheleia-mode)
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                golang               ;
