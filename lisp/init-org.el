@@ -23,11 +23,13 @@
       org-refile-targets '((nil :maxlevel . 3)
                            (org-agenda-files :level . 1))
       org-tags-column 80
-      org-noter-notes-window-location 'other-frame
-      org-format-latex-options (plist-put org-format-latex-options :scale 1.8)
+      org-noter-notes-window-location 'horizontal-split
+      org-noter-always-create-frame 'nil
+      org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
       org-roam-server-port 1784
       org-startup-with-inline-images 'inlineimages
-      org-habit-graph-column 70
+      org-habit-graph-column 100
+      org-habit-preceding-days 30
       org-display-remote-inline-images 'download
       org-adapt-indentation t
       org-edit-src-content-indentation 0
@@ -47,13 +49,10 @@
 ;; (setq org-agenda-files (append org-agenda-directory org-journal-last-eight-days-files))
 ;; (setq org-agenda-files (append (list org-agenda-directory) org-journal-last-eight-days-files))
 
-(defvar org-study-backlog-file (concat org-directory "roam/" "20221121131908-study_backlog.org"))
-
 ;; (defvar org-mo611-file (concat org-directory "roam/" "20230304135847-unicamp_mo611_teleprocessamento_e_redes.org"))
 ;; (defvar org-mo601-file (concat org-directory "roam/" "20230304142110-unicamp_mo601_arquitetura_de_computadores_ii.org"))
 
-(setq org-agenda-files (append (directory-files-recursively org-agenda-directory ".org$")
-                        (list org-study-backlog-file)))
+(setq org-agenda-files (append (directory-files-recursively org-agenda-directory ".org$")))
 
 (defvar org-capture-todo-file (concat org-agenda-directory "inbox.org"))
 (defvar org-capture-wishlist-file (concat org-agenda-directory "3-resources/wishlist/wishlist.org"))
@@ -171,7 +170,27 @@
                   (todo ""
                         ((org-agenda-overriding-header "Carrer")
                          (org-agenda-files '(,(expand-file-name org-capture-professional-file)))))
-                 ))
+                  )
+                 ;; ((org-agenda-tag-filter-preset '("-mtf")))
+                 )
+                ("1" "Misc"
+                 ((agenda ""
+                          ((org-agenda-start-day "-2d")
+                           (org-agenda-span 10)
+                           (org-deadline-warning-days 365)))
+                  (todo ""
+                        ((org-agenda-overriding-header "To Refile")
+                         (org-agenda-files '(,(expand-file-name org-capture-todo-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Wishlist")
+                         (org-agenda-files '(,(expand-file-name org-capture-wishlist-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Emails")
+                         (org-agenda-files '(,(expand-file-name org-capture-email-file)))))
+                  (todo ""
+                        ((org-agenda-overriding-header "Carrer")
+                         (org-agenda-files '(,(expand-file-name org-capture-professional-file)))))
+                  ))
                 ("r" "Review"
                  ((agenda ""
                           ((org-agenda-start-day "-7d")
@@ -389,15 +408,15 @@
            :unnarrowed t)
 
           ("p" "presentation" plain "%?"
-           :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org"
+           :if-new (file+head "projects/presentations/%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+TITLE: ${title}
 #+Author: Vitor Nagata
 #+Email: nagatavit@gmail.com
 #+FILETAGS: presentation
 
-#+REVEAL_INIT_OPTIONS: width:1920, height:1080, margin: 0.1, transition: 'slide',
+#+REVEAL_INIT_OPTIONS: width:1920, height:1080, margin: 0.1, transition: 'slide', slideNumber: true
 #+OPTIONS: toc:1 timestamp:nil
-#+REVEAL_THEME: dracula
+#+REVEAL_THEME: white
 #+REVEAL_PLUGINS: (markdown notes)
 
 * Introduction
@@ -556,7 +575,7 @@
     (setq org-ref-notes-directory "/home/nagata/Org/roam/bib/"
           ;; org-ref-bibliography-notes "/home/nagata/Org/bib/articles.org"
           org-ref-default-bibliography '("/home/nagata/Org/bib/my_library.bib")
-          org-ref-pdf-directory "/home/nagata/Backup/Zotero"))
+          org-ref-pdf-directory "/home/nagata/Zotero"))
 
 (use-package ivy-bibtex :straight t
   :after org
@@ -568,7 +587,7 @@
                                            "}")) ""))))
   (setq bibtex-completion-pdf-field "file"
         bibtex-completion-bibliography '("/home/nagata/Org/bib/my_library.bib")
-        bibtex-completion-library-path '("/home/nagata/Backup/Zotero/")
+        bibtex-completion-library-path '("/home/nagata/Zotero/")
         bibtex-completion-notes-path "/home/nagata/Org/roam/bib/"
         bibtex-completion-notes-template-multiple-files
         (concat
@@ -617,10 +636,11 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((java . t)
+   (python . t)
    (mermaid . t)))
 
 (defun my-org-confirm-babel-evaluate (lang body)
-  (not (member lang '("C" "java" "sh" "mermaid"))))
+  (not (member lang '("C" "java" "sh" "mermaid" "python"))))
 
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
@@ -629,6 +649,11 @@
 (use-package ox-reveal :straight t
   :config
   (setq org-reveal-root "file:///home/nagata/Repos/reveal.js/")
+  )
+
+(use-package org-edna :straight t
+  :config
+  (org-edna-mode)
   )
 
 (provide 'init-org)
