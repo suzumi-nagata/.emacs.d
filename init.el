@@ -750,28 +750,22 @@ See URL `https://github.com/golangci/golangci-lint'."
   (setq lsp-java-java-path "java"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                                        ;               flutter               ;
+;;                                   flutter                                  ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (with-eval-after-load "dart-mode"
-;;   (define-key dart-mode-map (kbd "C-c C-o") 'dart-format-buffer))
+(with-eval-after-load "dart-mode"
+  (define-key dart-mode-map (kbd "C-c C-o") 'lsp-format-buffer))
 
-(use-package dart-mode :straight t
-  :config
-  ;; (require 'reformatter)
-  ;; (reformatter-define dart-format
-  ;;   :program "dart"
-  ;;   :args '("format"))
-  ;; (add-hook 'before-save-hook 'dart-format-buffer)
+(use-package dart-mode :straight t)
 
-  )
 
-(use-package lsp-dart :straight t
+(use-package lsp-dart :straight
   :config
   (setq lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
   (with-eval-after-load "projectile"
-  (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
-  (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+    (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
+    (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+  (add-hook 'before-save-hook 'lsp-format-buffer)
   ;; (setq lsp-auto-guess-root t)
   )
 
