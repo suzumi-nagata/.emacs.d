@@ -30,13 +30,13 @@ Source: https://git.io/vQKzv"
                                    'help-echo (buffer-file-name)))
                "] "
 
-               '(:eval (when (vc-mode)
-                         (concat
-                          "["
-                          (propertize (substring vc-mode 1)
-                                      'face 'font-lock-string-face)
-                          "] "
-                          )))
+               ;; '(:eval (when (vc-mode)
+               ;;           (concat
+               ;;            "["
+               ;;            (propertize (substring vc-mode 1)
+               ;;                        'face 'font-lock-string-face)
+               ;;            "] "
+               ;;            )))
 
                "["  ;; Major mode
                '(:eval (propertize "%m" 'face 'font-lock-string-face)) "] "
