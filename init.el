@@ -618,6 +618,7 @@
   (add-hook 'rustic-mode-hook #'lsp-deferred)
   (add-hook 'java-mode-hook #'lsp-deferred)
   (add-hook 'typescript-ts-mode-hook #'lsp-deferred)
+  (add-hook 'tsx-ts-mode-hook #'lsp-deferred)
   (setq gc-cons-threshold 100000000)
   (setq lsp-file-watch-threshold 20000)
   :config
@@ -666,9 +667,11 @@
 ;; https://archlinux.org/packages/extra/any/typescript/
 (use-package typescript-ts-mode
   :config
-  (add-hook 'typescript-ts-mode #'apheleia-mode)
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
-  )
+  (add-hook 'typescript-ts-base-mode-hook #'apheleia-mode))
+
+(use-package :straight '(tsx-mode :type git
+                                  :host github
+                                  :repo "orzechowskid/tsx-mode.el"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                golang               ;
