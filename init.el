@@ -50,6 +50,7 @@
 (require 'init-org)
 (use-package s :straight t)
 (require 'org-protocol-capture-html)
+(require 'protobuf-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;                             Global Keybindings                              ;
@@ -641,6 +642,15 @@
                                         ;TODO: add dap support to c, c++
 ;; (require 'dap-lldb)
 (require 'dap-cpptools)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                  protobuf                                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package protobuf-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                  ts-react                                  ;
