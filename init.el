@@ -149,7 +149,7 @@
 
 ;; Default font
 ;; (set-frame-font "Input Mono Compressed 11" nil t)
-(add-to-list 'default-frame-alist '(font . "Input Mono Compressed 11"))
+(add-to-list 'default-frame-alist '(font . "InputMonoCompressed Nerd Font 11"))
 
 ;; Base theme
 (if (display-graphic-p)
@@ -158,7 +158,7 @@
       (use-package dracula-theme
         :straight (dracula-theme :type git :host github :repo "dracula/emacs"
                                  :fork (:host github
-                                        :repo "nagatavit/dracula")))
+                                        :repo "suzumi-nagata/dracula")))
       (load-theme 'dracula t))
   (progn
     (use-package monokai-theme :straight t)
@@ -313,7 +313,8 @@
 (define-key ivy-minibuffer-map (kbd "<tab>") #'ivy-partial-or-done)
 (dolist (k '("C-j" "C-RET"))
   (define-key ivy-minibuffer-map (kbd k) #'ivy-immediate-done))
-(use-package ws-butler :straight t :config (add-hook 'prog-mode-hook #'ws-butler-mode))
+;; (use-package ws-butler :straight t :config (add-hook 'prog-mode-hook #'ws-butler-mode))
+;; (add-hook 'prog-mode-hook #'ws-butler-mode)
 (use-package expand-region :straight t)
 (use-package mark-multiple :straight t)
 (use-package swiper :straight t)
