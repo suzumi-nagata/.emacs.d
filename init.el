@@ -638,8 +638,8 @@
 (use-package exec-path-from-shell :straight t
   :config
   (exec-path-from-shell-initialize)
-  (add-to-list 'exec-path "/home/nagata/go/bin")
-  (setenv "GOPATH" "/home/nagata/go"))
+  (add-to-list 'exec-path "/home/suzumi/go/bin")
+  (setenv "GOPATH" "/home/suzumi/go"))
 
 (lsp-register-custom-settings
  '(("gopls.completeUnimported" t t)
@@ -654,8 +654,8 @@
   (setq pyvenv-workon "emacs")  ; Default venv
   (pyvenv-tracking-mode 1))
 
-(add-to-list 'exec-path "/home/nagata/.local/bin")
-(setenv "JAVA_HOME" "/usr/lib/jvm/java-11-openjdk/")
+(add-to-list 'exec-path "/home/suzumi/.local/bin")
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-25-openjdk/")
 
 (lsp-register-custom-settings
  '(("pyls.plugins.pyls_mypy.enabled" t t)
