@@ -410,6 +410,7 @@
   :config
   (evil-define-key 'normal global-map "q" 'er/expand-region)
   (evil-define-key 'normal global-map "ç" 'other-window)
+  (evil-define-key 'normal global-map "m" 'back-to-indentation)
   (evil-define-key 'normal global-map (kbd "C-a") 'evil-beginning-of-line)
   (evil-define-key 'normal global-map (kbd "C-e") 'evil-last-non-blank)
   (evil-define-key 'normal global-map (kbd "C-v") 'golden-ratio-scroll-screen-down)
