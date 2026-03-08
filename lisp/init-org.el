@@ -637,5 +637,15 @@
   (setq org-reveal-root "file:///home/nagata/Repos/reveal.js/")
   )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                    hugo                                    ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package ox-hugo :straight t
+  :after ox
+  :config
+  (setq-default org-hugo-base-dir "/home/suzumi/Documents/suzumi-nagata.github.io/"))
+
+
 (provide 'init-org)
 ;;; init-org.el ends here
