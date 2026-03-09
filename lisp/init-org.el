@@ -27,13 +27,14 @@
       org-format-latex-options (plist-put org-format-latex-options :scale 1.8)
       org-roam-server-port 1784
       org-startup-with-inline-images 'inlineimages
-      org-habit-graph-column 70
+      org-habit-graph-column 100
       org-display-remote-inline-images 'download
       org-adapt-indentation t
       org-edit-src-content-indentation 0
       org-agenda-block-separator nil
       org-agenda-start-with-log-mode t
       org-tags-sort-function 'org-string-collate-lessp
+      org-cite-csl-styles-dir "/home/suzumi/.emacs.d/styles/"
       )
 
 (setq org-agenda-sorting-strategy
