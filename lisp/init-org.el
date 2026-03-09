@@ -34,6 +34,7 @@
       org-agenda-block-separator nil
       org-agenda-start-with-log-mode t
       org-tags-sort-function 'org-string-collate-lessp
+      org-cite-csl-styles-dir "/home/suzumi/.emacs.d/styles/"
       )
 
 (setq org-agenda-sorting-strategy

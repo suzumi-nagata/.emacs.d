@@ -10,3 +10,8 @@
 #+hugo_draft: false
 #+hugo_section: ${2:posts}
 #+hugo_custom_front_matter: :image $3
+#+cite_export: csl elsevier-vancouver.csl
+
+$0
+
+#+print_bibliography:
