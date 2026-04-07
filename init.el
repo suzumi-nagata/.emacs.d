@@ -378,6 +378,8 @@
 (require 'ispell)
 (setq ispell-program-name "/usr/bin/aspell")
 
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
 (defun show-trailing-whitespace ()
   "Enable display of trailing whitespace in this buffer."
   (setq-local show-trailing-whitespace t))
