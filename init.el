@@ -149,7 +149,7 @@
 
 ;; Default font
 ;; (set-frame-font "Input Mono Compressed 11" nil t)
-(add-to-list 'default-frame-alist '(font . "InputMonoCompressed Nerd Font 11"))
+(add-to-list 'default-frame-alist '(font . "InputMonoCompressed 11"))
 
 ;; Base theme
 (if (display-graphic-p)
@@ -382,7 +382,7 @@
   (setq-local show-trailing-whitespace t))
 (dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
   (add-hook hook 'show-trailing-whitespace))
-(use-package vterm :straight t)
+;; (use-package vterm :straight t)
 
 (defun close-wrong-buffer-and-magit ()
   "Close current buffer and find file from current path."
@@ -522,6 +522,11 @@
 
 ;; (use-package reformatter :straight t)
 
+;; (use-package eldoc-box :straight t
+;;   :config
+;;   (eldoc-box-mode +1)
+;;   )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -613,7 +618,15 @@
   :commands (lsp lsp-deferred))
 
 (use-package lsp-ui :straight t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t           ; Enable documentation popups
+        lsp-ui-doc-delay 0          ; Delay for hover popup (in seconds)
+        lsp-ui-doc-position 'top ; Position the popup near the cursor
+        lsp-ui-sideline-enable nil    ; Disable sideline if you prefer popups only
+        lsp-eldoc-enable-hover nil
+        lsp-ui-flycheck-enable t)     ; Enable flycheck popups
+  )
 
 (use-package lsp-ivy :straight t)
 
