@@ -1,91 +1,51 @@
-;;; modeline --- custom modeline
-;;; Commentary:
-;;; Code:
+;;; modeline --- custom modeline (Android optimized)
 
-;; flycheck
+;; flycheck lighter (safe)
 (defun d/flycheck-lighter (state)
-  "Return flycheck information for the given error type STATE.
+  (when (and (bound-and-true-p flycheck-mode)
+             (fboundp 'flycheck-count-errors))
+    (let* ((counts (flycheck-count-errors flycheck-current-errors))
+           (errorp (flycheck-has-current-errors-p state))
+           (err (or (cdr (assq state counts)) "?"))
+           (running (eq 'running flycheck-last-status-change)))
+      (if (or errorp running) (format "•%s" err)))))
 
-Source: https://git.io/vQKzv"
-  (let* ((counts (flycheck-count-errors flycheck-current-errors))
-         (errorp (flycheck-has-current-errors-p state))
-         (err (or (cdr (assq state counts)) "?"))
-         (running (eq 'running flycheck-last-status-change)))
-    (if (or errorp running) (format "•%s" err))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                               custom modeline                               ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Thanks to https://www.reddit.com/r/emacs/comments/701pzr/flycheck_error_tally_in_custom_mode_line/
 (setq-default mode-line-format
               (list
-
-               "["  ;; Size of file
-               (propertize "%I" 'face 'font-lock-constant-face)
-               "] "
-
-               "["  ;; Buffer name with file name as tooltip
-               '(:eval (propertize "%b" 'face 'font-lock-keyword-face
-                                   'help-echo (buffer-file-name)))
-               "] "
+               "[" (propertize "%I" 'face 'font-lock-constant-face) "] "
+               "[" '(:eval (propertize "%b" 'face 'font-lock-keyword-face
+                                   'help-echo (buffer-file-name))) "] "
 
                '(:eval (when (vc-mode)
-                         (concat
-                          "["
-                          (propertize (substring vc-mode 1)
-                                      'face 'font-lock-string-face)
-                          "] "
-                          )))
+                         (concat "[" (propertize (substring vc-mode 1)
+                                      'face 'font-lock-string-face) "] ")))
 
-               "["  ;; Major mode
-               '(:eval (propertize "%m" 'face 'font-lock-string-face)) "] "
+               "[" '(:eval (propertize "%m" 'face 'font-lock-string-face)) "] "
 
-               ;; god mode
-               '(:eval (if (bound-and-true-p god-local-mode)
-                           (progn
-                             (set-face-attribute  'mode-line
-                                                  nil
-                                                  :foreground "#209d6e"
-                                                  :background "#490f25"
-                                                  :box '(:line-width 1 :style released-button))
+               ;; Colors based on state (simplified)
+               '(:eval (progn
+                         (set-face-attribute  'mode-line nil
+                                              :foreground "LawnGreen"
+                                              :background "#0a2832"
+                                              :box '(:line-width 1 :style released-button))
+                         (set-face-attribute  'mode-line-inactive nil
+                                              :foreground "ForestGreen"
+                                              :background "gray4"
+                                              :box '(:line-width 1 :style released-button))
+                         ""))
 
-                             (set-face-attribute  'mode-line-inactive
-                                                  nil
-                                                  :foreground "#c57b57"
-                                                  :background "#080340"
-                                                  :box '(:line-width 1 :style released-button)))
-                         (progn
-                           (set-face-attribute  'mode-line
-                                                nil
-                                                :foreground "LawnGreen"
-                                                :background "#0a2832"
-                                                :box '(:line-width 1 :style released-button))
-
-                           (set-face-attribute  'mode-line-inactive
-                                                nil
-                                                :foreground "ForestGreen"
-                                                :background "gray4"
-                                                :box '(:line-width 1 :style released-button))
-                           )
-                         ))
-
-               "[" ;; Line, column and percentage
-               (propertize "%01l" 'face 'font-lock-type-face)
-               ","
-               (propertize "%01c" 'face 'font-lock-type-face)
-               ":"
+               "[" (propertize "%01l" 'face 'font-lock-type-face) ","
+               (propertize "%01c" 'face 'font-lock-type-face) ":"
                '(:eval (propertize "%q" 'face 'font-lock-type-face))
                '(:eval (if (use-region-p)
-                           (concat
-                            ":"
-                            (propertize (number-to-string (abs (- (point) (mark)))) 'face 'font-lock-type-face)
-                            )))
+                           (concat ":" (propertize (number-to-string (abs (- (point) (mark))))
+                                                   'face 'font-lock-type-face))))
                "] "
 
-               ;; flycheck errors
+               ;; flycheck errors (safe)
                '(:eval
                  (when (and (bound-and-true-p flycheck-mode)
+                            (fboundp 'flycheck-count-errors)
                             (or flycheck-current-errors
                                 (eq 'running flycheck-last-status-change)))
                    (concat "["
@@ -94,43 +54,26 @@ Source: https://git.io/vQKzv"
                                                    (info . "#83A598"))
                                     as lighter = (d/flycheck-lighter (car state))
                                     when lighter
-                                    concat (propertize
-                                            lighter
-                                            'face `(:foreground ,(cdr state))))
+                                    concat (propertize lighter 'face `(:foreground ,(cdr state))))
                            "] ")))
-
-               ;; "["  ;; minor modes (for now until I decide what is needed or not)
-               ;; 'minor-mode-alist
-               ;; "] "
 
                ;; flyspell indicator
                '(:eval (when (bound-and-true-p flyspell-mode)
-                         (propertize
-                          "[SPL] "
-                          'face 'font-lock-string-face)))
+                         (propertize "[SPL] " 'face 'font-lock-string-face)))
 
-               ;; lsp indicator on prog mode
-               '(:eval (when (derived-mode-p 'prog-mode)
-                         (concat
-                          "["
-                          (substring (lsp-mode-line) 1)
-                          "] ")))
+               ;; lsp indicator (safe)
+               '(:eval (when (and (derived-mode-p 'prog-mode)
+                                  (bound-and-true-p lsp-mode)
+                                  (fboundp 'lsp-mode-line))
+                         (concat "[" (substring (lsp-mode-line) 1) "] ")))
 
-               "[" ;; time and date
-               '(:eval (propertize
-                        (format-time-string "%H:%M - %d/%B/%Y")
-                        'face 'font-lock-builtin-face))
-               "] "
+               "[" '(:eval (propertize (format-time-string "%H:%M - %d/%B/%Y")
+                                       'face 'font-lock-builtin-face)) "] "
 
-               ;; Modified/Read only
                '(:eval (when (buffer-modified-p)
-                         (propertize "[MOD]"
-                                     'face 'font-lock-warning-face
-                                     'help-echo "Buffer has been modified")))
+                         (propertize "[MOD]" 'face 'font-lock-warning-face)))
                '(:eval (when buffer-read-only
-                         (propertize "[RO]"
-                                     'face 'font-lock-type-face
-                                     'help-echo "Buffer is read only")))
+                         (propertize "[RO]" 'face 'font-lock-type-face)))
                ))
 
 (provide 'modeline)

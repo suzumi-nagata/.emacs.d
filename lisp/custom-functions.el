@@ -1,6 +1,4 @@
 ;;; custom-functions.el --- custom util functions -*- lexical-binding: t; -*-
-;;; Commentary:
-;;; Code:
 
 (defun bk/copy-whole-line ()
   "Copies a line without regard for cursor position."
@@ -19,9 +17,6 @@
   (backward-word)
   (kill-word 1))
 
-;;----------------------------------------------------------------------------
-;; Proper C-w behavior (borrowed from https://stackoverflow.com/a/14047437/3581311)
-;;----------------------------------------------------------------------------
 (defun kill-region-or-backward-word ()
   "If the region is active and non-empty, call `kill-region'.
 Otherwise, call `backward-kill-word'."
@@ -29,9 +24,6 @@ Otherwise, call `backward-kill-word'."
   (call-interactively
    (if (use-region-p) 'kill-region 'backward-kill-word)))
 
-;;----------------------------------------------------------------------------
-;; duplicate line
-;;----------------------------------------------------------------------------
 (defun duplicate-line()
   "Duplicate current line."
   (interactive)
@@ -41,9 +33,6 @@ Otherwise, call `backward-kill-word'."
     (newline)
     (insert sline)))
 
-;;----------------------------------------------------------------------------
-;; Move the current line up (and down)
-;;----------------------------------------------------------------------------
 (defun move-line-up ()
   "Move current line up one line."
   (interactive)
@@ -57,10 +46,6 @@ Otherwise, call `backward-kill-word'."
   (transpose-lines 1)
   (forward-line -1))
 
-;;----------------------------------------------------------------------------
-;; Insert pairs: insert a pair from the arguments. If the region is selected
-;; put the pair around the region.
-;;----------------------------------------------------------------------------
 (defun my-insert-pair (open close)
   (if (region-active-p)
       (progn
@@ -73,9 +58,6 @@ Otherwise, call `backward-kill-word'."
     (insert open close))
   (backward-char))
 
-;;----------------------------------------------------------------------------
-;; Curly brackets insertion
-;;----------------------------------------------------------------------------
 (defun insert-curly-braces()
   (interactive)
   (end-of-line)
@@ -89,19 +71,11 @@ Otherwise, call `backward-kill-word'."
   (forward-line -1)
   (end-of-line))
 
-;;----------------------------------------------------------------------------
-;; Open line and tabs
-;;----------------------------------------------------------------------------
 (defun open-line-with-reindent (n)
-  "A version of `open-line' which reindents the start and end positions.
-  If there is a fill prefix and/or a `left-margin', insert them
-  on the new line if the line would have been blank.
-  With arg N, insert N newlines."
   (interactive "*p")
   (let* ((do-fill-prefix (and fill-prefix (bolp)))
          (do-left-margin (and (bolp) (> (current-left-margin) 0)))
          (loc (point-marker))
-         ;; Don't expand an abbrev before point.
          (abbrev-mode nil))
     (delete-horizontal-space t)
     (newline n)
@@ -119,28 +93,13 @@ Otherwise, call `backward-kill-word'."
     (end-of-line)
     (indent-according-to-mode)))
 
-;; If you have a ansi colored file
-(require 'ansi-color)
-(defun display-ansi-colors ()
-  (interactive)
-  (ansi-color-apply-on-region (point-min) (point-max)))
-
-(defun show-trailing-whitespace ()
-  "Enable display of trailing whitespace in this buffer."
-  (setq-local show-trailing-whitespace t))
-
-(dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-  (add-hook hook 'show-trailing-whitespace))
-
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 (defun my/autosave-backup-dirs()
   (let ((emacs-bkp-dir (expand-file-name "emacs-backups/" user-emacs-directory)))
     (unless (file-exists-p emacs-bkp-dir)
       (make-directory emacs-bkp-dir))
-    ;; don't know why this variable isn't setting properly, so it is hardcoded
-    ;; for now
-    (setq backup-directory-alist '(("." . "~/.emacs.d/emacs-backups/")))
+    (setq backup-directory-alist `(("." . ,emacs-bkp-dir)))
     )
   (let ((emacs-save-dir (expand-file-name "emacs-saves/" user-emacs-directory)))
     (unless (file-exists-p emacs-save-dir)
@@ -149,24 +108,6 @@ Otherwise, call `backward-kill-word'."
     )
   )
 
-;;----------------------------------------------------------------------------
-;; Close compilation buffer if there is no errors
-;;----------------------------------------------------------------------------
-
-(setq compilation-finish-function
-      (lambda (buf str)
-        (if (null (string-match ".*exited abnormally.*" str))
-            ;;no errors, make the compilation window go away in a few seconds
-            (progn
-              (run-at-time
-               "2 sec" nil 'delete-windows-on
-               (get-buffer-create "*compilation*"))
-              (message "No Compilation Errors!")))))
-
-;;----------------------------------------------------------------------------
-;; If you have open a wrong buffer but want to keep searching the right one
-;;----------------------------------------------------------------------------
-
 (defun close-wrong-buffer-and-find-file ()
   "Close current buffer and find file from current path."
   (interactive)
@@ -174,94 +115,6 @@ Otherwise, call `backward-kill-word'."
   (call-interactively #'find-file)
   (kill-buffer dirname))
   )
-
-;;----------------------------------------------------------------------------
-;; Find a file from a list of projects
-;;----------------------------------------------------------------------------
-
-(require 'cl-lib)
-
-(defun alist-project-files (full-file-path)
-  "Build an alist from the files in FULL-FILE-PATH."
-  (interactive)
-  (let ((full-path-name (expand-file-name full-file-path)))
-    (cl-pairlis (directory-files full-path-name nil "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)")
-                (directory-files full-path-name 1 "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))))
-
-(defvar projects-roots-path)
-(setq projects-roots-path '(("downloads" . "~/Downloads")
-                            ("init" . "~/.emacs.d")))
-;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/.config")))
-;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming")))
-;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/go")))
-;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/c")))
-;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/java")))
-;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Org")))
-
-(defun find-file-project-root (project)
-  "Find file starting from a PROJECT root."
-  (interactive (list (completing-read
-                      "Select a project: "
-                      projects-roots-path
-                      nil t)))
-  (find-file (cdr (assoc project projects-roots-path)))
-  (close-wrong-buffer-and-find-file))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                                        ;      Org agenda last day files      ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun org-journal-last-files (org-journal-file-path)
-  "Return a list with the last 8 days from the files in ORG-JOURNAL-FILE-PATH."
-  (interactive)
-  (let ((full-path-name (expand-file-name org-journal-file-path))
-        (current-date-delta 0)
-        (journal-files-regex "^\\("))
-    (while (> current-date-delta -8)
-      (setq journal-files-regex
-            (concat journal-files-regex
-                    (format-time-string "%Y-%m-%d"
-                                        ;; multiply current-date-delta with seconds in a day
-                                        (time-add (current-time) (* current-date-delta 86400)))))
-      (setq current-date-delta (1- current-date-delta))
-      (if (not (eq current-date-delta -8))
-          (setq journal-files-regex (concat journal-files-regex "\\|"))
-        (setq journal-files-regex (concat journal-files-regex "\\)"))
-        )
-      )
-    (directory-files full-path-name 1 journal-files-regex)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Reverse characters in a line. Taken from:
-;; https://emacs.stackexchange.com/questions/38156/reversing-the-order-of-letters-characters-of-a-selected-region
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun horizontal-reverse-region (beg end)
-  "Reverse characters between BEG and END."
- (interactive "r")
- (let ((region (buffer-substring beg end)))
-   (delete-region beg end)
-   (insert (nreverse region))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             ; Make the bg transparent (for pretty terminals) ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun make-bg-transparent ()
-  "Make the background of Emacs transparent."
-  (interactive)
-  (set-face-background 'default "unspecified-bg" (selected-frame)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Copy current file name and line (stolen from https://gist.github.com/kristianhellquist/3082383) ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun copy-current-line-position-to-clipboard ()
-  "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
-  (interactive)
-  (let ((path-with-line-number
-         (concat (buffer-file-name) ":" (number-to-string (line-number-at-pos)))))
-    (kill-new path-with-line-number)
-    (message (concat path-with-line-number " copied to clipboard"))))
 
 (provide 'custom-functions)
 ;;; custom-functions.el ends here
