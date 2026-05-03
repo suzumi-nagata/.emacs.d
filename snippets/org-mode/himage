@@ -3,5 +3,7 @@
 # key: himage
 # --
 
-#+ATTR_HTML: :alt $2
-#+ATTR_HTML: :title $1
+#+name: $1
+#+caption: $2
+#+attr_html: :class centered-figure
+$0
