@@ -658,7 +658,15 @@
   :commands (lsp lsp-deferred))
 
 (use-package lsp-ui :straight t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t           ; Enable documentation popups
+        lsp-ui-doc-delay 0          ; Delay for hover popup (in seconds)
+        lsp-ui-doc-position 'top ; Position the popup near the cursor
+        lsp-ui-sideline-enable nil    ; Disable sideline if you prefer popups only
+        lsp-eldoc-enable-hover nil
+        lsp-ui-flycheck-enable t)     ; Enable flycheck popups
+  )
 
 (use-package lsp-ivy :straight t)
 

@@ -34,6 +34,7 @@
       org-agenda-block-separator nil
       org-agenda-start-with-log-mode t
       org-tags-sort-function 'org-string-collate-lessp
+      org-cite-global-bibliography '("/home/suzumi/Org/bib/zotero.bib")
       org-cite-csl-styles-dir "/home/suzumi/.emacs.d/styles/"
       )
 
@@ -646,6 +647,19 @@
   :after ox
   :config
   (setq-default org-hugo-base-dir "/home/suzumi/Documents/suzumi-nagata.github.io/"))
+
+(with-eval-after-load 'ox-hugo
+  (defun my/ox-hugo-export-block-latex (export-block _contents _info)
+    "Export LATEX blocks as raw Markdown, ensuring no leading indentation."
+    (when (string= (org-element-property :type export-block) "LATEX")
+      (let ((value (org-element-property :value export-block)))
+        ;; 1. Remove the common indentation from the block
+        ;; 2. Wrap in newlines to ensure it's a separate Markdown block
+        (concat "\n\n" (org-remove-indentation value) "\n\n"))))
+
+  ;; Intercept the Hugo exporter for LATEX blocks
+  (advice-add 'org-hugo-export-block :before-until #'my/ox-hugo-export-block-latex))
+
 
 
 (provide 'init-org)
