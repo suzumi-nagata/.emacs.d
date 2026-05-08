@@ -567,6 +567,46 @@
               ("C-c n b" . obsidian-backlink-jump)))
 
 
+(add-hook 'markdown-mode-hook '(lambda () (setq-local fill-column 90)))
+
+(use-package obsidian
+  :straight t
+  :custom
+  ;; location of obsidian vault
+  (obsidian-directory "~/garden/content/")
+  (obsidian-inbox-directory "~/garden/content/")
+  (obsidian-daily-notes-directory "~/garden/content/Dailies")
+
+  ;; Default location for new notes from `obsidian-capture'
+  (obsidian-inbox-directory "Inbox")
+  ;; Useful if you're going to be using wiki links
+  (markdown-enable-wiki-links t)
+
+  :init
+  (add-hook 'markdown-mode-hook
+            (lambda ()
+              (let ((vault-path (file-truename "~/garden/content/"))
+                    (file-path (and buffer-file-name (file-truename buffer-file-name))))
+                (when (and file-path (string-prefix-p vault-path file-path))
+                  (require 'obsidian)
+                  (obsidian-mode 1)
+                  (obsidian-backlinks-mode 1)))))
+
+  ;; These bindings are only suggestions; it's okay to use other bindings
+  :bind (:map obsidian-mode-map
+              ;; Create note
+              ("C-c n ç" . obsidian-capture)
+              ;; If you prefer you can use `obsidian-insert-wikilink'
+              ("C-c n i" . obsidian-insert-wikilink)
+              ("C-c C-l" . obsidian-insert-link)
+              ;; Open file pointed to by link at point
+              ("C-c n o" . obsidian-follow-link-at-point)
+              ;; Open a different note from vault
+              ("C-c n f" . obsidian-jump)
+              ;; Follow a backlink for the current file
+              ("C-c n b" . obsidian-backlink-jump)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
