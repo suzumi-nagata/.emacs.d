@@ -660,7 +660,20 @@
   ;; Intercept the Hugo exporter for LATEX blocks
   (advice-add 'org-hugo-export-block :before-until #'my/ox-hugo-export-block-latex))
 
+(with-eval-after-load 'oc-csl
+  ;; Re-evaluating the strategy: :filter-return only gets the output string.
+  ;; Let's use :around instead to have access to all arguments.
+  (defun my/org-cite-csl-render-bibliography-hugo-around (orig-fun keys files style props backend info)
+    "Restore inline CSS for Hugo exports, as it ignores the HTML head."
+    (let ((output (funcall orig-fun keys files style props backend info)))
+      (if (and (org-export-derived-backend-p backend 'hugo)
+               (not (plist-get info :hugo-csl-styles-added)))
+          (progn
+            (plist-put info :hugo-csl-styles-added t)
+            (concat (org-cite-csl--generate-html-head info) output))
+        output)))
 
+  (advice-add 'org-cite-csl-render-bibliography :around #'my/org-cite-csl-render-bibliography-hugo-around))
 
 (provide 'init-org)
 ;;; init-org.el ends here
