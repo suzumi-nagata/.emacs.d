@@ -27,7 +27,7 @@
       org-format-latex-options (plist-put org-format-latex-options :scale 1.8)
       org-roam-server-port 1784
       org-startup-with-inline-images 'inlineimages
-      org-habit-graph-column 70
+      org-habit-graph-column 120
       org-display-remote-inline-images 'download
       org-adapt-indentation t
       org-edit-src-content-indentation 0
