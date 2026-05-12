@@ -51,6 +51,10 @@
 (use-package s :straight t)
 (require 'org-protocol-capture-html)
 
+(setq package-install-upgrade-built-in t)
+
+(progn (unload-feature 'transient t) (require 'transient))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                             Global Keybindings                              ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
