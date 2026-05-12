@@ -600,7 +600,7 @@
               ("C-c n i" . obsidian-insert-wikilink)
               ("C-c C-l" . obsidian-insert-link)
               ;; Open file pointed to by link at point
-              ("C-c n o" . obsidian-follow-link-at-point)
+              ("C-c C-o" . obsidian-follow-link-at-point)
               ;; Open a different note from vault
               ("C-c n f" . obsidian-jump)
               ;; Follow a backlink for the current file
