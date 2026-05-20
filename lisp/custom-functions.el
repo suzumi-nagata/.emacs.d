@@ -2,6 +2,15 @@
 ;;; Commentary:
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                Path Settings                                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar my/backup-dir (expand-file-name "emacs-backups/" user-emacs-directory))
+(defvar my/save-dir (expand-file-name "emacs-saves/" user-emacs-directory))
+(defvar my/projects-roots-path '(("downloads" . "~/Downloads")
+                                 ("init" . "~/.emacs.d")))
+
 (defun bk/copy-whole-line ()
   "Copies a line without regard for cursor position."
   (interactive)
@@ -135,14 +144,14 @@ Otherwise, call `backward-kill-word'."
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 (defun my/autosave-backup-dirs()
-  (let ((emacs-bkp-dir (expand-file-name "emacs-backups/" user-emacs-directory)))
+  (let ((emacs-bkp-dir my/backup-dir))
     (unless (file-exists-p emacs-bkp-dir)
       (make-directory emacs-bkp-dir))
     ;; don't know why this variable isn't setting properly, so it is hardcoded
     ;; for now
-    (setq backup-directory-alist '(("." . "~/.emacs.d/emacs-backups/")))
+    (setq backup-directory-alist `(("." . ,my/backup-dir)))
     )
-  (let ((emacs-save-dir (expand-file-name "emacs-saves/" user-emacs-directory)))
+  (let ((emacs-save-dir my/save-dir))
     (unless (file-exists-p emacs-save-dir)
       (make-directory emacs-save-dir))
     (setq auto-save-file-name-transforms `((".*", emacs-save-dir t)))
@@ -189,8 +198,7 @@ Otherwise, call `backward-kill-word'."
                 (directory-files full-path-name 1 "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))))
 
 (defvar projects-roots-path)
-(setq projects-roots-path '(("downloads" . "~/Downloads")
-                            ("init" . "~/.emacs.d")))
+(setq projects-roots-path my/projects-roots-path)
 ;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/.config")))
 ;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming")))
 ;; (setq projects-roots-path (append projects-roots-path (alist-project-files "~/Programming/go")))

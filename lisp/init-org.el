@@ -2,6 +2,22 @@
 ;;; Commentary:
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                Path Settings                                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar my/org-dir "/home/suzumi/Org/")
+(defvar my/org-roam-dir (expand-file-name "roam" my/org-dir))
+(defvar my/zotero-bib-file (expand-file-name "bib/zotero.bib" my/org-dir))
+(defvar my/csl-styles-dir (expand-file-name "styles/" user-emacs-directory))
+(defvar my/org-roam-bib-template-file (expand-file-name "templates/org-roam-bib-template.org" user-emacs-directory))
+(defvar my/org-ref-notes-file (expand-file-name "bib/notes.org" my/org-dir))
+(defvar my/org-ref-articles-file (expand-file-name "bib/articles.org" my/org-dir))
+(defvar my/zotero-pdf-dir "/home/suzumi/Backup/Zotero")
+(defvar my/hugo-base-dir "/home/suzumi/Documents/suzumi-nagata.github.io/")
+(defvar my/chromium-binary "/usr/bin/chromium")
+(defvar my/mmdc-binary "/usr/bin/mmdc")
+
 (straight-override-recipe
    '(org :type git :host github :repo "emacsmirror/org"))
 (use-package org :straight t)
@@ -11,7 +27,7 @@
 (setq-default major-mode 'org-mode)
 (setq initial-major-mode 'org-mode)
 
-(setq org-directory "/home/suzumi/Org/"
+(setq org-directory my/org-dir
       org-ellipsis "⬎"
       org-archive-location (concat "archive/" "%s_archive::")
       org-log-into-drawer t
@@ -34,8 +50,8 @@
       org-agenda-block-separator nil
       org-agenda-start-with-log-mode t
       org-tags-sort-function 'org-string-collate-lessp
-      org-cite-global-bibliography '("/home/suzumi/Org/bib/zotero.bib")
-      org-cite-csl-styles-dir "/home/suzumi/.emacs.d/styles/"
+      org-cite-global-bibliography (list my/zotero-bib-file)
+      org-cite-csl-styles-dir my/csl-styles-dir
       )
 
 (setq org-agenda-sorting-strategy
@@ -331,7 +347,7 @@
 (use-package org-roam :straight t
   :init
   (setq org-roam-v2-ack t)
-  (setq-default org-roam-directory (file-truename "/home/suzumi/Org/roam"))
+  (setq-default org-roam-directory (file-truename my/org-roam-dir))
 
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
@@ -391,7 +407,7 @@
            :unnarrowed t)
 
           ("r" "bibliography reference" plain
-           (file "~/.emacs.d/templates/org-roam-bib-template.org")
+           (file my/org-roam-bib-template-file)
            :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)
 
@@ -536,10 +552,10 @@
 (use-package org-ref :straight t
     :after org
     :init
-    (setq org-ref-notes-directory "/home/suzumi/Org/bib/notes.org"
-          org-ref-bibliography-notes "/home/suzumi/Org/bib/articles.org"
-          org-ref-default-bibliography '("/home/suzumi/Org/bib/zotero.bib")
-          org-ref-pdf-directory "/home/suzumi/Backup/Zotero")
+    (setq org-ref-notes-directory my/org-ref-notes-file
+          org-ref-bibliography-notes my/org-ref-articles-file
+          org-ref-default-bibliography (list my/zotero-bib-file)
+          org-ref-pdf-directory my/zotero-pdf-dir)
     )
 
 (use-package ivy-bibtex :straight t
@@ -551,9 +567,9 @@
                                            (mapconcat 'identity x ",")
                                            "}")) ""))))
   (setq bibtex-completion-pdf-field "file"
-        bibtex-completion-bibliography '("/home/suzumi/Org/bib/zotero.bib")
+        bibtex-completion-bibliography (list my/zotero-bib-file)
         ;; bibtex-completion-library-path '("/home/suzumi/Backup/Zotero/")
-        bibtex-completion-notes-path "/home/suzumi/Org/bib/articles.org"
+        bibtex-completion-notes-path my/org-ref-articles-file
         bibtex-completion-notes-template-multiple-files
         (concat
          "#+title: ${title}\n"
@@ -592,11 +608,11 @@
 
 (use-package mermaid-mode :straight t)
 
-(setenv "PUPPETEER_EXECUTABLE_PATH" "/usr/bin/chromium")
+(setenv "PUPPETEER_EXECUTABLE_PATH" my/chromium-binary)
 
 (use-package ob-mermaid :straight t
   :config
-  (setq ob-mermaid-cli-path "/usr/bin/mmdc"))
+  (setq ob-mermaid-cli-path my/mmdc-binary))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -617,7 +633,7 @@
 (use-package ox-hugo :straight t
   :after ox
   :config
-  (setq-default org-hugo-base-dir "/home/suzumi/Documents/suzumi-nagata.github.io/"))
+  (setq-default org-hugo-base-dir my/hugo-base-dir))
 
 (with-eval-after-load 'ox-hugo
   (defun my/ox-hugo-export-block-latex (export-block _contents _info)

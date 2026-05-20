@@ -22,6 +22,19 @@
 ;; Uncomment to debug
 ;; (setq debug-on-error t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                Path Settings                                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar my/org-roam-index-file "~/Org/roam/20210117203010-index.org")
+(defvar my/obsidian-dir "~/garden/content/")
+(defvar my/go-bin-dir "/home/suzumi/go/bin")
+(defvar my/go-path "/home/suzumi/go")
+(defvar my/local-bin-dir "/home/suzumi/.local/bin")
+(defvar my/java-home "/usr/lib/jvm/java-25-openjdk/")
+(defvar my/flutter-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
+(defvar my/aspell-binary "/usr/bin/aspell")
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -135,7 +148,7 @@
 (global-set-key (kbd "C-c n l") 'org-roam-buffer-toggle)
 (global-set-key (kbd "C-c n i") 'org-roam-node-insert)
 (global-set-key (kbd "C-c n f") 'org-roam-node-find)
-(global-set-key (kbd "C-c n k") (lambda() (interactive)(find-file "~/Org/roam/20210117203010-index.org")))
+(global-set-key (kbd "C-c n k") (lambda() (interactive)(find-file my/org-roam-index-file)))
 (global-set-key (kbd "C-c n ç") 'org-roam-capture)
 (global-set-key (kbd "C-c n d") 'deft)
 (global-set-key (kbd "C-c n a") 'orb-note-actions)
@@ -262,8 +275,8 @@
 ;; Makes *scratch* empty.
 (setq initial-scratch-message "")
 ;; Removes *messages* from the buffer.
-(setq-default message-log-max nil)
-(kill-buffer "*Messages*")
+;; (setq-default message-log-max nil)
+;; (kill-buffer "*Messages*")
 ;; Removes *Completions* from buffer after you've opened a file.
 (add-hook 'minibuffer-exit-hook
           '(lambda () (let ((buffer "*Completions*"))
@@ -373,7 +386,7 @@
                                     (ispell-change-dictionary "en_US")
                                     (flyspell-mode))))
 (require 'ispell)
-(setq ispell-program-name "/usr/bin/aspell")
+(setq ispell-program-name my/aspell-binary)
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
@@ -533,9 +546,9 @@
   :straight t
   :custom
   ;; location of obsidian vault
-  (obsidian-directory "~/garden/content/")
-  (obsidian-inbox-directory "~/garden/content/")
-  (obsidian-daily-notes-directory "~/garden/content/Dailies")
+  (obsidian-directory my/obsidian-dir)
+  (obsidian-inbox-directory my/obsidian-dir)
+  (obsidian-daily-notes-directory (concat my/obsidian-dir "Dailies"))
 
   ;; Default location for new notes from `obsidian-capture'
   (obsidian-inbox-directory "Inbox")
@@ -545,7 +558,7 @@
   :init
   (add-hook 'markdown-mode-hook
             (lambda ()
-              (let ((vault-path (file-truename "~/garden/content/"))
+              (let ((vault-path (file-truename my/obsidian-dir))
                     (file-path (and buffer-file-name (file-truename buffer-file-name))))
                 (when (and file-path (string-prefix-p vault-path file-path))
                   (require 'obsidian)
@@ -566,6 +579,8 @@
               ;; Follow a backlink for the current file
               ("C-c n b" . obsidian-backlink-jump)))
 
+
+(use-package zotxt :straight t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;
@@ -622,7 +637,7 @@
            #'TeX-revert-document-buffer)
 
 ;; (use-package company-bibtex :straight t
-;;   :config (add-to-list 'company-backends 'company-bibtex))
+  ;; :config (add-to-list 'company-backends 'company-bibtex))
 
 (use-package auctex-latexmk :straight t
   :init (with-eval-after-load 'tex (auctex-latexmk-setup))
@@ -693,8 +708,8 @@
 (use-package exec-path-from-shell :straight t
   :config
   (exec-path-from-shell-initialize)
-  (add-to-list 'exec-path "/home/suzumi/go/bin")
-  (setenv "GOPATH" "/home/suzumi/go"))
+  (add-to-list 'exec-path my/go-bin-dir)
+  (setenv "GOPATH" my/go-path))
 
 (lsp-register-custom-settings
  '(("gopls.completeUnimported" t t)
@@ -709,8 +724,8 @@
   (setq pyvenv-workon "emacs")  ; Default venv
   (pyvenv-tracking-mode 1))
 
-(add-to-list 'exec-path "/home/suzumi/.local/bin")
-(setenv "JAVA_HOME" "/usr/lib/jvm/java-25-openjdk/")
+(add-to-list 'exec-path my/local-bin-dir)
+(setenv "JAVA_HOME" my/java-home)
 
 (lsp-register-custom-settings
  '(("pyls.plugins.pyls_mypy.enabled" t t)
@@ -753,7 +768,7 @@
 
 (use-package lsp-dart :straight t
   :config
-  (setq lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
+  (setq lsp-dart-sdk-dir my/flutter-dart-sdk-dir)
   (with-eval-after-load "projectile"
   (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
   (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
