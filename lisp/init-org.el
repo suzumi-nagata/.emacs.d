@@ -562,23 +562,19 @@
           org-ref-default-bibliography '("/home/nagata/Org/bib/my_library.bib")
           org-ref-pdf-directory "/home/nagata/Zotero"))
 
+(use-package zotra :straight t)
+
 (use-package ivy-bibtex :straight t
   :after org
   :init
-  (setq bibtex-format-citation-functions
-        '((org-mode . (lambda (x) (insert (concat
-                                           "\\cite{"
-                                           (mapconcat 'identity x ",")
-                                           "}")) ""))))
-  (setq bibtex-completion-pdf-field "file"
-        bibtex-completion-bibliography '("/home/nagata/Org/bib/my_library.bib")
-        bibtex-completion-library-path '("/home/nagata/Zotero/")
-        bibtex-completion-notes-path "/home/nagata/Org/roam/bib/"
+  (setq bibtex-completion-bibliography
+        '("~/Org/bib/suzumi.bib")
+        bibtex-completion-notes-path (expand-file-name "bib/" my/org-roam-dir)
         bibtex-completion-notes-template-multiple-files
         (concat
          "#+title: ${title}\n"
-         "#+roam_key: cite:${=key=}\n"
-         "* Notes\n"
+         "#+roam_key: cite:${=key=}\n\n"
+         "* > TODO Notes\n"
          "  :PROPERTIES:\n"
          "  :Custom_ID: ${=key=}\n"
          "  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
@@ -588,8 +584,34 @@
          "  :YEAR: ${year}\n"
          "  :DOI: ${doi}\n"
          "  :URL: ${url}\n"
-         "  :END:\n\n"
-         )))
+         "  :END:\n\n")
+        bibtex-completion-pdf-field "File"
+        bibtex-completion-library-path '("~/pdfs"))
+
+  (setq bibtex-completion-additional-search-fields '(keywords abstract))
+
+  (setq zotra-local-server-directory "~/Repos/zotra-server/"
+        zotra-default-bibliography "~/Org/bib/suzumi.bib"
+        zotra-download-attachment-default-directory "~/pdfs/")
+
+  (setq bibtex-completion-format-citation-functions
+        '((org-mode . bibtex-completion-format-citation-org-title-link-to-PDF)
+          (latex-mode . bibtex-completion-format-citation-cite)
+          (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+          (python-mode . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+          (rst-mode . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+          (default . bibtex-completion-format-citation-default)))
+  :config
+  (ivy-set-prompt 'ivy-bibtex (lambda () "BibTeX entries [M-o: actions]: "))
+  (setq ivy-bibtex-default-action 'ivy-bibtex-edit-notes)
+  (ivy-add-actions
+   'ivy-bibtex
+   '(("p" ivy-bibtex-open-any "Open pdf, url or DOI")))
+  )
+
+(setq org-cite-global-bibliography '("~/Org/bib/suzumi.bib"))
+
+(setq org-cite-export-processors '((t csl)))
 
 (use-package org-roam-bibtex :straight t
   :after org-roam
@@ -599,6 +621,58 @@
   (setq orb-preformat-keywords '("url" "title" "file" "keywords" "citekey" "author" "date"))
   (setq orb-abbreviate-file-name nil)
   )
+
+(use-package ebib :straight t
+  :init
+  (setq ebib-preload-bib-files '("~/Org/bib/suzumi.bib"))
+  (setq ebib-notes-directory "~/Org/bib")
+  (setq ebib-multiline-major-mode 'org-mode)
+
+  (add-hook 'ebib-entry-mode-hook 'visual-line-mode)
+
+  (setq ebib-index-columns '(("Title" 60 t)
+                             ("Author/Editor" 40 t)
+                             ("Year" 6 t)
+                             ("Entry Key" 40 t)
+                             ("Note" 10 t)))
+
+  (setq ebib-citation-description-function 'ebib-create-org-title)
+
+  (defun ebib-edit-annote ()
+    "Edit annote field of entry."
+    (interactive)
+    (ebib-edit-field "annote"))
+
+  (defun ebib-list-recent (days)
+    "List entries created in the last DAYS days."
+    (interactive "nNumber of days: ")
+    ;; Save the database's current filter, if there is one.
+    (let ((filter (ebib-db-get-filter ebib--cur-db)))
+      (when filter (setq ebib--filters-last-filter filter)))
+    (let*
+        ;; Calculate the from-date in Emacs' time format.
+        ((date (time-subtract (current-time) (days-to-time days)))
+         ;; Create a Lisp expression that will function as the filter.
+         (filter `(ebib--newer-than (quote ,date))))
+      ;; Install it as the current database's filter.
+      (ebib-db-set-filter filter ebib--cur-db)
+      ;; Update the current entry key.
+      (ebib-db-set-current-entry-key (ebib--get-key-at-point) ebib--cur-db)
+      ;; Update the display, so that only filtered entries are visible.
+      (ebib--update-buffers)))
+
+  (defun ebib--newer-than (date)
+    "Function for use in filters.
+Return t if the entry being tested is newer than DATE.  DATE must
+be a list of the format returned by `current-time' and is
+compared to the timestamp of the entry being tested.  If the
+entry has no timestamp, or a timestamp that cannot be converted
+into a date representation, return nil."
+    (let ((timestamp (cdr (assoc-string "urldate" ebib-entry))))
+      (when (and timestamp
+                 (setq timestamp (ignore-errors (date-to-time timestamp))))
+        (time-less-p date timestamp))))
+)
 
 ;; (use-package org-transclusion
 ;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
