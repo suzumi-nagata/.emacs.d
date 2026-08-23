@@ -374,9 +374,12 @@
   ;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Normal templates
   (setq org-roam-capture-templates
-        '(("d" "default" plain "%?"
+        `(("d" "default" plain "%?"
            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                              "#+TITLE: ${title}
+                              ":PROPERTIES:
+:ID: ${id}
+:END:
+#+TITLE: ${title}
 #+FILETAGS:
 - links ::\n\n")
            :immediate-finish t
@@ -384,7 +387,10 @@
 
           ("c" "course" plain "%?"
            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                              "#+TITLE: ${title}
+                              ":PROPERTIES:
+:ID: ${id}
+:END:
+#+TITLE: ${title}
 #+FILETAGS: course
 - equivalent course ::
 - links ::
@@ -407,13 +413,16 @@
            :unnarrowed t)
 
           ("r" "bibliography reference" plain
-           (file my/org-roam-bib-template-file)
+           (file ,my/org-roam-bib-template-file)
            :if-new (file+head "bib/${citekey}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)
 
-          ("c" "cooking recipe" plain "%?"
+          ("k" "cooking recipe" plain "%?"
            :if-new (file+head "recipes/%<%Y%m%d%H%M%S>-${slug}.org"
-                              "#+TITLE: ${title}
+                              ":PROPERTIES:
+:ID: ${id}
+:END:
+#+TITLE: ${title}
 #+FILETAGS:
 - links ::
 
@@ -428,12 +437,14 @@
   (setq org-roam-capture-ref-templates
         '(("r" "ref" plain "%?"
            :if-new (file+head "websites/%<%Y%m%d%H%M%S>-${slug}.org"
-                              "#+TITLE: ${title}
+                              ":PROPERTIES:
+:ID: ${id}
+:ROAM_REFS: ${ref}
+:END:
+#+TITLE: ${title}
 #+FILETAGS:
 - source :: ${ref}
-- links ::\n\n"
-)
-           ;; :immediate-finish t
+- links ::\n\n")
            :unnarrowed t
            )))
 
@@ -612,6 +623,8 @@
 (use-package org-roam-bibtex :straight t
   :after org-roam
   :config
+  (setq orb-insert-interface 'ivy-bibtex)
+  (org-roam-bibtex-mode 1)
   (require 'org-ref))
 
 (use-package ebib :straight t

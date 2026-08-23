@@ -20,7 +20,7 @@
 ;;; Code:
 
 ;; Uncomment to debug
-;; (setq debug-on-error t)
+(setq debug-on-error t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                Path Settings                                ;
@@ -580,7 +580,7 @@
               ("C-c n b" . obsidian-backlink-jump)))
 
 
-(use-package zotxt :straight t)
+;; (use-package zotxt :straight t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;           end productivity          ;

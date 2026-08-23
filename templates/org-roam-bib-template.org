@@ -1,11 +1,11 @@
 - links ::
 - keywords :: %^{keywords}
 
-* %^{title}
+* ${title}
 :PROPERTIES:
-:Custom_ID: %^{citekey}
-:URL: %^{url}
-:AUTHOR: %^{author}
-:NOTER_DOCUMENT: %^{file}
+:Custom_ID: ${citekey}
+:URL: ${url}
+:AUTHOR: ${author}
+:NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")
 :NOTER_PAGE:
 :END:
