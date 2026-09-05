@@ -1,9 +1,9 @@
 ;;; init.el --- my init config
 ;;
-;; Copyright (C) 2021 Vitor Nagata
+;; Copyright (C) 2021 Suzumi Nagata
 ;;
-;; Author: Vitor Nagata <http://github/nagatavit>
-;; Maintainer: Vitor Nagata <nagatavit@gmail.com>
+;; Author: Suzumi Nagata <http://github/suzumi-nagata>
+;; Maintainer: Suzumi Nagata <suzumi.nag@gmail.com>
 ;; Created: January 15, 2021
 ;; Modified: January 15, 2021
 ;; Version: 0.0.1
@@ -20,7 +20,7 @@
 ;;; Code:
 
 ;; Uncomment to debug
-;; (setq debug-on-error t)
+(setq debug-on-error t)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -162,7 +162,7 @@
       (use-package dracula-theme
         :straight (dracula-theme :type git :host github :repo "dracula/emacs"
                                  :fork (:host github
-                                        :repo "nagatavit/dracula")))
+                                        :repo "suzumi-nagata/dracula")))
       (load-theme 'dracula t))
   (progn
     (use-package monokai-theme :straight t)
@@ -184,9 +184,9 @@
    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
    '(org-hide ((t (:background "#131417" :foreground "#131417"))))
-   '(org-agenda-date ((t (:inherit org-agenda-date :background "gray4" :foreground "ForestGreen"))))
-   '(org-agenda-date-today ((t (:inherit org-agenda-date :background "orange" :foreground "#300b66"))))
-   '(org-agenda-date-weekend ((t (:inherit org-agenda-date :background "#97BC62" :foreground "NavyBlue"))))
+   '(org-agenda-date ((t (:background "gray4" :foreground "ForestGreen"))))
+   '(org-agenda-date-today ((t (:background "orange" :foreground "#300b66"))))
+   '(org-agenda-date-weekend ((t (:background "#97BC62" :foreground "NavyBlue"))))
    '(org-block-begin-line ((t (:background "#606c7d"))))
    '(org-block-end-line ((t (:background "#606c7d"))))
    '(org-block ((t (:background "#323f4f"))))
