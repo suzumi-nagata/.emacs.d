@@ -720,7 +720,7 @@ into a date representation, return nil."
 (use-package ox-hugo :straight t
   :after ox
   :config
-  (setq-default org-hugo-base-dir "/home/suzumi/Documents/suzumi-nagata.github.io/"))
+  (setq-default org-hugo-base-dir "/home/nagata/suzumi-nagata.github.io/"))
 
 (with-eval-after-load 'ox-hugo
   (defun my/ox-hugo-export-block-latex (export-block _contents _info)
