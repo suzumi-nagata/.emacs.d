@@ -197,6 +197,11 @@
    '(ediff-even-diff-A ((t (:background "#0a2832"))))
    '(ediff-odd-diff-B ((t (:background "#0a2832"))))
    '(ediff-even-diff-B ((t (:background "#0a2832"))))
+   ;; muted green bg and explicitly unset the foreground so syntax
+   ;; highlighting shows through (theme specs are layered, so just omitting
+   ;; :foreground would still inherit Dracula's dark text).
+   '(ediff-current-diff-B ((t (:background "#0b2014" :foreground unspecified))))
+   '(ediff-fine-diff-B ((t (:background "#1a4a2e" :foreground unspecified))))
    ))
 
 (set-face-attribute  'mode-line
