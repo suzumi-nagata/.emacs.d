@@ -20,7 +20,7 @@
 ;;; Code:
 
 ;; Uncomment to debug
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
