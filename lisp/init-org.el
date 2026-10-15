@@ -34,8 +34,9 @@
       org-agenda-block-separator nil
       org-agenda-start-with-log-mode t
       org-tags-sort-function 'org-string-collate-lessp
-      org-cite-global-bibliography '("/home/suzumi/Org/bib/zotero.bib")
-      org-cite-csl-styles-dir "/home/suzumi/.emacs.d/styles/"
+      org-cite-global-bibliography '("~/garden/content/bibliography.bib")
+      ;; Copied out of ~/Zotero/styles so org-cite export survives deleting Zotero.
+      org-cite-csl-styles-dir "~/.emacs.d/csl-styles/"
       )
 
 (setq org-agenda-sorting-strategy
@@ -75,6 +76,7 @@
 ;; Note: uni-units is a list of names separated by newlines
 (setq org-todo-keywords
       (quote ((sequence "> TODO(t)"
+                        "> TO-READ(r)"
                         "# PROG(p)"
                         "$ WAIT(w@)"
                         "& HOLD(h@)"
@@ -557,10 +559,12 @@
 (use-package org-ref :straight t
     :after org
     :init
+    ;; org-ref-notes-directory still points at the legacy org literature
+    ;; notes; new ones are markdown in the vault.
     (setq org-ref-notes-directory "/home/nagata/Org/roam/bib/"
           ;; org-ref-bibliography-notes "/home/nagata/Org/bib/articles.org"
-          org-ref-default-bibliography '("/home/nagata/Org/bib/my_library.bib")
-          org-ref-pdf-directory "/home/nagata/Zotero"))
+          org-ref-default-bibliography '("~/garden/content/bibliography.bib")
+          org-ref-pdf-directory "~/pdfs"))
 
 (use-package zotra :straight t)
 
@@ -568,32 +572,39 @@
   :after org
   :init
   (setq bibtex-completion-bibliography
-        '("~/Org/bib/suzumi.bib")
-        bibtex-completion-notes-path (expand-file-name "bib/" org-roam-directory)
+        '("~/garden/content/bibliography.bib")
+        bibtex-completion-notes-path "~/garden/content/Literature/"
+        bibtex-completion-notes-extension ".md"
+        ;; Mirror of content/templates/literature.md in the vault: RET on an
+        ;; entry creates the same markdown note citar and Obsidian create.
         bibtex-completion-notes-template-multiple-files
         (concat
-         "#+title: ${title}\n"
-         "#+roam_key: cite:${=key=}\n\n"
-         "* > TODO Notes\n"
-         "  :PROPERTIES:\n"
-         "  :Custom_ID: ${=key=}\n"
-         "  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-         "  :AUTHOR: ${author-abbrev}\n"
-         "  :JOURNAL: ${journaltitle}\n"
-         "  :DATE: ${date}\n"
-         "  :YEAR: ${year}\n"
-         "  :DOI: ${doi}\n"
-         "  :URL: ${url}\n"
-         "  :END:\n\n")
+         "---\n"
+         "title: \"${title}\"\n"
+         "citekey: \"${=key=}\"\n"
+         "authors: \"${author}\"\n"
+         "year: ${year}\n"
+         "venue: \"${journal}\"\n"
+         "doi: \"${doi}\"\n"
+         "url: \"${url}\"\n"
+         "tags:\n"
+         "  - literature\n"
+         "read: false\n"
+         "---\n\n"
+         "# Why I picked this up\n\n"
+         "# Summary in my own words\n\n"
+         "# Key claims\n-\n\n"
+         "# Quotes\n>\n\n"
+         "# Open questions\n\n"
+         "# Permanent notes grown from this\n-\n")
         bibtex-completion-pdf-field "File"
         bibtex-completion-library-path '("~/pdfs"))
 
   (setq bibtex-completion-additional-search-fields '(keywords abstract))
 
-  (setq zotra-backend 'translation-server
-        ;; Zotero 7 desktop serves the translation server on 23119;
-        ;; the standalone translation-server defaults to 1969.
-        zotra-server-path "http://127.0.0.1:23119"
+  ;; No Zotero required: ~/Repos/zotra-server runs Zotero's translators as a
+  ;; standalone service (port 1969) and zotra starts it on demand.
+  (setq zotra-backend 'zotra-server
         zotra-local-server-directory "~/Repos/zotra-server/"
         zotra-default-bibliography "~/garden/content/bibliography.bib"
         zotra-download-attachment-default-directory "~/pdfs/")
@@ -613,8 +624,6 @@
    '(("p" ivy-bibtex-open-any "Open pdf, url or DOI")))
   )
 
-(setq org-cite-global-bibliography '("~/Org/bib/suzumi.bib"))
-
 (setq org-cite-export-processors '((t csl)))
 
 (use-package org-roam-bibtex :straight t
@@ -624,13 +633,50 @@
   (org-roam-bibtex-mode 1)
   (setq orb-preformat-keywords '("url" "title" "file" "keywords" "citekey" "author" "date"))
   (setq orb-abbreviate-file-name nil)
+  (setq orb-insert-interface 'ivy-bibtex
+        orb-note-actions-interface 'ivy)
   )
 
 (use-package ebib :straight t
   :init
-  (setq ebib-preload-bib-files '("~/Org/bib/suzumi.bib"))
-  (setq ebib-notes-directory "~/Org/bib")
+  (require 'ebib-reading-list)
+  (require 'org-ebib)
+  ;; The library UI: ebib browses and edits the same .bib that citar,
+  ;; ivy-bibtex, Quartz and the Obsidian citation plugin read.
+  (setq ebib-preload-bib-files '("~/garden/content/bibliography.bib"))
+  (setq ebib-notes-directory "~/garden/content/Literature")
   (setq ebib-multiline-major-mode 'org-mode)
+
+  ;; --- reading list (R a in the index buffer adds the current entry) ------
+  ;; Priorities A-E on org headings; "> TO-READ" and "V DONE" are the literal
+  ;; state names from `org-todo-keywords' above.
+  (setq ebib-reading-list-file "~/Org/roam/reading_list.org"
+        ebib-reading-list-todo-marker "> TO-READ"
+        ebib-reading-list-done-marker "V DONE"
+        ebib-reading-list-template "* %M %T\n:PROPERTIES:\n%K\n:REF: %C\n:END:\n%F\n"
+        ebib-reading-list-template-specifiers
+        '((?K . ebib-reading-list-create-org-identifier)
+          (?T . ebib-create-org-title)
+          (?M . ebib-reading-list-todo-marker)
+          (?C . ebib-create-org-cite)
+          (?F . ebib-create-org-file-link)
+          (?D . ebib-create-org-doi-link)
+          (?U . ebib-create-org-url-link)))
+
+  ;; --- topic indexes (ebib "dependent databases") -------------------------
+  ;; One .bib per topic sharing entries with the library: create with M c in
+  ;; ebib, push entries with M a, then list the file name here.
+  (defvar my/ebib-index-directory "~/Org/bib/index/"
+    "Directory holding the topic index databases.")
+  (defvar my/ebib-index-databases nil
+    "Topic index .bib files to open alongside the library.")
+  (defun my/ebib-open-indexes ()
+    "Open every index database listed in `my/ebib-index-databases'."
+    (interactive)
+    (dolist (db my/ebib-index-databases)
+      (ebib--load-bibtex-file-internal
+       (expand-file-name db my/ebib-index-directory)))
+    (message "Opened %d index database(s)" (length my/ebib-index-databases)))
 
   (add-hook 'ebib-entry-mode-hook 'visual-line-mode)
 
@@ -676,7 +722,39 @@ into a date representation, return nil."
       (when (and timestamp
                  (setq timestamp (ignore-errors (date-to-time timestamp))))
         (time-less-p date timestamp))))
+
+  ;; Prompt for an A-E priority on every item added to the reading list.
+  (defun my/ebib-reading-list-set-priority ()
+    "Set an A-E priority on the reading-list item that was just added."
+    (when (derived-mode-p 'org-mode)
+      (save-excursion
+        (org-back-to-heading t)
+        (call-interactively #'org-priority))))
+
+  (add-hook 'ebib-reading-list-new-item-hook #'my/ebib-reading-list-set-priority)
+
+  ;; From a reading-list item, create or open its markdown literature note in
+  ;; the vault.  The :REF: property holds "cite:<citekey>".
+  (defun my/reading-list-open-note ()
+    "Create or open the vault literature note for the item at point."
+    (interactive)
+    (require 'citar)
+    (let* ((raw (org-entry-get nil "REF"))
+           (citekey (and raw (string-remove-prefix "cite:" raw))))
+      (unless citekey (user-error "No :REF: citekey on this heading"))
+      (citar-create-note citekey)))
 )
+
+;;; --- reference workflow entry points --------------------------------------
+(defun my/citar-create-note ()
+  "Create or open the vault literature note for a citekey."
+  (interactive)
+  (require 'citar)                      ; not autoloaded, unlike ebib
+  (call-interactively #'citar-create-note))
+
+(global-set-key (kbd "C-c n e") 'ebib)                  ; browse the library
+(global-set-key (kbd "C-c n r") 'my/citar-create-note)  ; literature note
+
 
 ;; (use-package org-transclusion
 ;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
