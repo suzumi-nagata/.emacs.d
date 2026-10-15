@@ -755,6 +755,51 @@ into a date representation, return nil."
 (global-set-key (kbd "C-c n e") 'ebib)                  ; browse the library
 (global-set-key (kbd "C-c n r") 'my/citar-create-note)  ; literature note
 
+;; zotra appends to the library with a plain `insert' into whatever buffer
+;; visits the .bib.  If that buffer is read-only -- e.g. the library was opened
+;; with C-x C-r just to look at it -- the capture dies with "Buffer is
+;; read-only", and when it is triggered from the browser that error only
+;; reaches emacsclient's stderr, which nothing displays.  So: make the write
+;; unconditional, and report any other failure where it can be seen.
+(defun my/zotra-add-entry-writable (orig &rest args)
+  "Run ORIG with read-only buffers writable."
+  (let ((inhibit-read-only t))
+    (apply orig args)))
+
+(defun my/zotra-protocol-report-errors (orig info)
+  "Run ORIG, reporting a failure in the echo area instead of losing it."
+  (condition-case err
+      (funcall orig info)
+    (error (message "zotra capture failed: %S" err) nil)))
+
+;; zotra appends blindly, so capturing something already in the library leaves
+;; two entries sharing a citekey -- which is worse than a missing entry, since
+;; every citation of that key silently becomes ambiguous.
+(defun my/zotra--bibfile (args)
+  "Return the file `zotra-add-entry' will write to, given ARGS."
+  (let ((arg (nth 2 args)))
+    (cond ((and (stringp arg) (not (equal arg "here"))) arg)
+          ((stringp zotra-default-bibliography) zotra-default-bibliography)
+          ((listp zotra-default-bibliography) (car zotra-default-bibliography)))))
+
+(defun my/zotra-add-entry-warn-duplicate (orig &rest args)
+  "Run ORIG, warning when the citekey it added is already in the library."
+  (let ((key (apply orig args))
+        (bib (ignore-errors (my/zotra--bibfile args))))
+    (when (and key bib (file-readable-p (expand-file-name bib)))
+      (with-temp-buffer
+        (insert-file-contents (expand-file-name bib))
+        (when (> (count-matches (concat "^@[A-Za-z]+{" (regexp-quote key) ",")
+                                 (point-min) (point-max))
+                 1)
+          (message "zotra: `%s' was already in the library -- it now holds two entries with that key" key))))
+    key))
+
+(with-eval-after-load 'zotra
+  (advice-add 'zotra-add-entry :around #'my/zotra-add-entry-writable)
+  (advice-add 'zotra-add-entry :around #'my/zotra-add-entry-warn-duplicate)
+  (advice-add 'zotra-protocol :around #'my/zotra-protocol-report-errors))
+
 
 ;; (use-package org-transclusion
 ;;   :straight (:host github :repo "nobiot/org-transclusion" :branch "main" :files ("*.el"))
