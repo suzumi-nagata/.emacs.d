@@ -539,11 +539,12 @@
   :custom
   ;; location of obsidian vault
   (obsidian-directory "~/garden/content/")
-  (obsidian-inbox-directory "~/garden/content/")
   (obsidian-daily-notes-directory "~/garden/content/Dailies")
 
   ;; Default location for new notes from `obsidian-capture'
-  (obsidian-inbox-directory "Inbox")
+  (obsidian-inbox-directory "Notes")
+  ;; Templates, shared with the Obsidian core Templates plugin
+  (obsidian-templates-directory "templates")
   ;; Useful if you're going to be using wiki links
   (markdown-enable-wiki-links t)
 
@@ -557,10 +558,71 @@
                   (obsidian-mode 1)
                   (obsidian-backlinks-mode 1)))))
 
+  :config
+  (require 'obsidian-qmd)
+
+  ;; The vault is the zettelkasten: literature notes go to Literature/,
+  ;; permanent notes to Notes/, both stamped from content/templates/.
+  (defun my/obsidian-new-note ()
+    "Create a permanent note in the vault from `templates/note.md'."
+    (interactive)
+    (let* ((title (read-from-minibuffer "Title: "))
+           (file (expand-file-name (concat title ".md")
+                                   (expand-file-name "Notes" obsidian-directory))))
+      (with-current-buffer (find-file file)
+        (unless (file-exists-p file)
+          (obsidian-apply-template
+           (expand-file-name (concat obsidian-templates-directory "/note.md")
+                             obsidian-directory)))
+        (save-buffer))))
+
+  (defun my/citar-markdown-note (key entry)
+    "Create a markdown literature note for KEY from ENTRY.
+Fills `Literature/<citekey>.md' from `templates/literature.md' in the
+vault, substituting the same {{placeholders}} the Obsidian citation
+plugin understands."
+    (let* ((file (expand-file-name (concat key ".md")
+                                   (car citar-notes-paths)))
+           (template (expand-file-name "templates/literature.md" obsidian-directory))
+           (fields `(("citekey" . ,key)
+                     ("title" . ,(or (citar-get-value "title" entry) ""))
+                     ("authorString" . ,(or (citar-get-value "author" entry) ""))
+                     ("year" . ,(or (citar-get-value "year" entry) ""))
+                     ("containerTitle" . ,(or (citar-get-value "journaltitle" entry)
+                                              (citar-get-value "booktitle" entry)
+                                              ""))
+                     ("DOI" . ,(or (citar-get-value "doi" entry) ""))
+                     ("URL" . ,(or (citar-get-value "url" entry) ""))
+                     ("zoteroSelectURI" . ,(format "zotero://select/items/@%s" key)))))
+      (with-current-buffer (find-file file)
+        (erase-buffer)
+        (insert-file-contents template)
+        (pcase-dolist (`(,placeholder . ,value) fields)
+          (goto-char (point-min))
+          (while (search-forward (format "{{%s}}" placeholder) nil t)
+            (replace-match value t t)))
+        (save-buffer))))
+
+  (use-package citar :straight t
+    :custom
+    (citar-bibliography '("~/garden/content/bibliography.bib"))
+    (citar-notes-paths '("~/garden/content/Literature"))
+    (citar-file-note-extensions '("md"))
+    ;; Citekeys become markdown notes in the vault, not org notes in org-roam.
+    (citar-note-format-function #'my/citar-markdown-note)
+    :config
+    (require 'citar-markdown))
+
+
   ;; These bindings are only suggestions; it's okay to use other bindings
   :bind (:map obsidian-mode-map
-              ;; Create note
-              ("C-c n ç" . obsidian-capture)
+              ;; Semantic vault search via qmd
+              ("C-c n n" . obsidian-qmd-search)
+              ;; New permanent note, stamped from templates/note.md
+              ("C-c n ç" . my/obsidian-new-note)
+              ;; New literature note for a citekey, stamped from
+              ;; templates/literature.md into Literature/
+              ("C-c n r" . citar-create-note)
               ;; If you prefer you can use `obsidian-insert-wikilink'
               ("C-c n i" . obsidian-insert-wikilink)
               ("C-c C-l" . obsidian-insert-link)
@@ -569,7 +631,9 @@
               ;; Open a different note from vault
               ("C-c n f" . obsidian-jump)
               ;; Follow a backlink for the current file
-              ("C-c n b" . obsidian-backlink-jump)))
+              ("C-c n b" . obsidian-backlink-jump)
+              ("C-c n k" . citar-insert-citation)
+              ))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -590,8 +590,12 @@
 
   (setq bibtex-completion-additional-search-fields '(keywords abstract))
 
-  (setq zotra-local-server-directory "~/Repos/zotra-server/"
-        zotra-default-bibliography "~/Org/bib/suzumi.bib"
+  (setq zotra-backend 'translation-server
+        ;; Zotero 7 desktop serves the translation server on 23119;
+        ;; the standalone translation-server defaults to 1969.
+        zotra-server-path "http://127.0.0.1:23119"
+        zotra-local-server-directory "~/Repos/zotra-server/"
+        zotra-default-bibliography "~/garden/content/bibliography.bib"
         zotra-download-attachment-default-directory "~/pdfs/")
 
   (setq bibtex-completion-format-citation-functions
