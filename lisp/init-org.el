@@ -39,6 +39,8 @@
       org-cite-csl-styles-dir "~/.emacs.d/csl-styles/"
       )
 
+(add-hook 'org-mode-hook 'org-indent-mode)
+
 (setq org-agenda-sorting-strategy
   '((agenda time-up priority-down category-keep)
     (todo   priority-down category-keep)
