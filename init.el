@@ -40,6 +40,10 @@
 ;; add ~/.emacs.d/lisp to load the rest of configuration files
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
+;; Prefer a newer .el over an older .elc.  Without this, editing a source
+;; file and restarting silently keeps running the stale compiled version.
+(setq load-prefer-newer t)
+
 ;; Disable native comp warnings
 (setq-default warning-minimum-level :emergency)
 

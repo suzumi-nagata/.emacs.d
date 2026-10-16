@@ -1,5 +1,7 @@
 auto-save-list
 *.#*
+# Compiled files are build artifacts, and a stale one shadows its source.
+*.elc
 .emacs.desktop
 .emacs.desktop.lock
 elpa/
