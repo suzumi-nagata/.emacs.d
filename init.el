@@ -570,7 +570,7 @@
   (defun my/obsidian-new-note ()
     "Create a permanent note in the vault from `templates/note.md'."
     (interactive)
-    (let* ((title (read-from-minibuffer "Title: "))
+    (let* ((title (read-from-minibuffer "Claim (the note's title): "))
            (file (expand-file-name (concat title ".md")
                                    (expand-file-name "Notes" obsidian-directory))))
       (with-current-buffer (find-file file)

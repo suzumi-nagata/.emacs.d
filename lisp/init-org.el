@@ -594,10 +594,10 @@
          "read: false\n"
          "---\n\n"
          "# Why I picked this up\n\n"
-         "# Summary in my own words\n\n"
-         "# Key claims\n-\n\n"
-         "# Quotes\n>\n\n"
-         "# Open questions\n\n"
+         "# What the source argues (in my words)\n\n"
+         "# Key claims (with locations)\n-\n\n"
+         "# Quotes (with locations)\n>\n\n"
+         "# Where I disagree / what's missing\n\n"
          "# Permanent notes grown from this\n-\n")
         bibtex-completion-pdf-field "File"
         bibtex-completion-library-path '("~/pdfs"))
