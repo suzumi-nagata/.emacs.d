@@ -937,6 +937,18 @@ plugin understands."
   :config
   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
+;; Async spell checking for Markdown notes via Enchant. Much lighter than
+;; flyspell, whose post-command hook forces a Markdown font-lock redisplay on
+;; every keystroke. Dictionaries come from Enchant (en_US, pt_BR, pt_PT via
+;; aspell); use `M-x jinx-languages' to switch per buffer, or set
+;; `jinx-languages' to e.g. "en_US pt_BR" to check both at once.
+(use-package jinx
+  :straight t
+  :hook (markdown-mode . jinx-mode)
+  :config
+  (setq jinx-languages "en_US")
+  (define-key jinx-mode-map (kbd "C-;") #'jinx-correct))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;             global hooks            ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
