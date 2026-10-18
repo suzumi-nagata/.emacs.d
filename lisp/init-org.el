@@ -595,10 +595,10 @@
          "---\n\n"
          "# Why I picked this up\n\n"
          "# What the source argues (in my words)\n\n"
-         "# Key claims (with locations)\n-\n\n"
-         "# Quotes (with locations)\n>\n\n"
-         "# Where I disagree / what's missing\n\n"
-         "# Permanent notes grown from this\n-\n")
+         "# Key claims (in my words, with locations)\n\n"
+         "-\n\n"
+         "# Quotes (verbatim, with locations)\n\n"
+         ">\n")
         bibtex-completion-pdf-field "File"
         bibtex-completion-library-path '("~/pdfs"))
 
