@@ -760,6 +760,7 @@ plugin understands."
   (setq lsp-ui-doc-enable t           ; Enable documentation popups
         lsp-ui-doc-delay 0          ; Delay for hover popup (in seconds)
         lsp-ui-doc-position 'top ; Position the popup near the cursor
+        lsp-ui-doc-show-with-cursor t ; Show popup when point rests on a symbol
         lsp-ui-sideline-enable nil    ; Disable sideline if you prefer popups only
         lsp-eldoc-enable-hover nil
         lsp-ui-flycheck-enable t)     ; Enable flycheck popups
